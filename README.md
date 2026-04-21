@@ -139,7 +139,7 @@ Cada notebook gera:
 - 📊 **Gráficos interativos** (Plotly)
 - 📋 **DataFrames organizados para análise**
 
----
+----
 
 ## Observação Importante
 
