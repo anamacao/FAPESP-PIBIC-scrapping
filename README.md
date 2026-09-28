@@ -144,3 +144,11 @@ Cada notebook gera:
 ## Observação Importante
 
 > Sites que aplicam **bloqueio ativo contra scraping automatizado** (HTTP 403, WAF, fingerprinting) **não são forçados** neste projeto, respeitando boas práticas técnicas e éticas.
+
+## Coleta semanal e diagnóstico dos notebooks
+
+O workflow [FAPESP weekly news and notebook diagnostics](.github/workflows/fapesp-weekly.yml) roda às sextas-feiras, às 07h de Brasília, e também pode ser iniciado manualmente. Ele coleta os índices recentes de **NIC.br, EDPB, Mercociudades e Senado Federal**; esta é uma cobertura inicial de quatro fontes, não a execução de todos os scrapers. As notícias ficam acumuladas em [`data/news.csv`](data/news.csv), sem descartar registros anteriores quando uma fonte falha. O arquivo contém `source_id`, título, data de publicação (quando reconhecida), data original, URL, primeira e última detecção. Links repetidos da mesma fonte são consolidados.
+
+O diagnóstico em [`data/runs/latest.json`](data/runs/latest.json) registra quantidade de notícias novas, falhas por fonte e compilação das células de código de todos os notebooks existentes. **Compilação não é execução de ponta a ponta no Colab.** O workflow falha quando uma fonte não retorna notícias válidas ou quando uma célula tem erro de sintaxe, preservando o relatório para investigação. Notícias sem data reconhecida permanecem no CSV, mas não devem entrar nos gráficos por semana de publicação.
+
+Para executar localmente: instale `requests`, `beautifulsoup4` e `ipython`; rode `python -m unittest discover -s tests -v` e `python scripts/fapesp_weekly.py`. Não são criados notebooks novos.
