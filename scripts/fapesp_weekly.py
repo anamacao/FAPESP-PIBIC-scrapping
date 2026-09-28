@@ -115,15 +115,15 @@ def collect_edpb(client: requests.Session) -> list[dict]:
 
 def collect_mercociudades(client: requests.Session) -> list[dict]:
     base = "https://mercociudades.org/pt-br/noticias/"
-    soup = BeautifulSoup(fetch(client, base).text, "html.parser")
+    api = ("https://mercociudades.org/wp-json/wp/v2/posts"
+           "?per_page=50&lang=pt-br&_fields=date,link,title")
+    posts = fetch(client, api).json()
+    if not isinstance(posts, list):
+        raise ValueError("A API pública de Mercociudades não retornou uma lista")
     rows = []
-    for article in soup.select("article.post"):
-        link = article.select_one("h2 a[href]")
-        if not link:
-            continue
-        date = article.select_one(".fusion-single-line-meta span, time")
-        raw = date.get("datetime") or date.get_text(" ", strip=True) if date else ""
-        item = record("mercociudades", link.get_text(" ", strip=True), raw, link["href"], base)
+    for post in posts:
+        title = post.get("title", {}).get("rendered", "")
+        item = record("mercociudades", title, post.get("date", ""), post.get("link", ""), base)
         if item:
             rows.append(item)
     return rows

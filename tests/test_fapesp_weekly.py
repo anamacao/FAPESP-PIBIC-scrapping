@@ -42,9 +42,10 @@ class WeeklyTest(unittest.TestCase):
             "https://www.edpb.europa.eu/news_en?type%5B1%5D=1":
                 '<div class="node-article-card"><a class="node-article-card__link" href="/news/1">'
                 '<span class="node-article-card__title">EDPB</span></a><time datetime="2026-09-24"></time></div>',
-            "https://mercociudades.org/pt-br/noticias/":
-                '<article class="post"><h2><a href="/noticia/2">Mercocidades</a></h2>'
-                '<span class="fusion-single-line-meta"><span>24.09.2026</span></span></article>',
+            "https://mercociudades.org/wp-json/wp/v2/posts?per_page=50&lang=pt-br&_fields=date,link,title": [
+                {"date": "2026-09-24T12:45:32", "link": "https://mercociudades.org/pt-br/noticia/2",
+                 "title": {"rendered": "Mercocidades"}}
+            ],
             "https://www12.senado.leg.br/noticias/ultimas":
                 '<ol class="lista-resultados"><li><a href="/noticias/materias/2026/09/23/x">Senado</a>'
                 '<span class="text-muted normalis hidden-xs">23/09/2026 09h00</span></li></ol>',
