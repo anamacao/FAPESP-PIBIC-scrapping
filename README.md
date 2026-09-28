@@ -151,4 +151,6 @@ O workflow [FAPESP weekly news and notebook diagnostics](.github/workflows/fapes
 
 O diagnóstico em [`data/runs/latest.json`](data/runs/latest.json) registra quantidade de notícias novas, falhas por fonte e compilação das células de código de todos os notebooks existentes. **Compilação não é execução de ponta a ponta no Colab.** O workflow falha quando uma fonte não retorna notícias válidas ou quando uma célula tem erro de sintaxe, preservando o relatório para investigação. Notícias sem data reconhecida permanecem no CSV, mas não devem entrar nos gráficos por semana de publicação.
 
+Mercociudades usa a API pública de notícias no [notebook original](Mercosul/mercociudades.ipynb) e na coleta semanal. O site pode responder HTTP 403 ao ambiente do GitHub Actions, inclusive pela API. Nessa situação a coleta registra a falha e preserva as notícias já salvas; os gráficos da semana devem ser lidos como cobertura parcial. O notebook foi testado localmente com notícias reais, mas seu funcionamento na sessão hospedada do Google Colab ainda depende do acesso concedido pelo próprio site.
+
 Para executar localmente: instale `requests`, `beautifulsoup4` e `ipython`; rode `python -m unittest discover -s tests -v` e `python scripts/fapesp_weekly.py`. Não são criados notebooks novos.
