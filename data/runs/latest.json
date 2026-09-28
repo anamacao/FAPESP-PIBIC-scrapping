@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-28T21:01:12+00:00",
+  "generated_at": "2026-09-28T21:30:33+00:00",
   "dataset": "data/news.csv",
   "total_records": 562,
   "published_last_7_days": 24,
@@ -8,25 +8,26 @@
       "source_id": "nic",
       "status": "ok",
       "seen": 489,
-      "new": 489
+      "new": 0
     },
     {
       "source_id": "edpb",
       "status": "ok",
       "seen": 16,
-      "new": 16
+      "new": 0
     },
     {
       "source_id": "mercociudades",
-      "status": "ok",
-      "seen": 12,
-      "new": 12
+      "status": "failed",
+      "seen": 0,
+      "new": 0,
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://mercociudades.org/wp-json/wp/v2/posts?per_page=50&lang=pt-br&_fields=date,link,title"
     },
     {
       "source_id": "senado_federal",
       "status": "ok",
       "seen": 7,
-      "new": 7
+      "new": 0
     }
   ],
   "notebooks": {
@@ -126,7 +127,7 @@
       },
       {
         "path": "UE/charts.ipynb",
-        "code_cells": 8,
+        "code_cells": 11,
         "status": "syntax_ok",
         "errors": [],
         "runtime_status": "not_executed"
