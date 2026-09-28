@@ -245,7 +245,8 @@ def main() -> int:
         report = run(args.output)
     print(f"Notebooks válidos: {report['notebooks']['syntax_ok']}/{report['notebooks']['count']}")
     for item in report["sources"]:
-        print(f"{item['source_id']}: {item['status']} ({item['seen']} vistos, {item['new']} novos)")
+        detail = f" — {item['error']}" if item.get("error") else ""
+        print(f"{item['source_id']}: {item['status']} ({item['seen']} vistos, {item['new']} novos){detail}")
     return int(report["notebooks"]["count"] == 0 or
                report["notebooks"]["syntax_ok"] != report["notebooks"]["count"] or
                any(item["status"] != "ok" for item in report["sources"]))
