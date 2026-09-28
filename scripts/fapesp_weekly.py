@@ -221,7 +221,7 @@ def run(output: Path, collectors: dict = COLLECTORS, client: requests.Session | 
         writer.writeheader()
         writer.writerows(current[key] for key in sorted(current))
     notebooks = check_notebooks()
-    week_ago = (datetime.now(timezone.utc) - timedelta(days=7)).date().isoformat()
+    week_ago = (datetime.now(timezone.utc) - timedelta(days=6)).date().isoformat()
     recent = [r for r in current.values() if r["published_date"] and r["published_date"] >= week_ago]
     report = {"generated_at": now, "dataset": "data/news.csv", "total_records": len(current),
               "published_last_7_days": len(recent), "sources": source_reports, "notebooks": notebooks,
