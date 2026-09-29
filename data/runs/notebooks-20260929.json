@@ -1,0 +1,194 @@
+{
+  "generated_at": "2026-09-29T22:09:17+00:00",
+  "github_commit_tested": "2c99f78258b91491cda015b6554aadcd13334a7d",
+  "scope": "Execução local integral das células originais, na ordem, sem modo diagnóstico; diretório isolado por notebook; IPython no processo porque sockets do kernel Jupyter não são permitidos neste ambiente.",
+  "github_notebooks": {
+    "total": 21,
+    "passed": 20,
+    "blocked": 1,
+    "results": [
+      {
+        "path": "Mercosul/Parlamento uruguaio/parlamento_uy.ipynb",
+        "status": "fail",
+        "cells_run": 6,
+        "code_cells_total": 8,
+        "rows": null,
+        "seconds": 12.1,
+        "error": "HTTP 403 na página oficial de notícias do Parlamento do Uruguai; coleta interrompida, sem dados ou gráficos apresentados como válidos."
+      },
+      {
+        "path": "Mercosul/aaip.ipynb",
+        "status": "pass",
+        "cells_run": 19,
+        "code_cells_total": 19,
+        "rows": 16,
+        "seconds": 145.6
+      },
+      {
+        "path": "Mercosul/camaraFederal.ipynb",
+        "status": "pass",
+        "cells_run": 11,
+        "code_cells_total": 11,
+        "rows": 10,
+        "seconds": 91.5
+      },
+      {
+        "path": "Mercosul/cgi.ipynb",
+        "status": "pass",
+        "cells_run": 6,
+        "code_cells_total": 6,
+        "rows": 41,
+        "seconds": 21.3
+      },
+      {
+        "path": "Mercosul/dataprivacy.ipynb",
+        "status": "pass",
+        "cells_run": 9,
+        "code_cells_total": 9,
+        "rows": 32,
+        "seconds": 18.5
+      },
+      {
+        "path": "Mercosul/icncongresoargentina.ipynb",
+        "status": "pass",
+        "cells_run": 6,
+        "code_cells_total": 6,
+        "rows": 55,
+        "seconds": 8.4
+      },
+      {
+        "path": "Mercosul/internetlab.ipynb",
+        "status": "pass",
+        "cells_run": 15,
+        "code_cells_total": 15,
+        "rows": 6,
+        "seconds": 48.5
+      },
+      {
+        "path": "Mercosul/mercociudades.ipynb",
+        "status": "pass",
+        "cells_run": 5,
+        "code_cells_total": 5,
+        "rows": 60,
+        "seconds": 11.3
+      },
+      {
+        "path": "Mercosul/nic_.ipynb",
+        "status": "pass",
+        "cells_run": 10,
+        "code_cells_total": 10,
+        "rows": 500,
+        "seconds": 8.8
+      },
+      {
+        "path": "Mercosul/observacom.ipynb",
+        "status": "pass",
+        "cells_run": 9,
+        "code_cells_total": 9,
+        "rows": 12,
+        "seconds": 9.2
+      },
+      {
+        "path": "Mercosul/senado.ipynb",
+        "status": "pass",
+        "cells_run": 23,
+        "code_cells_total": 23,
+        "rows": 20,
+        "seconds": 9.2
+      },
+      {
+        "path": "Mercosul/senadofederal.ipynb",
+        "status": "pass",
+        "cells_run": 18,
+        "code_cells_total": 18,
+        "rows": 9,
+        "seconds": 78.8
+      },
+      {
+        "path": "Mercosul/urcdp.ipynb",
+        "status": "pass",
+        "cells_run": 14,
+        "code_cells_total": 14,
+        "rows": 10,
+        "seconds": 90.4
+      },
+      {
+        "path": "UE/charts.ipynb",
+        "status": "pass",
+        "cells_run": 11,
+        "code_cells_total": 11,
+        "rows": 562,
+        "seconds": 16.3
+      },
+      {
+        "path": "UE/comissaoEuropeia.ipynb",
+        "status": "pass",
+        "cells_run": 6,
+        "code_cells_total": 6,
+        "rows": 80,
+        "seconds": 17.8
+      },
+      {
+        "path": "UE/database_analysis.ipynb",
+        "status": "pass",
+        "cells_run": 7,
+        "code_cells_total": 7,
+        "rows": 562,
+        "seconds": 7.3
+      },
+      {
+        "path": "UE/edpb.ipynb",
+        "status": "pass",
+        "cells_run": 22,
+        "code_cells_total": 22,
+        "rows": 16,
+        "seconds": 137.5
+      },
+      {
+        "path": "UE/google_transparency.ipynb",
+        "status": "pass",
+        "cells_run": 21,
+        "code_cells_total": 21,
+        "rows": 13,
+        "seconds": 99.2
+      },
+      {
+        "path": "UE/icann.ipynb",
+        "status": "pass",
+        "cells_run": 6,
+        "code_cells_total": 6,
+        "rows": 20,
+        "seconds": 9.0
+      },
+      {
+        "path": "UE/uniaoEuropeia.ipynb",
+        "status": "pass",
+        "cells_run": 5,
+        "code_cells_total": 5,
+        "rows": 40,
+        "seconds": 16.1
+      },
+      {
+        "path": "UE/uniaoEuropeia_news (EUR-Lex).ipynb",
+        "status": "pass",
+        "cells_run": 16,
+        "code_cells_total": 16,
+        "rows": 20,
+        "seconds": 163.0
+      }
+    ]
+  },
+  "google_colab_hosted": {
+    "verified": false,
+    "reason": "Interface exigiu login Google; página accounts.google.com respondeu 502 Bad Gateway neste ambiente."
+  },
+  "weekly_actions": {
+    "as_of": "2026-09-28T21:30:33+00:00",
+    "sources_total": 4,
+    "sources_ok": 3,
+    "sources_failed": [
+      "mercociudades"
+    ],
+    "reason": "HTTP 403 na API oficial a partir do runner GitHub Actions; dados antigos preservados em data/news.csv; teste local do notebook passou."
+  }
+}

@@ -26,8 +26,8 @@ python -m pip install requests beautifulsoup4 pandas plotly ipython nbformat jin
 python scripts/check_notebooks.py Mercosul/nic_.ipynb UE/charts.ipynb --output resultado.json
 ```
 
-A opção `--diagnostic` reduz temporariamente a coleta a uma página e pula células de instalação no teste; **não altera os arquivos** e não deve ser usada como prova de execução integral. O relatório versionado em `data/runs/notebooks-20260928.json` identifica ambiente, células, notícias e bloqueios observados. Uma validação local não comprova que a sessão hospedada do Google Colab executou o notebook; essa confirmação requer uma execução na interface do Colab.
+A opção `--diagnostic` reduz temporariamente a coleta a uma página e pula células de instalação no teste; **não altera os arquivos** e não deve ser usada como prova de execução integral. O relatório versionado em [`data/runs/notebooks-20260929.json`](data/runs/notebooks-20260929.json) identifica ambiente, células, notícias e bloqueios observados. Uma validação local não comprova que a sessão hospedada do Google Colab executou o notebook; essa confirmação requer uma execução na interface do Colab.
 
 ## Fontes bloqueadas
 
-`Mercosul/Parlamento uruguaio/parlamento_uy.ipynb` acessa a página oficial de notícias do Parlamento. Em 28/09/2026 ela respondeu HTTP 403 neste ambiente, inclusive no endereço com `www` e na raiz do domínio. O notebook mantém a falha explícita para evitar gráficos vazios apresentados como coleta bem-sucedida. Se a página abrir no Colab, execute novamente lá; se continuar bloqueada, a fonte precisará de uma via oficial acessível.
+`Mercosul/Parlamento uruguaio/parlamento_uy.ipynb` acessa a página oficial de notícias do Parlamento. Em 29/09/2026 ela respondeu HTTP 403 neste ambiente, inclusive no endereço com `www` e na raiz do domínio. O notebook mantém a falha explícita para evitar gráficos vazios apresentados como coleta bem-sucedida. Se a página abrir no Colab, execute novamente lá; se continuar bloqueada, a fonte precisará de uma via oficial acessível. A cópia autônoma na pasta compartilhada usa a legislação oficial do IMPO; esses registros não são notícias do Parlamento.
