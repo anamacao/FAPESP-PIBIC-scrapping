@@ -1,156 +1,33 @@
-### *Coleta, análise e exportação de notícias de múltiplas fontes institucionais*  
----
+# FAPESP PIBIC — coleta e análise de notícias
 
-## Visão Geral
+O projeto mantém **21 notebooks originais** em [`Mercosul/`](Mercosul/) e [`UE/`](UE/). Eles fazem coleta, análise ou gráficos. Nenhum notebook novo foi criado na atualização de setembro de 2026.
 
-Este repositório contém **scrapers independentes** para coleta, análise e visualização de notícias e documentos oficiais de **fontes institucionais nacionais e internacionais**.
+## Como executar
 
-Cada fonte possui:
-- Notebook próprio (Jupyter)
-- Lógica de scraping isolada
-- Tratamento de dados com `pandas`
-- Gráficos interativos (`plotly`)
-- Exportação para CSV
-- Estrutura opcional para SQLite
+1. Abra o notebook desejado no Google Colab e execute **Ambiente de execução → Executar tudo**. Cada coletor usa um banco SQLite temporário próprio da sessão; reiniciar a sessão apaga esse banco.
+2. Os coletores com muitas páginas históricas começam pela página mais recente. A variável `TOTAL_PAGES`, `MAX_PAGES` ou argumento `max_pages` no notebook controla quantas páginas visitar. Aumente-a apenas quando precisar recuperar o histórico; uma página pode abrir dezenas de notícias.
+3. [`UE/charts.ipynb`](UE/charts.ipynb) e [`UE/database_analysis.ipynb`](UE/database_analysis.ipynb) conseguem usar o [CSV acumulado](data/news.csv) do GitHub quando nenhum banco SQLite está disponível na sessão. O CSV cobre inicialmente NIC.br, EDPB, Mercociudades e Senado Federal; não inclui automaticamente os outros coletores.
+4. Confira as mensagens de coleta e a quantidade de linhas antes de interpretar os gráficos. Células executadas sem erro e com zero notícias não confirmam que a fonte está funcionando.
 
----
+Os notebooks atualizados usam `requests`, `beautifulsoup4`, `pandas` e `plotly`; alguns gráficos também usam `matplotlib`, `seaborn` e `wordcloud`. `UE/uniaoEuropeia.ipynb` lê o HTML público sem Chrome ou Selenium. `google_transparency.ipynb` mostra apenas contagens de links realmente coletados, sem valores regionais simulados.
 
-## Fontes Monitoradas
+## Coleta semanal
 
-| Fonte | URL Base | Tipo de Conteúdo |
-|------|---------|------------------|
-| **CGI.br** | `https://cgi.br/noticias/indice/` | Notícias + atas de reuniões |
-| **NIC.br** | `https://www.nic.br/noticias/` | Notícias institucionais sobre internet e governança |
-| **ANPD** | `https://www.gov.br/anpd/pt-br/assuntos/noticias` | Notícias oficiais sobre proteção de dados |
-| **Mercociudades** | `https://mercociudades.org/noticias/` | Notícias de cidades da América Latina |
-| **União Europeia** | `https://european-union.europa.eu/news-and-events/news-and-stories_en` | Notícias oficiais da UE |
-| **CGD (CGLU)** | `https://www.cglu.org/es/noticias` | Notícias globais de governos locais |
+O [workflow semanal](.github/workflows/fapesp-weekly.yml) roda às sextas-feiras às 07h de Brasília e pode ser iniciado manualmente. Ele atualiza `data/news.csv` para **quatro fontes**: NIC.br, EDPB, Mercociudades e Senado Federal. [`data/runs/latest.json`](data/runs/latest.json) registra erros, registros novos e a checagem de sintaxe dos 21 notebooks. A checagem de sintaxe não executa as células.
 
----
+O domínio de Mercociudades respondeu HTTP 403 no ambiente do GitHub Actions, inclusive pela API pública, embora o notebook tenha coletado dados em uma execução local. Quando isso ocorrer, o workflow mantém as notícias antigas e sinaliza cobertura parcial; a coleta não deve ser interpretada como atualizada para essa fonte.
 
-## Tecnologias Utilizadas
+## Validação local dos notebooks
 
-| Tecnologia | Uso |
-|-----------|-----|
-| `requests` + `BeautifulSoup` | Coleta de HTML estático |
-| `Selenium` + `webdriver-manager` | Páginas com conteúdo dinâmico |
-| `pandas` | Limpeza, estruturação e análise dos dados |
-| `plotly` | Gráficos interativos |
-| `SQLite` | Estrutura de banco de dados (opcional) |
+[`scripts/check_notebooks.py`](scripts/check_notebooks.py) executa as células originais em ordem, em um diretório temporário por notebook, e considera falha tanto uma exceção quanto um conjunto de dados vazio. Ele usa um interpretador IPython no processo porque este ambiente não permite iniciar o kernel Jupyter por sockets locais. Para reproduzir a verificação local:
 
----
+```bash
+python -m pip install requests beautifulsoup4 pandas plotly ipython nbformat jinja2 matplotlib seaborn wordcloud
+python scripts/check_notebooks.py Mercosul/nic_.ipynb UE/charts.ipynb --output resultado.json
+```
 
-## Scrapers Disponíveis
+A opção `--diagnostic` reduz temporariamente a coleta a uma página e pula células de instalação no teste; **não altera os arquivos** e não deve ser usada como prova de execução integral. O relatório versionado em `data/runs/notebooks-20260928.json` identifica ambiente, células, notícias e bloqueios observados. Uma validação local não comprova que a sessão hospedada do Google Colab executou o notebook; essa confirmação requer uma execução na interface do Colab.
 
-### 1. **CGI.br Scraper**
-- **Paginação**: `page:1`, `page:2`, … (uso de `:`)
-- **Coleta**:
-  - Título
-  - Data
-  - Link
-  - Tipo de conteúdo (notícia ou ata)
-- **Observação**: atas de reuniões são coletadas separadamente
-- **Saída média**: ~200 registros
+## Fontes bloqueadas
 
----
-
-### 2. **NIC.br Scraper**
-- **Paginação**: navegação sequencial por páginas
-- **Coleta**:
-  - Título
-  - Data
-  - Link
-  - Texto completo da notícia
-- **Temas recorrentes**:
-  - Governança da internet
-  - Infraestrutura digital
-  - Segurança e políticas públicas
-- **Saída média**: ~100 notícias recentes
-- **Extras**:
-  - Filtro por palavras-chave
-  - Gráficos de frequência temática
-
----
-
-### 3. **ANPD Scraper**
-- **Fonte**: Autoridade Nacional de Proteção de Dados (Brasil)
-- **Paginação**: páginas institucionais padrão do `gov.br`
-- **Coleta**:
-  - Título
-  - Data
-  - Link
-  - Conteúdo textual
-- **Temas principais**:
-  - LGPD
-  - Fiscalização
-  - Regulamentações
-  - Autorizações e sanções
-- **Saída média**: ~80–120 notícias
-- **Observação técnica**:
-  - Conteúdo majoritariamente estático (não exige Selenium)
-
----
-
-### 4. **Mercociudades Scraper**
-- **Paginação**: `/page/N/`
-- **Coleta**:
-  - Título
-  - Data
-  - Resumo
-  - Link
-- **Idioma**: espanhol
-- **Filtro**: palavras-chave configuráveis
-- **Saída média**: ~150 notícias
-
----
-
-### 5. **União Europeia Scraper**
-- **Paginação**: `?page=36` até `?page=1`
-- **Tecnologia**: Selenium (conteúdo dinâmico)
-- **Coleta**:
-  - Título
-  - Data
-  - Tags
-  - Imagem
-  - Texto completo
-- **Saída média**: ~360 notícias
-- **Observação**: scraping mais pesado, execução mais lenta
-
----
-
-### 6. **CGD (CGLU) Scraper**
-- **Paginação**: `/page/N/`
-- **Idioma**: espanhol (principal)
-- **Coleta**:
-  - Título
-  - Data
-  - Categoria
-  - Resumo
-  - Link
-- **Escopo temporal**: últimos ~2 anos
-- **Saída média**: ~180 notícias
-
----
-
-## Saídas Geradas
-
-Cada notebook gera:
-
-- 📊 **Gráficos interativos** (Plotly)
-- 📋 **DataFrames organizados para análise**
-
-----
-
-## Observação Importante
-
-> Sites que aplicam **bloqueio ativo contra scraping automatizado** (HTTP 403, WAF, fingerprinting) **não são forçados** neste projeto, respeitando boas práticas técnicas e éticas.
-
-## Coleta semanal e diagnóstico dos notebooks
-
-O workflow [FAPESP weekly news and notebook diagnostics](.github/workflows/fapesp-weekly.yml) roda às sextas-feiras, às 07h de Brasília, e também pode ser iniciado manualmente. Ele coleta os índices recentes de **NIC.br, EDPB, Mercociudades e Senado Federal**; esta é uma cobertura inicial de quatro fontes, não a execução de todos os scrapers. As notícias ficam acumuladas em [`data/news.csv`](data/news.csv), sem descartar registros anteriores quando uma fonte falha. O arquivo contém `source_id`, título, data de publicação (quando reconhecida), data original, URL, primeira e última detecção. Links repetidos da mesma fonte são consolidados.
-
-O diagnóstico em [`data/runs/latest.json`](data/runs/latest.json) registra quantidade de notícias novas, falhas por fonte e compilação das células de código de todos os notebooks existentes. **Compilação não é execução de ponta a ponta no Colab.** O workflow falha quando uma fonte não retorna notícias válidas ou quando uma célula tem erro de sintaxe, preservando o relatório para investigação. Notícias sem data reconhecida permanecem no CSV, mas não devem entrar nos gráficos por semana de publicação.
-
-Mercociudades usa a API pública de notícias no [notebook original](Mercosul/mercociudades.ipynb) e na coleta semanal. O site pode responder HTTP 403 ao ambiente do GitHub Actions, inclusive pela API. Nessa situação a coleta registra a falha e preserva as notícias já salvas; os gráficos da semana devem ser lidos como cobertura parcial. O notebook foi testado localmente com notícias reais, mas seu funcionamento na sessão hospedada do Google Colab ainda depende do acesso concedido pelo próprio site.
-
-Para executar localmente: instale `requests`, `beautifulsoup4` e `ipython`; rode `python -m unittest discover -s tests -v` e `python scripts/fapesp_weekly.py`. Não são criados notebooks novos.
+`Mercosul/Parlamento uruguaio/parlamento_uy.ipynb` acessa a página oficial de notícias do Parlamento. Em 28/09/2026 ela respondeu HTTP 403 neste ambiente, inclusive no endereço com `www` e na raiz do domínio. O notebook mantém a falha explícita para evitar gráficos vazios apresentados como coleta bem-sucedida. Se a página abrir no Colab, execute novamente lá; se continuar bloqueada, a fonte precisará de uma via oficial acessível.
