@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-29T23:24:13+00:00",
+  "generated_at": "2026-09-29T23:32:50+00:00",
   "scope": "Execução local integral das células originais, na ordem, sem modo diagnóstico; diretório isolado por notebook; IPython no processo porque sockets do kernel Jupyter não são permitidos neste ambiente.",
   "github_notebooks": {
     "total": 21,
@@ -180,20 +180,29 @@
   },
   "google_colab_hosted": {
     "verified": false,
-    "reason": "Interface exigiu login Google; página accounts.google.com respondeu 502 Bad Gateway neste ambiente."
+    "reason": "O fluxo seguro de login Google não foi concluído nesta sessão; execução hospedada não comprovada."
   },
   "weekly_actions": {
-    "as_of": "2026-09-28T21:30:33+00:00",
+    "as_of": "2026-09-29T23:31:45+00:00",
+    "workflow_run_url": "https://github.com/anamacao/FAPESP-PIBIC-scrapping/actions/runs/36645674726",
+    "workflow_conclusion": "success",
     "sources_total": 4,
-    "sources_ok": 3,
-    "sources_failed": [
-      "mercociudades"
-    ],
-    "reason": "HTTP 403 na API oficial a partir do runner GitHub Actions; dados antigos preservados em data/news.csv; teste local do notebook passou."
+    "sources_ok": 4,
+    "sources_failed": [],
+    "total_records": 579,
+    "mercociudades": {
+      "method": "official_rss_after_api_403",
+      "seen": 10,
+      "new": 10,
+      "status": "ok",
+      "note": "O feed oficial cobre a janela atual de sete dias; registros anteriores ao item mais antigo do feed não foram verificados nesta execução."
+    },
+    "notebook_syntax": "21/21; a verificação do workflow compila células, não as executa."
   },
   "validation_provenance": "Os outros 20 notebooks passaram na execução integral do commit 2c99f78258b91491cda015b6554aadcd13334a7d; o Parlamento foi retestado integralmente após a alteração registrada com este relatório.",
   "source_limitations": [
     "O portal de notícias do Parlamento uruguaio respondeu HTTP 403; o fallback cobre somente eventos da Biblioteca.",
-    "O runner semanal do GitHub Actions recebeu HTTP 403 da API de Mercociudades; o histórico continua preservado."
+    "Mercociudades teve HTTP 403 na API; o RSS oficial funcionou no runner em 29/09 e cobriu a janela semanal. Publicações anteriores ao item mais antigo não foram revistas.",
+    "A execução hospedada no Google Colab não foi comprovada porque o fluxo seguro de login não foi concluído."
   ]
 }
