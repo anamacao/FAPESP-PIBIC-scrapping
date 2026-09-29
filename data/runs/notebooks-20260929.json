@@ -1,20 +1,20 @@
 {
-  "generated_at": "2026-09-29T22:09:17+00:00",
-  "github_commit_tested": "2c99f78258b91491cda015b6554aadcd13334a7d",
+  "generated_at": "2026-09-29T23:24:13+00:00",
   "scope": "Execução local integral das células originais, na ordem, sem modo diagnóstico; diretório isolado por notebook; IPython no processo porque sockets do kernel Jupyter não são permitidos neste ambiente.",
   "github_notebooks": {
     "total": 21,
-    "passed": 20,
-    "blocked": 1,
+    "passed": 21,
+    "blocked": 0,
     "results": [
       {
         "path": "Mercosul/Parlamento uruguaio/parlamento_uy.ipynb",
-        "status": "fail",
-        "cells_run": 6,
+        "status": "pass",
+        "cells_run": 8,
         "code_cells_total": 8,
-        "rows": null,
-        "seconds": 12.1,
-        "error": "HTTP 403 na página oficial de notícias do Parlamento do Uruguai; coleta interrompida, sem dados ou gráficos apresentados como válidos."
+        "rows": 18,
+        "seconds": 18.9,
+        "source_coverage": "fallback_events",
+        "note": "Portal de notícias parlamentares HTTP 403; 18 eventos da Biblioteca do Poder Legislativo, fonte oficial alternativa; não são notícias legislativas."
       },
       {
         "path": "Mercosul/aaip.ipynb",
@@ -190,5 +190,10 @@
       "mercociudades"
     ],
     "reason": "HTTP 403 na API oficial a partir do runner GitHub Actions; dados antigos preservados em data/news.csv; teste local do notebook passou."
-  }
+  },
+  "validation_provenance": "Os outros 20 notebooks passaram na execução integral do commit 2c99f78258b91491cda015b6554aadcd13334a7d; o Parlamento foi retestado integralmente após a alteração registrada com este relatório.",
+  "source_limitations": [
+    "O portal de notícias do Parlamento uruguaio respondeu HTTP 403; o fallback cobre somente eventos da Biblioteca.",
+    "O runner semanal do GitHub Actions recebeu HTTP 403 da API de Mercociudades; o histórico continua preservado."
+  ]
 }
