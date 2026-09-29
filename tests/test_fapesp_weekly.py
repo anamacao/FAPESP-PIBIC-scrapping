@@ -4,6 +4,8 @@ import tempfile
 import unittest
 from pathlib import Path
 
+import requests
+
 from scripts.fapesp_weekly import (
     collect_edpb, collect_mercociudades, collect_nic, collect_senado_federal,
     date_iso, run,
@@ -28,6 +30,13 @@ class Client:
 
     def get(self, url, timeout):
         return Response(self.pages[url])
+
+
+class Forbidden(Response):
+    status_code = 403
+
+    def raise_for_status(self):
+        raise requests.HTTPError("403 Forbidden", response=self)
 
 
 class WeeklyTest(unittest.TestCase):
@@ -76,6 +85,31 @@ class WeeklyTest(unittest.TestCase):
             self.assertEqual(rows[0]["published_date"], "2026-09-25")
             latest = json.loads((output / "runs/latest.json").read_text())
             self.assertEqual(latest["notebooks"]["syntax_ok"], 21)
+
+    def test_mercociudades_official_rss_after_api_403(self):
+        api = "https://mercociudades.org/wp-json/wp/v2/posts?per_page=50&lang=pt-br&_fields=date,link,title"
+        feed = "https://mercociudades.org/feed/"
+        rss = '''<?xml version="1.0"?><rss version="2.0"><channel>
+          <item><title>Notícia recente</title><link>https://mercociudades.org/noticia-recente/</link>
+          <pubDate>Mon, 28 Sep 2026 16:22:03 +0000</pubDate></item>
+          <item><title>Notícia anterior</title><link>https://mercociudades.org/noticia-anterior/</link>
+          <pubDate>Mon, 14 Sep 2026 16:22:03 +0000</pubDate></item>
+        </channel></rss>'''
+
+        class FeedClient:
+            def get(self, url, timeout):
+                return Forbidden("") if url == api else Response(rss)
+
+        rows = collect_mercociudades(FeedClient())
+        self.assertEqual(len(rows), 2)
+        self.assertEqual(rows[0]["published_date"], "2026-09-28")
+        self.assertEqual(rows.method, "rss")
+        self.assertTrue(rows.complete_week)
+        with tempfile.TemporaryDirectory() as directory:
+            report = run(Path(directory), collectors={"mercociudades": collect_mercociudades},
+                         client=FeedClient())
+            self.assertEqual(report["sources"][0]["status"], "ok")
+            self.assertEqual(report["sources"][0]["method"], "official_rss_after_api_403")
 
 
 if __name__ == "__main__":

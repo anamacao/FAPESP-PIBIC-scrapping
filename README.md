@@ -15,7 +15,7 @@ Os notebooks atualizados usam `requests`, `beautifulsoup4`, `pandas` e `plotly`;
 
 O [workflow semanal](.github/workflows/fapesp-weekly.yml) roda às sextas-feiras às 07h de Brasília e pode ser iniciado manualmente. Ele atualiza `data/news.csv` para **quatro fontes**: NIC.br, EDPB, Mercociudades e Senado Federal. [`data/runs/latest.json`](data/runs/latest.json) registra erros, registros novos e a checagem de sintaxe dos 21 notebooks. A checagem de sintaxe não executa as células.
 
-O domínio de Mercociudades respondeu HTTP 403 no ambiente do GitHub Actions, inclusive pela API pública, embora o notebook tenha coletado dados em uma execução local. Quando isso ocorrer, o workflow mantém as notícias antigas e sinaliza cobertura parcial; a coleta não deve ser interpretada como atualizada para essa fonte.
+O domínio de Mercociudades respondeu HTTP 403 no ambiente do GitHub Actions pela API pública, embora o notebook tenha coletado dados em uma execução local. A rotina semanal agora tenta o [RSS oficial](https://mercociudades.org/feed/) quando a API retorna 403. O relatório identifica `method: official_rss_after_api_403`; só considera a janela de sete dias coberta quando o item mais antigo do feed antecede o início dela. Se o RSS também falhar ou trouxer poucos itens, o workflow preserva as notícias antigas e sinaliza cobertura parcial ou falha.
 
 ## Validação local dos notebooks
 

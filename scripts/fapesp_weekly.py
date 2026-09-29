@@ -11,8 +11,10 @@ import csv
 import json
 import re
 from datetime import datetime, timedelta, timezone
+from email.utils import parsedate_to_datetime
 from pathlib import Path
 from urllib.parse import urljoin, urlsplit, urlunsplit
+from xml.etree import ElementTree
 
 import requests
 from bs4 import BeautifulSoup
@@ -117,7 +119,35 @@ def collect_mercociudades(client: requests.Session) -> list[dict]:
     base = "https://mercociudades.org/pt-br/noticias/"
     api = ("https://mercociudades.org/wp-json/wp/v2/posts"
            "?per_page=50&lang=pt-br&_fields=date,link,title")
-    posts = fetch(client, api).json()
+    try:
+        posts = fetch(client, api).json()
+    except requests.HTTPError as exc:
+        if exc.response is None or exc.response.status_code != 403:
+            raise
+        feed = "https://mercociudades.org/feed/"
+        try:
+            root = ElementTree.fromstring(fetch(client, feed).text)
+        except ElementTree.ParseError as parse_error:
+            raise ValueError("O RSS oficial de Mercociudades não contém XML válido") from parse_error
+        rows = []
+        dates = []
+        for entry in root.findall("./channel/item"):
+            raw = entry.findtext("pubDate", "")
+            try:
+                published = parsedate_to_datetime(raw).date().isoformat()
+            except (TypeError, ValueError, IndexError):
+                continue
+            link = entry.findtext("link", "")
+            if urlsplit(link).hostname != "mercociudades.org":
+                continue
+            item = record("mercociudades", entry.findtext("title", ""), published, link, feed)
+            if item:
+                rows.append(item)
+                dates.append(published)
+        if not rows:
+            raise ValueError("O RSS oficial de Mercociudades não retornou notícias datadas")
+        complete_week = min(dates) <= (datetime.now(timezone.utc) - timedelta(days=7)).date().isoformat()
+        return CollectedRows(rows, method="rss", complete_week=complete_week)
     if not isinstance(posts, list):
         raise ValueError("A API pública de Mercociudades não retornou uma lista")
     rows = []
@@ -127,6 +157,15 @@ def collect_mercociudades(client: requests.Session) -> list[dict]:
         if item:
             rows.append(item)
     return rows
+
+
+class CollectedRows(list):
+    """Attach source coverage to records without changing the CSV schema."""
+
+    def __init__(self, rows: list[dict], method: str, complete_week: bool):
+        super().__init__(rows)
+        self.method = method
+        self.complete_week = complete_week
 
 
 def collect_senado_federal(client: requests.Session) -> list[dict]:
@@ -212,7 +251,14 @@ def run(output: Path, collectors: dict = COLLECTORS, client: requests.Session | 
                     added += 1
                 item["last_seen"] = now
                 current[key] = item
-            source_reports.append({"source_id": source_id, "status": "ok", "seen": len(unique), "new": added})
+            method = getattr(records, "method", "api_or_html")
+            complete_week = getattr(records, "complete_week", True)
+            source_reports.append({"source_id": source_id,
+                                   "status": "ok" if complete_week else "partial",
+                                   "seen": len(unique), "new": added,
+                                   **({"method": "official_rss_after_api_403",
+                                       "coverage_note": "Feed oficial com as últimas publicações; notícias anteriores ao item mais antigo não foram verificadas."}
+                                      if method == "rss" else {})})
         except (requests.RequestException, ValueError, TypeError, KeyError) as exc:
             source_reports.append({"source_id": source_id, "status": "failed", "seen": 0, "new": 0,
                                    "error": f"{type(exc).__name__}: {exc}"[:400]})
