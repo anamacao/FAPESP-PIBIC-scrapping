@@ -27,7 +27,7 @@ import requests
 FOLDER_ID = "1SpKKCSz99_V6OsMLzN7XNYFHXXullzvu"
 WEEKLY_CSV = "https://raw.githubusercontent.com/anamacao/FAPESP-PIBIC-scrapping/main/data/news.csv"
 SELF_NAME = "agente_fapesp_unificado.ipynb"
-ANALYSIS_NAMES = {"charts (1).ipynb", "database_analysis (1).ipynb"}
+ANALYSIS_NAMES = {"charts (1).ipynb", "database_analysis (1).ipynb", "Agente_curadoria_FAPESP.ipynb"}
 
 # País/região se refere à instituição publicadora, não ao assunto da notícia.
 SOURCE_META = {
