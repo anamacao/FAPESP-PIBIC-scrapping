@@ -1,0 +1,247 @@
+{
+  "version": "1.1",
+  "source_names": {
+    "nic": "NIC.br",
+    "edpb": "EDPB",
+    "mercociudades": "Mercociudades",
+    "senado_federal": "Senado Federal"
+  },
+  "keywords": {
+    "GDPR": [
+      "gdpr",
+      "rgpd",
+      "general data protection regulation"
+    ],
+    "LGPD": [
+      "lgpd",
+      "lei geral de proteção de dados"
+    ],
+    "Proteção de dados": [
+      "proteção de dados",
+      "protecao de dados",
+      "data protection",
+      "protección de datos",
+      "datos personales",
+      "personal data",
+      "dados pessoais"
+    ],
+    "Privacidade": [
+      "privacidade",
+      "privacy",
+      "privacidad"
+    ],
+    "Inteligência artificial": [
+      "inteligência artificial",
+      "inteligencia artificial",
+      "artificial intelligence",
+      "generative ai",
+      "ia",
+      "ai"
+    ],
+    "Algoritmos": [
+      "algoritmo",
+      "algoritmos",
+      "algorithm",
+      "algorithms",
+      "algorítmica",
+      "algorithmic"
+    ],
+    "Governança digital": [
+      "governança digital",
+      "digital governance",
+      "gobernanza digital",
+      "governança da internet",
+      "internet governance",
+      "gobernanza de internet"
+    ],
+    "Plataformas": [
+      "plataforma digital",
+      "plataformas digitais",
+      "digital platform",
+      "digital platforms",
+      "plataformas digitales",
+      "redes sociais",
+      "social media",
+      "redes sociales"
+    ],
+    "Moderação": [
+      "moderação de conteúdo",
+      "content moderation",
+      "moderación de contenidos",
+      "desinformação",
+      "disinformation",
+      "misinformation",
+      "desinformación",
+      "fake news"
+    ],
+    "Transferências de dados": [
+      "transferência internacional de dados",
+      "transferências internacionais",
+      "data transfers",
+      "international data transfer",
+      "cross border data",
+      "fluxos de dados",
+      "data transfer",
+      "data flows",
+      "data flow",
+      "transferencia de datos",
+      "transferencias de datos"
+    ],
+    "Adequação": [
+      "adequação",
+      "adequacy",
+      "adecuación"
+    ],
+    "Soberania digital": [
+      "soberania digital",
+      "digital sovereignty",
+      "soberanía digital"
+    ],
+    "Proteção infantil": [
+      "proteção infantil",
+      "children online",
+      "child protection",
+      "verificação de idade",
+      "age verification",
+      "aferição de idade",
+      "e ca digital",
+      "eca digital",
+      "crianças e adolescentes na internet",
+      "crianças na internet",
+      "proteger crianças",
+      "child safety",
+      "children and adolescents online",
+      "niños y adolescentes en internet"
+    ],
+    "DSA": [
+      "dsa",
+      "digital services act",
+      "regulamento dos serviços digitais"
+    ],
+    "ANPD": [
+      "anpd",
+      "autoridade nacional de proteção de dados",
+      "agência nacional de proteção de dados"
+    ],
+    "EDPB": [
+      "edpb",
+      "european data protection board",
+      "comitê europeu para a proteção de dados"
+    ],
+    "Mercosul": [
+      "mercosul",
+      "mercosur"
+    ],
+    "União Europeia": [
+      "união europeia",
+      "european union",
+      "unión europea",
+      "europa",
+      "european",
+      "europeu",
+      "europeia",
+      "ue",
+      "eu"
+    ],
+    "Sul Global": [
+      "sul global",
+      "global south",
+      "sur global",
+      "países em desenvolvimento",
+      "developing countries",
+      "países en desarrollo"
+    ],
+    "Cooperação digital": [
+      "parceria digital",
+      "digital partnership",
+      "aliança digital",
+      "digital alliance",
+      "cooperação digital",
+      "digital cooperation"
+    ],
+    "Internet": [
+      "internet",
+      "cibersegurança",
+      "cybersecurity",
+      "ciberseguridad"
+    ],
+    "AI Act": [
+      "ai act",
+      "artificial intelligence act",
+      "regulamento de inteligência artificial"
+    ],
+    "Comércio digital": [
+      "comércio digital",
+      "digital trade",
+      "comercio digital",
+      "comércio eletrônico",
+      "comercio electrónico",
+      "e commerce"
+    ]
+  },
+  "relevance_keywords": [
+    "GDPR",
+    "LGPD",
+    "Proteção de dados",
+    "Privacidade",
+    "Inteligência artificial",
+    "Algoritmos",
+    "Governança digital",
+    "Plataformas",
+    "Moderação",
+    "Transferências de dados",
+    "Soberania digital",
+    "Proteção infantil",
+    "DSA",
+    "ANPD",
+    "EDPB",
+    "Cooperação digital",
+    "Internet",
+    "AI Act",
+    "Comércio digital"
+  ],
+  "axes": {
+    "GDPR/LGPD e proteção de dados": {
+      "any_keywords": [
+        "GDPR",
+        "LGPD",
+        "Proteção de dados",
+        "Privacidade",
+        "Transferências de dados",
+        "Adequação",
+        "ANPD",
+        "EDPB"
+      ]
+    },
+    "IA e proteção de dados": {
+      "any_keywords": [
+        "Inteligência artificial",
+        "Algoritmos",
+        "AI Act"
+      ]
+    },
+    "Governança digital no Mercosul": {
+      "any_keywords": [
+        "Mercosul"
+      ]
+    },
+    "UE–Mercosul": {
+      "all_groups": [
+        [
+          "União Europeia",
+          "Cooperação digital"
+        ],
+        [
+          "Mercosul"
+        ]
+      ]
+    },
+    "Sul Global": {
+      "any_keywords": [
+        "Sul Global",
+        "Soberania digital"
+      ]
+    }
+  },
+  "stopwords": "a ao aos as o os um uma umas uns de da das do dos e em no nos na nas para por com sem sob sobre entre que quem como se sua suas seu seus não nao mais muito já ja também tambem esta este estas estes isso esse essa foi são sao ser tem ter há ha dos das à às ou contra até apos após antes durante ainda pela pelo pelos pelas agora todos todas vai pode the a an and or of to in on for from by with without about at into is are was were be been being this that these those it its their our your they you we not new more also will can has have had el la los las un una unos unas y o de del al en por para con sin sobre entre que quien como se su sus no es son ser fue han hay este esta estos estas lo las le les más mas nuevos nuevas da news noticia noticias notícia notícias report reports relatório relatorio brazil brasil brazilian brasileiro brasileira announces announcement anuncia apresenta diz afirma abre publica publicado publicação publicacao latest último última semana week"
+}

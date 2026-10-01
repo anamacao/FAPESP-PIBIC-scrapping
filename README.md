@@ -8,6 +8,18 @@ O projeto mantém **21 notebooks originais** em [`Mercosul/`](Mercosul/) e [`UE/
 
 Execute o novo Colab e autorize o Drive quando solicitado. O modo `completo` percorre as páginas configuradas em cada coletor; `rapido` usa uma página por fonte. Os arquivos CSV, JSON e HTML ficam na subpasta **Resultados - agente FAPESP** dentro da pasta compartilhada, atualizados sem criar versões repetidas. A coleta semanal automática alimenta o CSV de quatro fontes e gera o [painel semanal](data/analysis/painel_fapesp.html) e tabelas com [`scripts/generate_weekly_dashboard.py`](scripts/generate_weekly_dashboard.py). A rodada completa dos outros portais acontece quando este Colab é executado. O código compartilhado está em [`scripts/fapesp_agent.py`](scripts/fapesp_agent.py).
 
+## Código do agente da curadoria semanal
+
+[`scripts/curadoria_agent.py`](scripts/curadoria_agent.py) transforma o histórico semanal em tabelas, gráficos PNG, resumo e um painel HTML com oito gráficos interativos. Os filtros cobrem período, fonte, eixo, palavra-chave e busca. A análise inclui frequência de termos, evolução mensal, comparação de janelas e coocorrência por contagem ou Jaccard.
+
+    python -m pip install -r requirements-analytics.txt
+    python scripts/curadoria_agent.py
+    python scripts/curadoria_agent.py --catalog CAMINHO_DO_CATALOGO.md
+
+O catálogo é uma entrada opcional fornecida pela pesquisadora. Quando informado, as fontes selecionadas são preservadas mesmo sem correspondências lexicais no título. A seleção de até cinco publicações exige datas exatas e usa uma pontuação transparente. O dicionário editável está em [`config/curadoria.json`](config/curadoria.json). O modo padrão analisa títulos; a opção `--analysis-text title_summary` inclui notas fornecidas. Eixos são multilabel e coocorrência não demonstra influência regulatória.
+
+O workflow proposto executa a análise após a coleta de quatro fontes e oferece o artefato `curadoria-fapesp`. O gerador de notebook em [`scripts/build_curadoria_notebook.py`](scripts/build_curadoria_notebook.py) utiliza o código e os arquivos de entrada disponíveis localmente para criar um Colab independente.
+
 ## Como executar
 
 1. Abra o notebook desejado no Google Colab e execute **Ambiente de execução → Executar tudo**. Cada coletor usa um banco SQLite temporário próprio da sessão; reiniciar a sessão apaga esse banco.

@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Observatório FAPESP · Curadoria semanal</title>
+<style>
+:root{--ink:#21394b;--muted:#5d7180;--teal:#237c83;--line:#dce5ea;--bg:#f2f6f8}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 system-ui,sans-serif}
+main{max-width:1480px;margin:auto;padding:30px}header{padding:34px;background:#153b4d;color:#fff;border-radius:18px}
+.eyebrow{text-transform:uppercase;letter-spacing:.14em;font-size:11px;color:#b9e5e2}h1{font-size:35px;margin:9px 0;line-height:1.2}h2{font-size:22px;margin:0 0 10px}h3{margin:0 0 8px;font-size:18px}p{margin:8px 0}.muted,.note{color:var(--muted);font-size:13px}
+section{background:#fff;border:1px solid var(--line);border-radius:13px;padding:22px;margin-top:22px}
+.controls{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:15px}label{display:block;font-size:12px;font-weight:650;margin-bottom:5px}
+select,input{width:100%;padding:10px;border:1px solid #b9ccd4;border-radius:7px;background:white;color:var(--ink);font:inherit;font-size:13px}
+.check{display:flex;align-items:center;gap:7px;margin-top:20px}.check input{width:auto}.check label{margin:0;font-size:13px;font-weight:400}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:18px}.card{background:#edf5f6;border:1px solid #dce9eb;border-radius:10px;padding:15px}.card b{font-size:31px;display:block}.card span{font-size:12px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}.panel{min-width:0}.chart{width:100%;min-height:390px}.warning{background:#fff8e8;border:1px solid #eee1bd;border-radius:9px;padding:13px;margin-top:16px;font-size:13px}
+.table-wrap{overflow:auto;max-height:600px;border:1px solid var(--line);border-radius:9px}table{border-collapse:collapse;width:100%;font-size:12px}th{background:#edf4f6;position:sticky;top:0;text-align:left}th,td{padding:12px;vertical-align:top;border-bottom:1px solid var(--line)}td:first-child{min-width:270px}td{min-width:130px}a{color:#176c81}tbody tr:hover{background:#f5f9fa}
+button{border:0;padding:11px 16px;border-radius:7px;background:var(--teal);color:white;font:inherit;cursor:pointer;font-size:13px}.toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:13px 0}
+.reading{display:grid;gap:12px}.reading article{border-left:4px solid var(--teal);background:#f4f8fa;padding:15px;border-radius:6px}.reading a{font-weight:650}.pill{display:inline-block;background:#e4f0f1;border-radius:5px;padding:3px 6px;font-size:11px;margin:2px}
+footer{font-size:12px;color:var(--muted);margin:20px 0}details summary{cursor:pointer;font-weight:600}#busy{font-size:12px}
+@media(max-width:1050px){.controls{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}}
+@media(max-width:620px){main{padding:12px}header{padding:22px}h1{font-size:27px}section{padding:16px}.cards{grid-template-columns:1fr 1fr}.controls{grid-template-columns:1fr}.toolbar{align-items:flex-start;flex-direction:column}}
+</style>
+</head>
+<body>
+<main>
+<header><div class="eyebrow">Pesquisa FAPESP · Brasil e governança digital</div>
+<h1>Curadoria semanal</h1><p>Notícias, fontes, palavras-chave e relações entre temas.</p>
+<p id="reference"></p><p id="scope"></p></header>
+<section>
+<h2>Explore a base</h2><p class="muted">Os filtros atualizam as tabelas, os gráficos e as sugestões de leitura. O arquivo funciona sem conexão à internet.</p>
+<div class="controls">
+<div><label for="period">Período de publicação</label><select id="period"><option value="all">Histórico até a data de referência</option><option value="7">Últimos 7 dias</option><option value="30">Últimos 30 dias</option><option value="90">Últimos 90 dias</option><option value="custom">Intervalo personalizado</option></select></div>
+<div><label for="corpus">Conjunto de fontes</label><select id="corpus"><option value="todos">Scrapers e catálogo, sem duplicar URLs</option><option value="scrapers">Notícias dos scrapers</option><option value="catalogo">Catálogo da curadoria</option></select></div>
+<div><label for="start">Publicado desde</label><input id="start" type="date"></div>
+<div><label for="end">Publicado até</label><input id="end" type="date"></div>
+<div><label for="source">Fonte</label><select id="source"></select></div>
+<div><label for="topic">Eixo da pesquisa</label><select id="topic"></select></div>
+<div><label for="keyword">Palavra-chave</label><select id="keyword"></select></div>
+<div><label for="query">Buscar no título, fonte ou termos</label><input id="query" type="search" placeholder="Ex.: LGPD, Mercosul, privacidade"></div>
+</div>
+<div class="controls">
+<div class="check"><input id="candidates" type="checkbox" checked><label for="candidates">Candidatas lexicais ou já selecionadas no catálogo</label></div>
+<div class="check"><input id="uncertain" type="checkbox" checked><label for="uncertain">Incluir datas imprecisas como contexto</label></div>
+<div><label for="metric">Métrica de coocorrência</label><select id="metric"><option value="count">Número de documentos</option><option value="jaccard">Jaccard: proporção da união dos termos</option></select></div>
+<div class="check"><button id="reset" type="button">Limpar filtros</button><span id="busy" aria-live="polite"></span></div>
+</div>
+<div class="cards">
+<div class="card"><b id="n-docs">0</b><span>Documentos no recorte</span></div>
+<div class="card"><b id="n-sources">0</b><span>Fontes observadas</span></div>
+<div class="card"><b id="n-terms">0</b><span>Palavras-chave identificadas</span></div>
+<div class="card"><b id="n-uncertain">0</b><span>Sem data exata no recorte</span></div>
+</div><p id="summary"></p><div id="warnings" class="warning"></div>
+</section>
+<div class="grid">
+<section class="panel"><h2>Palavras-chave</h2><p class="note">Até 15 termos. Sinônimos em português, inglês e espanhol; cada termo conta uma vez por documento.</p><div id="chart-keywords" class="chart"></div></section>
+<section class="panel"><h2>Eixos da pesquisa</h2><p class="note">Um documento pode integrar vários eixos. As barras não somam o total de publicações.</p><div id="chart-topics" class="chart"></div></section>
+<section class="panel"><h2>Fontes monitoradas</h2><p class="note">Até 12 fontes. Volume nesta amostra, sujeito à cobertura e ao método dos coletores.</p><div id="chart-sources" class="chart"></div></section>
+<section class="panel"><h2>Evolução das publicações</h2><p class="note">Datas com dia ou mês. Meses sem registros são lacunas, sem confirmação de ausência de publicações.</p><div id="chart-months" class="chart"></div></section>
+<section class="panel"><h2>Termos que aparecem juntos</h2><p class="note">Coocorrência no texto analisado. A diagonal é a frequência do próprio termo; Jaccard normaliza pela união dos documentos.</p><div id="chart-pairs" class="chart"></div></section>
+<section class="panel"><h2>Palavras frequentes</h2><p class="note">Até 15 palavras após remover palavras funcionais. Valores indicam documentos, não repetições no mesmo texto.</p><div id="chart-words" class="chart"></div></section>
+<section class="panel"><h2>Palavras-chave por fonte</h2><p class="note">Percentual dos documentos filtrados de cada fonte com o termo. Não mede prevalência no universo de notícias.</p><div id="chart-source-terms" class="chart"></div></section>
+<section class="panel"><h2>Comparação entre períodos</h2><p id="comparison-note" class="note"></p><div id="chart-comparison" class="chart"></div></section>
+</div>
+<section><h2>Até cinco publicações para leitura</h2><p id="reading-note" class="note"></p><div id="reading" class="reading"></div></section>
+<section><h2>Documentos e fontes</h2><div class="toolbar"><p id="table-note" class="muted"></p><button id="download" type="button">Baixar o recorte em CSV</button></div>
+<div class="table-wrap"><table id="documents"><thead><tr><th>Título e link</th><th>Fonte</th><th>Publicação</th><th>Eixos e palavras-chave</th><th>Termos encontrados</th><th>Contexto do catálogo</th></tr></thead><tbody></tbody></table></div></section>
+<section><details><summary>Como interpretar esta análise</summary>
+<p>“Candidata” indica correspondência com o dicionário da pesquisa. A seleção prévia no catálogo é preservada mesmo sem palavras-chave no título. A confirmação de pertinência exige leitura da fonte.</p>
+<p>O modo padrão analisa os títulos. O modo com contexto acrescenta resumos ou notas editoriais fornecidas, não o texto integral das publicações. As frequências desse segundo modo também refletem a linguagem das notas.</p>
+<p>Data de publicação e primeira detecção são distintas. Datas imprecisas podem aparecer no histórico, mas não na seleção semanal nem na comparação de janelas exatas.</p>
+<p>A relação entre termos não demonstra causalidade, difusão do GDPR ou atuação do Brasil como ponte regulatória. Essas relações são perguntas para investigação documental.</p>
+<p>A ordem de leitura atribui até 5 pontos por termos, até 6 por eixos, 3 por seleção prévia e 2 por eixo ainda não coberto nas sugestões. A pontuação é uma regra de triagem, sem avaliação automática da qualidade científica.</p>
+</details></section><footer id="footer"></footer>
+</main>
+<script id="payload" type="application/json">__CURADORIA_DATA__</script>
+<script>__PLOTLY_JS__</script>
+<script>
+"use strict";
+const D=JSON.parse(document.getElementById("payload").textContent);
+const ref=D.metadata.as_of, windowDays=D.metadata.days, WSTART=D.metadata.window_start;
+const $=id=>document.getElementById(id);
+const norm=s=>String(s||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^\p{L}\p{N}]+/gu," ").trim().replace(/\s+/g," ");
+const esc=s=>String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+const isoShift=(s,n)=>{let x=new Date(s+"T12:00:00Z");x.setUTCDate(x.getUTCDate()+n);return x.toISOString().slice(0,10)};
+const oldEnd=isoShift(ref,-windowDays),oldStart=isoShift(ref,-2*windowDays+1);
+const stop=new Set(norm(D.config.stopwords).split(" "));
+const rank=m=>Object.entries(m).sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0]));
+const count=(rows,fn)=>{let c={};rows.forEach(r=>Array.from(new Set(fn(r))).forEach(k=>{c[k]=(c[k]||0)+1}));return c};
+const exact=(r,a,b)=>r.date_precision==="day"&&r.published_date>=a&&r.published_date<=b;
+const periodLabel=s=>s.split("-").reverse().join("/");
+function options(id,values){const el=$(id);el.replaceChildren();const all=document.createElement("option");all.value="";all.textContent="Todas";el.append(all);values.forEach(v=>{const o=document.createElement("option");o.value=v;o.textContent=v;el.append(o)})}
+options("source",[...new Set(D.documents.map(r=>r.source))].sort());
+options("topic",Object.keys(D.config.axes));options("keyword",Object.keys(D.config.keywords));
+$("end").value=ref;$("end").max=ref;$("start").max=ref;
+$("reference").textContent="Data de referência: "+periodLabel(ref)+" · Brasília · comparação de janelas de "+windowDays+" dias";
+$("scope").textContent=D.metadata.analysis_text==="title"?"Análise dos títulos · dicionário editável · fontes rastreáveis":"Análise de títulos e notas editoriais · sem leitura automática do texto integral";
+$("comparison-note").textContent=periodLabel(oldStart)+"–"+periodLabel(oldEnd)+" versus "+periodLabel(WSTART)+"–"+periodLabel(ref)+". Usa os mesmos filtros temáticos e de fonte; o filtro de datas é desconsiderado apenas nesta comparação.";
+$("reading-note").textContent="Publicadas de "+periodLabel(WSTART)+" a "+periodLabel(ref)+". A lista respeita os filtros e pode ter menos de cinco itens. Requer leitura e avaliação acadêmica.";
+$("footer").textContent="Gerado em "+D.metadata.generated_at+" · entradas, configuração e hashes no resumo.json · catálogo e scrapers preservados.";
+const warningList=document.createElement("ul");
+D.metadata.warnings.forEach(w=>{const li=document.createElement("li");li.textContent=w;warningList.append(li)});
+const warningIntro=document.createElement("strong");warningIntro.textContent="Cobertura observada";
+$("warnings").append(warningIntro,warningList);
+function dataset(){return $("corpus").value==="todos"?D.documents:(D.corpora[$("corpus").value]||[])}
+function selected(ignoreDates=false){
+ const start=$("start").value,end=$("end").value||ref,source=$("source").value,topic=$("topic").value,keyword=$("keyword").value,q=norm($("query").value);
+ if(!ignoreDates&&start&&start>end)return [];
+ return dataset().filter(r=>{
+   if(r.published_date&&r.published_date>ref)return false;
+   if($("candidates").checked&&!r.candidate&&!r.manually_selected)return false;
+   if(source&&r.source!==source)return false;if(topic&&!r.topics.includes(topic))return false;
+   if(keyword&&!r.keywords.includes(keyword))return false;
+   if(q&&!norm([r.title,r.source,...r.keywords,...r.topics].join(" ")).includes(q))return false;
+   if(ignoreDates)return true;
+   if(r.date_precision==="day")return (!start||r.published_date>=start)&&r.published_date<=end;
+   if(!$("uncertain").checked)return false;
+   if(["month","year"].includes(r.date_precision)){const size=r.date_precision==="month"?7:4;
+     return (!start||r.published_date>=start.slice(0,size))&&r.published_date<=end.slice(0,size)}
+   return true;
+ }).sort((a,b)=>b.published_date.localeCompare(a.published_date)||a.title.localeCompare(b.title));
+}
+const plotConfig={responsive:true,displaylogo:false,toImageButtonOptions:{format:"png",scale:2}};
+function layout(height=440){return {paper_bgcolor:"#fff",plot_bgcolor:"#fff",font:{family:"Arial, sans-serif",size:11,color:"#21394b"},height:height,margin:{l:35,r:25,t:30,b:65},xaxis:{automargin:true},yaxis:{automargin:true,zeroline:false,gridcolor:"#edf2f4"}}}
+function wrap(s,width=27){let lines=[],line="";String(s).split(" ").forEach(w=>{if(line&&line.length+w.length+1>width){lines.push(line);line=w}else{line+=(line?" ":"")+w}});if(line)lines.push(line);return lines.map(esc).join("<br>")}
+function bar(id,pairs,limit=15){const r=pairs.slice(0,limit).reverse(),labels=r.map(x=>wrap(x[0])),counts=r.map(x=>x[1]);
+ let l=layout(Math.max(400,r.length*36+100));l.margin.l=170;l.xaxis={title:"Documentos",rangemode:"tozero",tickformat:",d",gridcolor:"#edf2f4",automargin:true};
+ if(!r.length)l.annotations=[{text:"Sem registros neste recorte",showarrow:false,x:.5,y:.5,xref:"paper",yref:"paper"}];
+ return Plotly.react(id,[{type:"bar",orientation:"h",y:labels,x:counts,marker:{color:"#237c83"},text:counts,textposition:"auto",hovertemplate:"%{y}<br>%{x} documentos<extra></extra>"}],l,plotConfig)}
+function readList(rows){
+ const pool=rows.filter(r=>exact(r,WSTART,ref)&&(r.candidate||r.manually_selected)).map(r=>Object.assign({},r,{score:Math.min(5,r.keywords.length)+2*Math.min(3,r.topics.length)+(r.manually_selected?3:0)}));
+ const chosen=[],covered=new Set();while(pool.length&&chosen.length<5){
+   pool.sort((a,b)=>(b.score+2*b.topics.filter(t=>!covered.has(t)).length)-(a.score+2*a.topics.filter(t=>!covered.has(t)).length)||b.published_date.localeCompare(a.published_date)||b.title.localeCompare(a.title));
+   const row=pool.shift();row.topics.forEach(t=>covered.add(t));chosen.push(row)}
+ const out=$("reading");out.replaceChildren();
+ if(!chosen.length){const p=document.createElement("p");p.textContent="Nenhuma candidata com data exata nesta janela e nestes filtros.";out.append(p)}
+ chosen.forEach((r,i)=>{const article=document.createElement("article"),a=document.createElement("a"),p=document.createElement("p"),why=document.createElement("p");
+ a.textContent=(i+1)+". "+r.title;a.href=r.url;a.target="_blank";a.rel="noopener noreferrer";
+ p.className="muted";p.textContent=periodLabel(r.published_date)+" · "+r.source+" · pontuação base "+r.score;
+ why.textContent="Termos: "+(r.keywords.join(", ")||"nenhum no título")+". Eixos: "+(r.topics.join(", ")||"revisão necessária")+(r.manually_selected?". Selecionada no catálogo.":".");
+ article.append(a,p,why);out.append(article)});
+}
+function documents(rows){
+ const tbody=$("documents").querySelector("tbody");tbody.replaceChildren();
+ rows.forEach(r=>{let tr=document.createElement("tr");
+ const values=[r.title,r.source,r.published_date||"Não informada",r.topics.join("; ")+"\n"+r.keywords.join("; "),r.match_evidence||"Sem correspondência lexical",r.catalog_summary||r.summary||""];
+ values.forEach((v,i)=>{const td=document.createElement("td");if(i===0){const a=document.createElement("a");a.textContent=v;a.href=r.url;a.target="_blank";a.rel="noopener noreferrer";td.append(a)}else{td.textContent=v;td.style.whiteSpace="pre-line"}
+ if(i===2){const note=document.createElement("div");note.className="muted";note.textContent="Precisão: "+({day:"dia",month:"mês",year:"ano",unknown:"desconhecida"}[r.date_precision]||r.date_precision);td.append(note)}tr.append(td)});tbody.append(tr)});
+ if(!rows.length){let tr=document.createElement("tr"),td=document.createElement("td");td.colSpan=6;td.textContent="Sem documentos neste recorte.";tr.append(td);tbody.append(tr)}
+ $("table-note").textContent=rows.length+" documentos · links das fontes originais · uma linha por URL no conjunto selecionado";
+}
+async function render(){
+ $("busy").textContent="Atualizando…";const rows=selected(),base=selected(true);
+ window.curadoriaView=rows;
+ const terms=count(rows,r=>r.keywords),topics=count(rows,r=>r.topics),sources=count(rows,r=>[r.source]);
+ const words=count(rows,r=>norm(r.analysis_text||r.title).split(" ").filter(w=>w.length>=3&&!/^\d+$/.test(w)&&!stop.has(w)));
+ $("n-docs").textContent=rows.length;$("n-sources").textContent=Object.keys(sources).length;
+ $("n-terms").textContent=Object.keys(terms).length;$("n-uncertain").textContent=rows.filter(r=>r.date_precision!=="day").length;
+ const top=rank(terms).slice(0,3).map(t=>t[0]+" ("+t[1]+")").join(", ");
+ $("summary").textContent=rows.length?"Termos mais presentes no recorte: "+(top||"sem correspondências no dicionário")+". A frequência descreve a amostra observada.":"Nenhum registro atende a estes filtros.";
+ const jobs=[bar("chart-keywords",rank(terms)),bar("chart-topics",Object.keys(D.config.axes).map(k=>[k,topics[k]||0])),bar("chart-sources",rank(sources),12),bar("chart-words",rank(words))];
+ const monthCounts=count(rows.filter(r=>["day","month"].includes(r.date_precision)),r=>[r.published_date.slice(0,7)]),months=Object.keys(monthCounts).sort();
+ let mx=[],my=[];if(months.length){let d=new Date(months[0]+"-01T12:00:00Z");const last=months[months.length-1];
+   while(d.toISOString().slice(0,7)<=last){let s=d.toISOString().slice(0,7);mx.push(s);my.push(monthCounts[s]||null);d.setUTCMonth(d.getUTCMonth()+1)}}
+ let ml=layout();ml.yaxis.title="Documentos";ml.yaxis.rangemode="tozero";
+ jobs.push(Plotly.react("chart-months",[{type:"scatter",mode:"lines+markers",x:mx,y:my,connectgaps:false,line:{color:"#237c83"},hovertemplate:"%{x}: %{y} documentos<extra></extra>"}],ml,plotConfig));
+ const keys=rank(terms).slice(0,10).map(x=>x[0]),metric=$("metric").value;
+ const z=keys.map(a=>keys.map(b=>{const n=rows.filter(r=>r.keywords.includes(a)&&r.keywords.includes(b)).length;return metric==="count"?n:(terms[a]+terms[b]-n?n/(terms[a]+terms[b]-n):0)}));
+ let hl=layout(590);hl.margin={l:160,r:30,t:25,b:150};hl.xaxis.tickangle=-45;
+ jobs.push(Plotly.react("chart-pairs",keys.length?[{type:"heatmap",z:z,x:keys.map(esc),y:keys.map(esc),colorscale:"Blues",zmin:0,zmax:metric==="jaccard"?1:undefined,text:z.map(r=>r.map(v=>metric==="count"?String(v):v.toFixed(2))),texttemplate:"%{text}",colorbar:{title:{text:metric==="count"?"Docs":"Jaccard"}},hovertemplate:"%{y} + %{x}: %{z}<extra></extra>"}]:[],hl,plotConfig));
+ const src=rank(sources).slice(0,10).map(x=>x[0]),pct=src.map(s=>keys.map(k=>100*rows.filter(r=>r.source===s&&r.keywords.includes(k)).length/sources[s]));
+ let sl=layout(Math.max(480,src.length*48+170));sl.margin={l:190,r:40,t:25,b:130};sl.xaxis.tickangle=-45;
+ jobs.push(Plotly.react("chart-source-terms",src.length&&keys.length?[{type:"heatmap",z:pct,x:keys.map(esc),y:src.map(s=>wrap(s)),colorscale:"Blues",zmin:0,zmax:100,text:pct.map(r=>r.map(v=>v.toFixed(0)+"%")),texttemplate:"%{text}",customdata:src.map(s=>keys.map(()=>sources[s])),colorbar:{title:{text:"%"}},hovertemplate:"%{y}<br>%{x}: %{z:.1f}%<br>Base: %{customdata} documentos<extra></extra>"}]:[],sl,plotConfig));
+ const cmp=Object.keys(D.config.keywords).map(k=>({term:k,current:base.filter(r=>exact(r,WSTART,ref)&&r.keywords.includes(k)).length,prior:base.filter(r=>exact(r,oldStart,oldEnd)&&r.keywords.includes(k)).length})).sort((a,b)=>(b.current+b.prior)-(a.current+a.prior)||a.term.localeCompare(b.term));
+ window.curadoriaComparison=cmp;const shown=cmp.filter(r=>r.current+r.prior>0).slice(0,12);let cl=layout(490);cl.xaxis.tickangle=-40;cl.yaxis.title="Documentos";cl.yaxis.rangemode="tozero";cl.barmode="group";cl.legend={orientation:"h",y:1.15};
+ jobs.push(Plotly.react("chart-comparison",[{type:"bar",name:"Janela anterior",x:shown.map(r=>esc(r.term)),y:shown.map(r=>r.prior),marker:{color:"#b0c0cb"}},{type:"bar",name:"Janela atual",x:shown.map(r=>esc(r.term)),y:shown.map(r=>r.current),marker:{color:"#237c83"}}],cl,plotConfig));
+ readList(rows);documents(rows);await Promise.all(jobs);$("busy").textContent="Atualizado";
+}
+function changePeriod(){const value=$("period").value;if(value==="custom")return;
+ $("end").value=ref;$("start").value=value==="all"?"":isoShift(ref,1-Number(value));$("uncertain").checked=value==="all";render()}
+$("period").addEventListener("change",changePeriod);
+["corpus","source","topic","keyword","uncertain","candidates","metric"].forEach(id=>$(id).addEventListener("change",render));
+["start","end"].forEach(id=>$(id).addEventListener("change",()=>{$("period").value="custom";render()}));
+let timer;$("query").addEventListener("input",()=>{clearTimeout(timer);timer=setTimeout(render,150)});
+$("reset").addEventListener("click",()=>{["source","topic","keyword","query","start"].forEach(id=>$(id).value="");$("corpus").value="todos";$("period").value="all";$("end").value=ref;$("candidates").checked=true;$("uncertain").checked=true;render()});
+function csvCell(v){let s=Array.isArray(v)?v.join("; "):String(v==null?"":v);if(/^\s*[=+\-@]/.test(s))s="'"+s;return '"'+s.replace(/"/g,'""')+'"'}
+$("download").addEventListener("click",()=>{const fields=["title","source","published_date","date_precision","url","topics","keywords","match_evidence","summary"],lines=[fields.map(csvCell).join(",")];
+ selected().forEach(r=>lines.push(fields.map(f=>csvCell(r[f])).join(",")));const blob=new Blob(["\ufeff"+lines.join("\r\n")],{type:"text/csv;charset=utf-8"}),a=document.createElement("a"),u=URL.createObjectURL(blob);a.href=u;a.download="curadoria_recorte.csv";a.click();setTimeout(()=>URL.revokeObjectURL(u),1000)});
+render().catch(e=>{$("busy").textContent="Erro: "+e.message;console.error(e)});
+</script>
+</body>
+</html>
