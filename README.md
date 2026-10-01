@@ -1,6 +1,12 @@
 # FAPESP PIBIC — coleta e análise de notícias
 
-O projeto mantém **21 notebooks originais** em [`Mercosul/`](Mercosul/) e [`UE/`](UE/). Eles fazem coleta, análise ou gráficos. Nenhum notebook novo foi criado na atualização de setembro de 2026.
+O projeto mantém **21 notebooks originais** em [`Mercosul/`](Mercosul/) e [`UE/`](UE/). Eles fazem coleta, análise ou gráficos. Em outubro de 2026, foi acrescentado um notebook separado para consolidar a pesquisa; os 21 originais permanecem nos caminhos anteriores.
+
+## Agente de análise unificada
+
+[`Analise/agente_fapesp_unificado.ipynb`](Analise/agente_fapesp_unificado.ipynb) lê os coletores originais da pasta compartilhada no Drive, acrescenta o histórico de quatro fontes do [CSV semanal](data/news.csv), elimina URLs repetidas e apresenta tabelas, séries mensais, temas, palavras-chave por país, coocorrência e evidências com links. Ele registra erros e páginas incompletas por fonte. Eventos da Biblioteca e páginas de referência ficam identificados separadamente das notícias. Os títulos são pistas para a análise documental, não um resumo do conteúdo integral.
+
+Execute o novo Colab e autorize o Drive quando solicitado. O modo `completo` percorre as páginas configuradas em cada coletor; `rapido` usa uma página por fonte. Os arquivos CSV, JSON e HTML ficam na subpasta **Resultados - agente FAPESP** dentro da pasta compartilhada, atualizados sem criar versões repetidas. A coleta semanal automática alimenta o CSV de quatro fontes; a rodada completa dos outros portais acontece quando este Colab é executado. O código compartilhado está em [`scripts/fapesp_agent.py`](scripts/fapesp_agent.py).
 
 ## Como executar
 
@@ -13,7 +19,7 @@ Os notebooks atualizados usam `requests`, `beautifulsoup4`, `pandas` e `plotly`;
 
 ## Coleta semanal
 
-O [workflow semanal](.github/workflows/fapesp-weekly.yml) roda às sextas-feiras às 07h de Brasília e pode ser iniciado manualmente. Ele atualiza `data/news.csv` para **quatro fontes**: NIC.br, EDPB, Mercociudades e Senado Federal. [`data/runs/latest.json`](data/runs/latest.json) registra erros, registros novos e a checagem de sintaxe dos 21 notebooks. A checagem de sintaxe não executa as células.
+O [workflow semanal](.github/workflows/fapesp-weekly.yml) roda às sextas-feiras às 07h de Brasília e pode ser iniciado manualmente. Ele atualiza `data/news.csv` para **quatro fontes**: NIC.br, EDPB, Mercociudades e Senado Federal. [`data/runs/latest.json`](data/runs/latest.json) registra erros, registros novos e a checagem de sintaxe dos 21 originais e do novo agente (22 notebooks). A checagem de sintaxe não executa as células.
 
 O domínio de Mercociudades respondeu HTTP 403 no ambiente do GitHub Actions pela API pública, embora o notebook tenha coletado dados em uma execução local. A rotina semanal agora tenta o [RSS oficial](https://mercociudades.org/feed/) quando a API retorna 403. O relatório identifica `method: official_rss_after_api_403`; só considera a janela de sete dias coberta quando o item mais antigo do feed antecede o início dela. Se o RSS também falhar ou trouxer poucos itens, o workflow preserva as notícias antigas e sinaliza cobertura parcial ou falha.
 
