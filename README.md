@@ -18,7 +18,7 @@ Execute o novo Colab e autorize o Drive quando solicitado. O modo `completo` per
 
 O catálogo é uma entrada opcional fornecida pela pesquisadora. Quando informado, as fontes selecionadas são preservadas mesmo sem correspondências lexicais no título. A seleção de até cinco publicações exige datas exatas e usa uma pontuação transparente. O dicionário editável está em [`config/curadoria.json`](config/curadoria.json). O modo padrão analisa títulos; a opção `--analysis-text title_summary` inclui notas fornecidas. Eixos são multilabel e coocorrência não demonstra influência regulatória.
 
-O workflow proposto executa a análise após a coleta de quatro fontes e oferece o artefato `curadoria-fapesp`. O gerador de notebook em [`scripts/build_curadoria_notebook.py`](scripts/build_curadoria_notebook.py) utiliza o código e os arquivos de entrada disponíveis localmente para criar um Colab independente.
+O workflow ativo executa a análise após a coleta de quatro fontes e oferece o artefato `curadoria-fapesp`. O gerador de notebook em [`scripts/build_curadoria_notebook.py`](scripts/build_curadoria_notebook.py) utiliza o código e os arquivos de entrada disponíveis localmente para criar um Colab independente.
 
 ## Como executar
 

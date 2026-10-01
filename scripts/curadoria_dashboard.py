@@ -171,7 +171,9 @@ def notebook_figures(rows: list[dict], config: dict, as_of: date, days: int = 7,
                               marker_color=color, text=[r["documentos"] for r in selected],
                               textposition="auto"))
         fig.update_layout(title=title, template="plotly_white", height=max(380, 24 * len(selected) + 170),
-                          xaxis_title="Documentos", xaxis=dict(rangemode="tozero", dtick=1),
+                          xaxis_title="Documentos", xaxis=dict(
+                              rangemode="tozero", tickformat=",d", nticks=6,
+                              dtick=1 if max((r["documentos"] for r in selected), default=0) <= 10 else None),
                           margin=dict(l=220, r=35, t=70, b=70))
         return fig
     figures["palavras_chave"] = bar("keywords", "palavra_chave", "Palavras-chave • uma contagem por documento")

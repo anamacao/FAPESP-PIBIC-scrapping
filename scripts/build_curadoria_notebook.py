@@ -308,8 +308,8 @@ print("Inclui: painel HTML, CSVs, gráficos PNG, resumo semanal e registro dos i
 ## Executar toda semana
 O Colab serve para executar e explorar. O repositório já tem uma rotina de coleta por
 GitHub Actions às **sextas-feiras às 07h de Brasília**, antes da curadoria das 08h.
-A integração deste novo painel a essa rotina está preparada em uma proposta para revisão.
-Depois da aprovação, ela poderá gerar os gráficos e tabelas após cada coleta agendada.
+A integração deste painel está ativa: os gráficos e tabelas são gerados após cada coleta
+agendada e ficam disponíveis no artefato `curadoria-fapesp` do GitHub Actions.
 
 O catálogo incluído é uma cópia datada, não uma sincronização automática com conversas.
 Atualize o arquivo do catálogo ou indique um catálogo próprio para incorporar novas seleções.
