@@ -1,0 +1,41 @@
+{
+  "generated_at": "2026-10-01T18:59:22+00:00",
+  "as_of": "2026-10-01",
+  "window_start": "2026-09-25",
+  "days": 7,
+  "timezone": "America/Sao_Paulo",
+  "analysis_text": "title",
+  "config_version": "1.1",
+  "config_sha256": "635b2e8d395f597cb0798e5b8f2f516654d3ce8566fc05d7ffb5c521561b4df3",
+  "inputs": {
+    "scrapers": {
+      "path": "/home/runner/work/FAPESP-PIBIC-scrapping/FAPESP-PIBIC-scrapping/data/news.csv",
+      "sha256": "6cb998daff0f6360636eec8ee5947ea3dfbe23b3a391bb6d4bee64b67adf6074"
+    }
+  },
+  "corpus": {
+    "scrapers": {
+      "input_rows": 593,
+      "duplicates_removed": 0,
+      "invalid_records": 0,
+      "documents": 593,
+      "candidates": 283,
+      "published_window": 36,
+      "candidates_window": 4,
+      "candidates_previous_window": 11,
+      "without_exact_date": 0,
+      "future_publications": 0,
+      "candidates_without_axis": 108
+    }
+  },
+  "warnings": [
+    "mercociudades: Feed oficial com as últimas publicações; notícias anteriores ao item mais antigo não foram verificadas.",
+    "O catálogo da curadoria não foi fornecido: estas saídas cobrem somente as notícias dos scrapers."
+  ],
+  "collection_generated_at": "2026-10-01T18:59:10+00:00",
+  "method": "Correspondências lexicais com sinônimos; multilabel; URL canônica deduplicada por corpus; publicação distinta de primeira detecção.",
+  "interactive_dashboard": "painel_interativo.html",
+  "shortlist_count": 4,
+  "combined_unique_documents": 593,
+  "dashboard_sha256": "d8ba958e2180becec2223ee9f1e88f2bdd1cef1e58f3e757cf5ec64372aa5188"
+}
