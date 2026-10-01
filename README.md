@@ -26,7 +26,7 @@ python -m pip install requests beautifulsoup4 pandas plotly ipython nbformat jin
 python scripts/check_notebooks.py Mercosul/nic_.ipynb UE/charts.ipynb --output resultado.json
 ```
 
-A opção `--diagnostic` reduz temporariamente a coleta a uma página e pula células de instalação no teste; **não altera os arquivos** e não deve ser usada como prova de execução integral. O relatório versionado em [`data/runs/notebooks-20260929.json`](data/runs/notebooks-20260929.json) identifica ambiente, células, notícias e bloqueios observados. Uma validação local não comprova que a sessão hospedada do Google Colab executou o notebook; essa confirmação requer uma execução na interface do Colab.
+A opção `--diagnostic` reduz temporariamente a coleta a uma página e pula células de instalação no teste; **não altera os arquivos** e não deve ser usada como prova de execução integral. O [relatório de 01/10](data/runs/notebooks-20261001.json) reúne a validação integral anterior e a nova execução local do notebook do Parlamento, com ambiente, células, registros e bloqueios observados. Uma validação local não comprova que a sessão hospedada do Google Colab executou o notebook; essa confirmação requer uma execução na interface do Colab.
 
 ## Fontes bloqueadas
 

@@ -1,0 +1,220 @@
+{
+  "generated_at": "2026-10-01T14:09:30+00:00",
+  "scope": "Execução local integral das células originais, na ordem, sem modo diagnóstico; diretório isolado por notebook; IPython no processo porque sockets do kernel Jupyter não são permitidos neste ambiente.",
+  "github_notebooks": {
+    "total": 21,
+    "passed": 21,
+    "blocked": 0,
+    "results": [
+      {
+        "path": "Mercosul/Parlamento uruguaio/parlamento_uy.ipynb",
+        "status": "pass",
+        "cells_run": 8,
+        "code_cells_total": 8,
+        "rows": 18,
+        "seconds": 33.0,
+        "source_coverage": "fallback_events_after_parliament_403_chamber_502",
+        "note": "Novo endereço institucional de notícias da Câmara incluído; respondeu HTTP 502 nesta rede. Biblioteca retornou 18 eventos claramente rotulados."
+      },
+      {
+        "path": "Mercosul/aaip.ipynb",
+        "status": "pass",
+        "cells_run": 19,
+        "code_cells_total": 19,
+        "rows": 16,
+        "seconds": 145.6
+      },
+      {
+        "path": "Mercosul/camaraFederal.ipynb",
+        "status": "pass",
+        "cells_run": 11,
+        "code_cells_total": 11,
+        "rows": 10,
+        "seconds": 91.5
+      },
+      {
+        "path": "Mercosul/cgi.ipynb",
+        "status": "pass",
+        "cells_run": 6,
+        "code_cells_total": 6,
+        "rows": 41,
+        "seconds": 21.3
+      },
+      {
+        "path": "Mercosul/dataprivacy.ipynb",
+        "status": "pass",
+        "cells_run": 9,
+        "code_cells_total": 9,
+        "rows": 32,
+        "seconds": 18.5
+      },
+      {
+        "path": "Mercosul/icncongresoargentina.ipynb",
+        "status": "pass",
+        "cells_run": 6,
+        "code_cells_total": 6,
+        "rows": 55,
+        "seconds": 8.4
+      },
+      {
+        "path": "Mercosul/internetlab.ipynb",
+        "status": "pass",
+        "cells_run": 15,
+        "code_cells_total": 15,
+        "rows": 6,
+        "seconds": 48.5
+      },
+      {
+        "path": "Mercosul/mercociudades.ipynb",
+        "status": "pass",
+        "cells_run": 5,
+        "code_cells_total": 5,
+        "rows": 60,
+        "seconds": 11.3
+      },
+      {
+        "path": "Mercosul/nic_.ipynb",
+        "status": "pass",
+        "cells_run": 10,
+        "code_cells_total": 10,
+        "rows": 500,
+        "seconds": 8.8
+      },
+      {
+        "path": "Mercosul/observacom.ipynb",
+        "status": "pass",
+        "cells_run": 9,
+        "code_cells_total": 9,
+        "rows": 12,
+        "seconds": 9.2
+      },
+      {
+        "path": "Mercosul/senado.ipynb",
+        "status": "pass",
+        "cells_run": 23,
+        "code_cells_total": 23,
+        "rows": 20,
+        "seconds": 9.2
+      },
+      {
+        "path": "Mercosul/senadofederal.ipynb",
+        "status": "pass",
+        "cells_run": 18,
+        "code_cells_total": 18,
+        "rows": 9,
+        "seconds": 78.8
+      },
+      {
+        "path": "Mercosul/urcdp.ipynb",
+        "status": "pass",
+        "cells_run": 14,
+        "code_cells_total": 14,
+        "rows": 10,
+        "seconds": 90.4
+      },
+      {
+        "path": "UE/charts.ipynb",
+        "status": "pass",
+        "cells_run": 11,
+        "code_cells_total": 11,
+        "rows": 562,
+        "seconds": 16.3
+      },
+      {
+        "path": "UE/comissaoEuropeia.ipynb",
+        "status": "pass",
+        "cells_run": 6,
+        "code_cells_total": 6,
+        "rows": 80,
+        "seconds": 17.8
+      },
+      {
+        "path": "UE/database_analysis.ipynb",
+        "status": "pass",
+        "cells_run": 7,
+        "code_cells_total": 7,
+        "rows": 562,
+        "seconds": 7.3
+      },
+      {
+        "path": "UE/edpb.ipynb",
+        "status": "pass",
+        "cells_run": 22,
+        "code_cells_total": 22,
+        "rows": 16,
+        "seconds": 137.5
+      },
+      {
+        "path": "UE/google_transparency.ipynb",
+        "status": "pass",
+        "cells_run": 21,
+        "code_cells_total": 21,
+        "rows": 13,
+        "seconds": 99.2
+      },
+      {
+        "path": "UE/icann.ipynb",
+        "status": "pass",
+        "cells_run": 6,
+        "code_cells_total": 6,
+        "rows": 20,
+        "seconds": 9.0
+      },
+      {
+        "path": "UE/uniaoEuropeia.ipynb",
+        "status": "pass",
+        "cells_run": 5,
+        "code_cells_total": 5,
+        "rows": 40,
+        "seconds": 16.1
+      },
+      {
+        "path": "UE/uniaoEuropeia_news (EUR-Lex).ipynb",
+        "status": "pass",
+        "cells_run": 16,
+        "code_cells_total": 16,
+        "rows": 20,
+        "seconds": 163.0
+      }
+    ]
+  },
+  "google_colab_hosted": {
+    "verified": false,
+    "authenticated": true,
+    "reason": "A execução foi interrompida no aviso de segurança do Colab para notebook carregado do GitHub; a etapa Executar assim mesmo deve ser feita pela titular da conta. Não há resultado de células hospedadas."
+  },
+  "weekly_actions": {
+    "as_of": "2026-09-29T23:31:45+00:00",
+    "workflow_run_url": "https://github.com/anamacao/FAPESP-PIBIC-scrapping/actions/runs/36645674726",
+    "workflow_conclusion": "success",
+    "sources_total": 4,
+    "sources_ok": 4,
+    "sources_failed": [],
+    "total_records": 579,
+    "mercociudades": {
+      "method": "official_rss_after_api_403",
+      "seen": 10,
+      "new": 10,
+      "status": "ok",
+      "note": "O feed oficial cobre a janela atual de sete dias; registros anteriores ao item mais antigo do feed não foram verificados nesta execução."
+    },
+    "notebook_syntax": "21/21; a verificação do workflow compila células, não as executa."
+  },
+  "validation_provenance": "Vinte notebooks passaram na execução integral de 29/09; o notebook do Parlamento alterado em 01/10 passou novamente em execução local integral (8/8 células). O teste de Colab hospedado aguarda ação da titular no aviso de segurança.",
+  "source_limitations": [
+    "O Parlamento respondeu HTTP 403 e o portal de notícias da Câmara respondeu HTTP 502 nesta rede; ambos permanecem como primeiras fontes no notebook.",
+    "A Biblioteca retornou 18 eventos oficiais, que não devem ser classificados como notícias legislativas.",
+    "A execução no Colab hospedado aguarda a ação manual no aviso de segurança do notebook GitHub."
+  ],
+  "official_legislative_news_alternative": {
+    "url": "https://www.diputados.gub.uy/noticias/",
+    "publisher": "Câmara de Representantes do Uruguai",
+    "tested_here": "HTTP 502; o extrator foi testado com uma página simulada, mas a coleta ao vivo dessa fonte ainda não foi comprovada."
+  },
+  "drive_original": {
+    "updated_in_place": true,
+    "collector_tested_locally": true,
+    "records": 18,
+    "coverage": "Eventos da Biblioteca após Parlamento 403 e Câmara 502"
+  }
+}
