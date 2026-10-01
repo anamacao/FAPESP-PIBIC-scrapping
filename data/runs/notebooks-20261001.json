@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-01T14:09:30+00:00",
+  "generated_at": "2026-10-01T15:24:46+00:00",
   "scope": "Execução local integral das células originais, na ordem, sem modo diagnóstico; diretório isolado por notebook; IPython no processo porque sockets do kernel Jupyter não são permitidos neste ambiente.",
   "github_notebooks": {
     "total": 21,
@@ -9,12 +9,12 @@
       {
         "path": "Mercosul/Parlamento uruguaio/parlamento_uy.ipynb",
         "status": "pass",
-        "cells_run": 8,
-        "code_cells_total": 8,
-        "rows": 18,
-        "seconds": 33.0,
-        "source_coverage": "fallback_events_after_parliament_403_chamber_502",
-        "note": "Novo endereço institucional de notícias da Câmara incluído; respondeu HTTP 502 nesta rede. Biblioteca retornou 18 eventos claramente rotulados."
+        "cells_run": 14,
+        "code_cells_total": 14,
+        "rows": 256,
+        "seconds": 190.0,
+        "source_coverage": "fallback_events_15_pages_after_parliament_403_chamber_502",
+        "note": "Execução local integral do notebook expandido: 15/15 páginas da Biblioteca, 256 eventos distintos, 256 datas reconhecidas; tabelas e gráficos concluídos. Notícias oficiais falharam nesta rede."
       },
       {
         "path": "Mercosul/aaip.ipynb",
@@ -179,9 +179,10 @@
     ]
   },
   "google_colab_hosted": {
-    "verified": false,
-    "authenticated": true,
-    "reason": "A execução foi interrompida no aviso de segurança do Colab para notebook carregado do GitHub; a etapa Executar assim mesmo deve ser feita pela titular da conta. Não há resultado de células hospedadas."
+    "expanded_version_verified": false,
+    "previous_drive_version_executed_by_user": true,
+    "previous_drive_version_code_cells_executed": 3,
+    "note": "A versão anterior do arquivo original na pasta tem saídas Colab de 18 eventos; a versão expandida foi testada localmente e ainda não teve execução hospedada registrada."
   },
   "weekly_actions": {
     "as_of": "2026-09-29T23:31:45+00:00",
@@ -200,11 +201,11 @@
     },
     "notebook_syntax": "21/21; a verificação do workflow compila células, não as executa."
   },
-  "validation_provenance": "Vinte notebooks passaram na execução integral de 29/09; o notebook do Parlamento alterado em 01/10 passou novamente em execução local integral (8/8 células). O teste de Colab hospedado aguarda ação da titular no aviso de segurança.",
+  "validation_provenance": "Vinte notebooks GitHub passaram na execução local integral em 29/09. O notebook expandido do Parlamento passou em 01/10 (14/14 células de código, 256 eventos, 190 s). O original da pasta expandido passou localmente (9/9 células executadas; a célula de instalação de dependências não foi repetida; 255 eventos, 118 s). A execução Colab hospedada da versão expandida permanece a confirmar.",
   "source_limitations": [
-    "O Parlamento respondeu HTTP 403 e o portal de notícias da Câmara respondeu HTTP 502 nesta rede; ambos permanecem como primeiras fontes no notebook.",
-    "A Biblioteca retornou 18 eventos oficiais, que não devem ser classificados como notícias legislativas.",
-    "A execução no Colab hospedado aguarda a ação manual no aviso de segurança do notebook GitHub."
+    "Parlamento respondeu HTTP 403 e Câmara de Representantes HTTP 502 nesta rede; ambos permanecem como fontes prioritárias.",
+    "A Biblioteca retornou 256 eventos no notebook GitHub e 255 no notebook original da pasta; esses registros não são notícias legislativas.",
+    "A versão expandida não foi executada no Colab hospedado; execução local testou coleta e todas as análises."
   ],
   "official_legislative_news_alternative": {
     "url": "https://www.diputados.gub.uy/noticias/",
@@ -213,8 +214,16 @@
   },
   "drive_original": {
     "updated_in_place": true,
-    "collector_tested_locally": true,
-    "records": 18,
-    "coverage": "Eventos da Biblioteca após Parlamento 403 e Câmara 502"
+    "expanded_cells_total": 16,
+    "code_cells_total": 10,
+    "code_cells_executed_locally": 9,
+    "dependency_install_cell_skipped_locally": true,
+    "analysis_tested_locally": true,
+    "records": 255,
+    "dated_records": 255,
+    "fallback_pages_ok": 15,
+    "fallback_pages_requested": 15,
+    "coverage": "Eventos da Biblioteca após Parlamento 403 e Câmara 502",
+    "hosted_expanded_version_verified": false
   }
 }
