@@ -531,7 +531,7 @@ def build_dashboard(data: pd.DataFrame, diagnostics: list[dict], *,
 
 
 def export_results(data: pd.DataFrame, diagnostics: list[dict], dashboard: dict,
-                   output: Path, quality: dict) -> dict[str, Path]:
+                   output: Path, quality: dict, *, embed_plotly_js: bool = True) -> dict[str, Path]:
     output.mkdir(parents=True, exist_ok=True)
     paths = {name: output / name for name in (
         "noticias_unificadas.csv", "evidencias_tematicas.csv", "comparacao_regional.csv", "saude_fontes.csv",
@@ -558,7 +558,7 @@ def export_results(data: pd.DataFrame, diagnostics: list[dict], dashboard: dict,
     parts.append("</ul><h2>Saúde das fontes</h2>")
     parts.append(dashboard["health"].to_html(index=False, escape=True) if not dashboard["health"].empty else "<p>Sem diagnóstico de fontes.</p>")
     for index, fig in enumerate(dashboard["figures"]):
-        parts.append(fig.to_html(full_html=False, include_plotlyjs=True if index == 0 else False))
+        parts.append(fig.to_html(full_html=False, include_plotlyjs=(True if embed_plotly_js else "cdn") if index == 0 else False))
     parts.append("<h2>Registros recentes da amostra</h2>")
     recent = dashboard["recent"][["published_date", "title", "country", "source", "record_type", "url"]].copy()
     if not recent.empty:

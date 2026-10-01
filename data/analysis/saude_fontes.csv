@@ -1,0 +1,5 @@
+notebook,source_id,status,coletados_nesta_rodada,registros_unicos,datas_%,ultima_publicacao,paginas,erros
+workflow semanal: edpb,edpb,ok,16,16,100.0,2026-09-21,0/0,0
+workflow semanal: mercociudades,mercociudades,ok,10,61,100.0,2026-10-01,0/0,0
+workflow semanal: nic,nic,ok,489,499,100.0,2026-10-01,0/0,0
+workflow semanal: senado_federal,senado_federal,ok,6,16,100.0,2026-10-01,0/0,0

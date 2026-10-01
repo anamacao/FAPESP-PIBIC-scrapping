@@ -1,0 +1,48 @@
+{
+  "generated_at": "2026-10-01T16:51:39.828035+00:00",
+  "quality": {
+    "input_records": 592,
+    "valid": 592,
+    "unique": 592,
+    "duplicates": 0
+  },
+  "sources": [
+    {
+      "notebook": "workflow semanal: nic",
+      "source_id": "nic",
+      "status": "ok",
+      "records": 489,
+      "pages_ok": 0,
+      "pages_requested": 0,
+      "errors": []
+    },
+    {
+      "notebook": "workflow semanal: edpb",
+      "source_id": "edpb",
+      "status": "ok",
+      "records": 16,
+      "pages_ok": 0,
+      "pages_requested": 0,
+      "errors": []
+    },
+    {
+      "notebook": "workflow semanal: mercociudades",
+      "source_id": "mercociudades",
+      "status": "ok",
+      "records": 10,
+      "pages_ok": 0,
+      "pages_requested": 0,
+      "errors": []
+    },
+    {
+      "notebook": "workflow semanal: senado_federal",
+      "source_id": "senado_federal",
+      "status": "ok",
+      "records": 6,
+      "pages_ok": 0,
+      "pages_requested": 0,
+      "errors": []
+    }
+  ],
+  "scope": "Coletas acessíveis nesta execução; títulos e links, sem inferência de conteúdo integral."
+}

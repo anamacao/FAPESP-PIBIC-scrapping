@@ -10,6 +10,7 @@ on:
       - ".github/workflows/fapesp-weekly.yml"
       - "scripts/fapesp_weekly.py"
       - "scripts/fapesp_agent.py"
+      - "scripts/generate_weekly_dashboard.py"
       - "Analise/**"
       - "tests/test_fapesp_weekly.py"
       - "tests/test_fapesp_agent.py"
@@ -42,12 +43,24 @@ jobs:
           result=$?
           echo "exit_code=$result" >> "$GITHUB_OUTPUT"
           exit 0
+      - name: Build weekly dashboard
+        id: analysis
+        shell: bash
+        run: |
+          set +e
+          python scripts/generate_weekly_dashboard.py
+          result=$?
+          echo "exit_code=$result" >> "$GITHUB_OUTPUT"
+          exit 0
       - name: Save cumulative data and report
         shell: bash
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -f data/news.csv data/runs/*.json
+          if compgen -G 'data/analysis/*' > /dev/null; then
+            git add -f data/analysis/*
+          fi
           if ! git diff --cached --quiet; then
             git commit -m "Atualiza notícias e diagnóstico semanal FAPESP"
             git push
@@ -57,3 +70,4 @@ jobs:
         run: |
           python scripts/fapesp_weekly.py --check-report data/runs/latest.json
           test "${{ steps.collect.outputs.exit_code }}" = "0"
+          test "${{ steps.analysis.outputs.exit_code }}" = "0"
