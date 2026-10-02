@@ -3,7 +3,7 @@ name: FAPESP weekly news and notebook diagnostics
 on:
   workflow_dispatch:
   schedule:
-    # Sexta-feira, 07:00 no horário de Brasília.
+    # Sexta-feira, 10:17 UTC (07:17 no horário de Brasília).
     - cron: "17 10 * * 5"
   push:
     branches:
