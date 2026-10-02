@@ -222,7 +222,35 @@ def read_history(path: Path) -> dict[tuple[str, str], dict]:
         return {}
     with path.open(newline="", encoding="utf-8") as handle:
         rows = list(csv.DictReader(handle))
-    return {(row["source_id"], row["url"]): row for row in rows}
+    history = {}
+    for row in rows:
+        key = story_key(row)
+        if key not in history:
+            history[key] = row
+            continue
+        old = history[key]
+        # The official RSS omits /pt-br/ while the WordPress API includes it
+        # for the same article. Keep the Portuguese version when available,
+        # but retain the earliest discovery and latest successful sighting.
+        preferred = row if "/pt-br/" in row["url"] else old
+        merged = dict(preferred)
+        merged["first_seen"] = min(filter(None, (old["first_seen"], row["first_seen"])), default="")
+        merged["last_seen"] = max(old["last_seen"], row["last_seen"])
+        if not merged["published_date"]:
+            other = old if preferred is row else row
+            merged["published_date"] = other["published_date"]
+            merged["published_raw"] = other["published_raw"]
+        history[key] = merged
+    return history
+
+
+def story_key(row: dict) -> tuple[str, str]:
+    """Identify a Mercociudades article across its two observed URL variants."""
+    source_id, url = row["source_id"], row["url"]
+    parsed = urlsplit(url)
+    if source_id == "mercociudades" and parsed.hostname == "mercociudades.org" and parsed.path.startswith("/pt-br/"):
+        url = urlunsplit((parsed.scheme, parsed.netloc, parsed.path[len("/pt-br"):], parsed.query, ""))
+    return source_id, url
 
 
 def run(output: Path, collectors: dict = COLLECTORS, client: requests.Session | None = None) -> dict:
@@ -236,7 +264,7 @@ def run(output: Path, collectors: dict = COLLECTORS, client: requests.Session | 
     for source_id, collector in collectors.items():
         try:
             records = collector(client)
-            unique = {(r["source_id"], r["url"]): r for r in records}
+            unique = {story_key(r): r for r in records}
             if not unique:
                 raise ValueError("Nenhuma notícia válida encontrada; verificar URL e seletores")
             added = 0
@@ -246,6 +274,10 @@ def run(output: Path, collectors: dict = COLLECTORS, client: requests.Session | 
                     if not item["published_date"]:
                         item["published_date"] = current[key]["published_date"]
                         item["published_raw"] = current[key]["published_raw"]
+                    if (source_id == "mercociudades" and
+                            "/pt-br/" in current[key]["url"] and "/pt-br/" not in item["url"]):
+                        item["title"] = current[key]["title"]
+                        item["url"] = current[key]["url"]
                 else:
                     item["first_seen"] = now
                     added += 1

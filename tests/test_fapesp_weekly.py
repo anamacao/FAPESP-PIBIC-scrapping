@@ -111,6 +111,24 @@ class WeeklyTest(unittest.TestCase):
             self.assertEqual(report["sources"][0]["status"], "ok")
             self.assertEqual(report["sources"][0]["method"], "official_rss_after_api_403")
 
+    def test_mercociudades_api_and_feed_share_one_history_record(self):
+        portuguese = {"source_id": "mercociudades", "title": "Encontro regional",
+                      "published_date": "2026-10-01", "published_raw": "2026-10-01",
+                      "url": "https://mercociudades.org/pt-br/encontro-regional/"}
+        spanish = {**portuguese, "title": "Encuentro regional",
+                   "url": "https://mercociudades.org/encontro-regional/"}
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory)
+            first = run(output, collectors={"mercociudades": lambda _: [portuguese]})
+            second = run(output, collectors={"mercociudades": lambda _: [spanish]})
+            self.assertEqual(first["total_records"], 1)
+            self.assertEqual(second["total_records"], 1)
+            self.assertEqual(second["sources"][0]["new"], 0)
+            with (output / "news.csv").open(newline="", encoding="utf-8") as file:
+                rows = list(csv.DictReader(file))
+            self.assertEqual(rows[0]["title"], "Encontro regional")
+            self.assertEqual(rows[0]["url"], portuguese["url"])
+
 
 if __name__ == "__main__":
     unittest.main()
