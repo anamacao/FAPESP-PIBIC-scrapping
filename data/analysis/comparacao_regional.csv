@@ -1,10 +1,10 @@
 região,tema,títulos,total,% dos títulos,amostra pequena
-Mercosul,Proteção de dados,14,567,2.5,False
-Mercosul,IA e algoritmos,138,567,24.3,False
-Mercosul,Plataformas e moderação,41,567,7.2,False
-Mercosul,Internet e infraestrutura,79,567,13.9,False
-Mercosul,Mercosul e integração,1,567,0.2,False
-Mercosul,Infância e verificação de idade,37,567,6.5,False
+Mercosul,Proteção de dados,14,592,2.4,False
+Mercosul,IA e algoritmos,140,592,23.6,False
+Mercosul,Plataformas e moderação,42,592,7.1,False
+Mercosul,Internet e infraestrutura,82,592,13.9,False
+Mercosul,Mercosul e integração,1,592,0.2,False
+Mercosul,Infância e verificação de idade,40,592,6.8,False
 UE,Proteção de dados,6,16,37.5,False
 UE,IA e algoritmos,1,16,6.2,False
 UE,Plataformas e moderação,1,16,6.2,False

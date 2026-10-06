@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-10-02T13:24:48+00:00",
-  "as_of": "2026-10-02",
-  "window_start": "2026-09-26",
+  "generated_at": "2026-10-06T22:35:58+00:00",
+  "as_of": "2026-10-06",
+  "window_start": "2026-09-30",
   "days": 7,
   "timezone": "America/Sao_Paulo",
   "analysis_text": "title",
@@ -10,32 +10,32 @@
   "inputs": {
     "scrapers": {
       "path": "/home/runner/work/FAPESP-PIBIC-scrapping/FAPESP-PIBIC-scrapping/data/news.csv",
-      "sha256": "6422d41a551e585fec04a97fcab306636838143478a1974f17d44cccf93cce6f"
+      "sha256": "d17f1eb48fb6b49ec15581bffb3b1d80ee96ac86fa45ebbe8028cba897418c70"
     }
   },
   "corpus": {
     "scrapers": {
-      "input_rows": 583,
+      "input_rows": 608,
       "duplicates_removed": 0,
       "invalid_records": 0,
-      "documents": 583,
-      "candidates": 283,
-      "published_window": 30,
-      "candidates_window": 3,
-      "candidates_previous_window": 9,
+      "documents": 608,
+      "candidates": 289,
+      "published_window": 39,
+      "candidates_window": 8,
+      "candidates_previous_window": 5,
       "without_exact_date": 0,
       "future_publications": 0,
-      "candidates_without_axis": 108
+      "candidates_without_axis": 111
     }
   },
   "warnings": [
     "mercociudades: Feed oficial com as últimas publicações; notícias anteriores ao item mais antigo não foram verificadas.",
     "O catálogo da curadoria não foi fornecido: estas saídas cobrem somente as notícias dos scrapers."
   ],
-  "collection_generated_at": "2026-10-02T13:24:35+00:00",
+  "collection_generated_at": "2026-10-06T22:35:45+00:00",
   "method": "Correspondências lexicais com sinônimos; multilabel; URL canônica deduplicada por corpus; publicação distinta de primeira detecção.",
   "interactive_dashboard": "painel_interativo.html",
-  "shortlist_count": 3,
-  "combined_unique_documents": 583,
-  "dashboard_sha256": "db3be3275e1dc9bdbc5b8068cac270801ba928758ae41f5ea9fc883f054c5116"
+  "shortlist_count": 5,
+  "combined_unique_documents": 608,
+  "dashboard_sha256": "8fbba4477b1ba467eeb1c9a84391f2ef458cff2c1a3ccacb7d0c1854f0abc1bd"
 }
