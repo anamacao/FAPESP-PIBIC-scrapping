@@ -22,12 +22,17 @@ import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 import requests
+import sys
+
+# Also works when this module is loaded with spec_from_file_location in Colab.
+if str(Path(__file__).parent) not in sys.path:
+    sys.path.insert(0, str(Path(__file__).parent))
 
 
 FOLDER_ID = "1SpKKCSz99_V6OsMLzN7XNYFHXXullzvu"
 WEEKLY_CSV = "https://raw.githubusercontent.com/anamacao/FAPESP-PIBIC-scrapping/main/data/news.csv"
 SELF_NAME = "agente_fapesp_unificado.ipynb"
-ANALYSIS_NAMES = {"charts (1).ipynb", "database_analysis (1).ipynb", "Agente_curadoria_FAPESP.ipynb"}
+ANALYSIS_NAMES = {"charts (1).ipynb", "database_analysis (1).ipynb", "charts.ipynb", "database_analysis.ipynb", "Agente_curadoria_FAPESP.ipynb"}
 
 # País/região se refere à instituição publicadora, não ao assunto da notícia.
 SOURCE_META = {
@@ -103,7 +108,7 @@ def parse_date(raw: object) -> pd.Timestamp | pd.NaT:
     text = plain(raw).strip()
     if not text or text in {"nan", "none", "na", "nat"}:
         return pd.NaT
-    match = re.search(r"\b(\d{4}-\d{2}-\d{2})\b", text)
+    match = re.search(r"\b(\d{4}-\d{2}-\d{2})(?:T|t|\b)", text)
     if match:
         return pd.to_datetime(match.group(1), format="%Y-%m-%d", errors="coerce")
     match = re.search(r"\b(\d{1,2})[/.](\d{1,2})[/.](\d{4})\b", text)
@@ -165,10 +170,35 @@ def list_drive_notebooks(service, folder_id: str = FOLDER_ID) -> tuple[list[dict
 
 
 def prepare_collector(item: dict) -> dict:
+    import ast
+    from source_collectors import SOURCES, collect_source
+    # Legacy GitHub notebooks have database and browser cells in position 2.
+    # Adapt known sources without executing those cells or losing the source.
+    known = {"nic_": "nic", "dataprivacy": "dataprivacy", "mercociudades": "mercociudades",
+             "observacom": "observacom", "internetlab": "internetlab", "mitic_paraguai": "mitic_paraguai",
+             "edpb": "edpb", "anpd": "anpd", "agesic": "agesic", "urcdp": "urcdp", "aaip": "aaip",
+             "camarafederal": "camara_federal", "cgi": "cgi", "senado": "senado_federal", "senadofederal": "senado_federal",
+             "icncongresoargentina": "icn_argentina", "icann": "icann", "uniaoeuropeia": "ue_news",
+             "uniaoeuropeia_news (eur-lex)": "ue_news", "comissaoeuropeia": "ue_news", "parlamento_uy": "parlamento_uy",
+             "google_transparency": "google_transparency", "meta_transparency": "meta_transparency", "dsa_transparency": "dsa_transparency"}
+    sid = known.get(Path(item["name"]).stem.lower())
     cells = [cell for cell in item["book"]["cells"] if cell["cell_type"] == "code"]
     if len(cells) < 2:
         raise ValueError("Notebook sem célula de coleta")
     code = "".join(cells[1]["source"])
+    try:
+        has_collect = any(isinstance(n, (ast.FunctionDef, ast.AsyncFunctionDef)) and n.name == "collect" for n in ast.parse(code).body)
+    except SyntaxError:
+        has_collect = False
+    if sid and not has_collect:
+        name, _, _, endpoint, _ = SOURCES[sid]
+        def adapted(source_id, cfg, delay=.25):
+            rows, report = collect_source(source_id, pages=cfg.get("pages", 10))
+            report["pages_requested"] = cfg.get("pages", 10)
+            return rows, report
+        cfg = {"name": name, "url": endpoint, "pages": 10}
+        return {"item": item, "scope": {"collect": adapted}, "source_id": sid,
+                "configs": [cfg], "signature": ((endpoint, ()),)}
     # dataclass checks __module__ in sys.modules while Record is defined.
     # Some collectors use json in a helper while importing it in the next cell.
     scope: dict = {"__name__": "__main__", "json": json}
@@ -266,6 +296,16 @@ def collect_drive(notebooks: list[dict], max_pages: int | None = None,
     return rows, sorted(diagnostics, key=lambda d: d["notebook"])
 
 
+def collect_public_sources(max_pages: int = 10, workers: int = 3):
+    """Collect all registered original institutions, without Drive setup cells."""
+    from source_collectors import collect_all
+    rows, reports = collect_all(pages=max_pages, workers=workers)
+    for report in reports:
+        report["notebook"] = "registro público: " + report["source_id"]
+        report["pages_requested"] = max_pages
+    return rows, reports
+
+
 def weekly_rows(csv_bytes: bytes) -> list[dict]:
     table = pd.read_csv(BytesIO(csv_bytes), dtype=str, keep_default_na=False)
     required = {"source_id", "title", "url", "published_date"}
@@ -310,12 +350,15 @@ def normalize_records(records: list[dict]) -> tuple[pd.DataFrame, dict]:
             continue
         sid = str(row.get("source_id", "unknown"))
         country, region, institution = SOURCE_META.get(sid, ("Outra", "Outra", sid))
+        country, region = row.get("country") or country, row.get("region") or region
         raw_date = row.get("published_date") or row.get("date") or row.get("published_raw") or ""
         published = parse_date(raw_date)
         source = str(row.get("source") or institution)
         if sid == "comissao_europeia" and urlsplit(url).hostname == "european-union.europa.eu":
             source = "Portal da União Europeia (configurado como Comissão)"
-        if row.get("reference_link"):
+        if row.get("record_type"):
+            record_type = row["record_type"]
+        elif row.get("reference_link"):
             record_type = "Referência institucional"
         elif "biblioteca.parlamento.gub.uy/eventos/" in url:
             record_type = "Evento da Biblioteca"
@@ -535,7 +578,7 @@ def export_results(data: pd.DataFrame, diagnostics: list[dict], dashboard: dict,
     output.mkdir(parents=True, exist_ok=True)
     paths = {name: output / name for name in (
         "noticias_unificadas.csv", "evidencias_tematicas.csv", "comparacao_regional.csv", "saude_fontes.csv",
-        "diagnostico.json", "painel_fapesp.html")}
+        "diagnostico.json", "Painel_FAPESP_interativo.html")}
     csv = data.copy()
     csv["published_date"] = csv["published_date"].dt.strftime("%Y-%m-%d").fillna("")
     csv.to_csv(paths["noticias_unificadas.csv"], index=False)
@@ -548,22 +591,7 @@ def export_results(data: pd.DataFrame, diagnostics: list[dict], dashboard: dict,
     payload = {"generated_at": datetime.now(timezone.utc).isoformat(), "quality": quality,
                "sources": diagnostics, "scope": "Coletas acessíveis nesta execução; títulos e links, sem inferência de conteúdo integral."}
     paths["diagnostico.json"].write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
-    parts = ["<!doctype html><html lang='pt-BR'><meta charset='utf-8'>",
-             "<title>Agente FAPESP — painel de notícias</title>",
-             "<style>body{font:16px system-ui;max-width:1200px;margin:32px auto;padding:0 16px;color:#182439}h1{color:#153a69}table{border-collapse:collapse;width:100%}td,th{padding:6px;border-bottom:1px solid #ddd;text-align:left}small{color:#556}</style>",
-             "<h1>Agente FAPESP — painel de notícias</h1>",
-             f"<p><small>Gerado em {escape(datetime.now(timezone.utc).strftime('%d/%m/%Y %H:%M UTC'))}. Filtro inicial do notebook; abra o Colab para alterar os filtros.</small></p>",
-             "<h2>Leituras automáticas da amostra</h2><ul>"]
-    parts.extend(f"<li>{escape(message)}</li>" for message in dashboard["observations"])
-    parts.append("</ul><h2>Saúde das fontes</h2>")
-    parts.append(dashboard["health"].to_html(index=False, escape=True) if not dashboard["health"].empty else "<p>Sem diagnóstico de fontes.</p>")
-    for index, fig in enumerate(dashboard["figures"]):
-        parts.append(fig.to_html(full_html=False, include_plotlyjs=(True if embed_plotly_js else "cdn") if index == 0 else False))
-    parts.append("<h2>Registros recentes da amostra</h2>")
-    recent = dashboard["recent"][["published_date", "title", "country", "source", "record_type", "url"]].copy()
-    if not recent.empty:
-        recent["published_date"] = recent["published_date"].dt.strftime("%Y-%m-%d").fillna("")
-    parts.append(recent.to_html(index=False, escape=True))
-    parts.append("<p><small>Eventos, referências e dados sem data ficam separados. O CSV contém os links e a proveniência integral.</small></p></html>")
-    paths["painel_fapesp.html"].write_text("\n".join(parts), encoding="utf-8")
+    # The same updateable HTML is produced by the Colab and the weekly workflow.
+    from build_updateable_dashboard import build
+    build(paths["noticias_unificadas.csv"], paths["Painel_FAPESP_interativo.html"], paths["diagnostico.json"])
     return paths

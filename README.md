@@ -49,3 +49,27 @@ A opção `--diagnostic` reduz temporariamente a coleta a uma página e pula cé
 ## Fontes bloqueadas
 
 `Mercosul/Parlamento uruguaio/parlamento_uy.ipynb` tenta primeiro as [notícias do Parlamento](https://parlamento.gub.uy/noticiasyeventos/noticias) e depois as [notícias da Câmara de Representantes](https://www.diputados.gub.uy/noticias/). Em 01/10/2026, esses portais responderam HTTP 403 e 502, respectivamente, nesta rede. Se ambos falharem, o mesmo notebook percorre até 15 páginas dos [eventos da Biblioteca do Poder Legislativo](https://biblioteca.parlamento.gub.uy/eventos/), com limite ajustável em `MAX_LIBRARY_PAGES`. No teste local, foram 256 eventos com data em 15 páginas, apresentados em tabelas, séries temporais e gráficos de títulos. **Eventos da Biblioteca não substituem as notícias legislativas**: fonte e tipo permanecem identificados. O arquivo original na pasta compartilhada usa a mesma ordem de fontes e registra as tentativas no diagnóstico.
+
+
+## HTML único atualizável e scraping completo
+
+`Painel_FAPESP_interativo.html` incorpora Plotly e os dados para abrir localmente sem dependências externas. Tem 17 gráficos, incluindo nove análises descritivas para o relatório, filtros múltiplos por âmbito, país, fonte, tipo, eixo e palavra-chave, comparação livre por séries e exportação PNG/SVG/CSV. Mercosul usa azul `#2563eb`, UE laranja `#d97706`, América Latina verde `#0d9488` e Global roxo `#7c3aed`; filtros não alteram as cores.
+
+Para atualizar no próprio painel, importe CSV/JSON dos Colabs ou use **Atualizar coleta do GitHub**. **Salvar HTML atualizado** incorpora a base, as cores e os filtros no arquivo baixado. Os modos de importação permitem acrescentar URLs, substituir fontes ou substituir o scraping preservando o catálogo curado. Falha de rede não apaga a base. O navegador atualiza o painel a partir de dados coletados; a coleta é executada pelo Python/Colab/GitHub Actions.
+
+```bash
+python scripts/source_collectors.py --pages 10
+python scripts/build_updateable_dashboard.py
+```
+
+O registro público verifica 21 fontes dos notebooks originais. Inclui Data Privacy Brasil (API pública com datas e resumos), ANPD (API Plone), Câmara, EDPB, CGI.br e ICN, com adaptação para as mudanças dos portais. O diagnóstico distingue coleta com datas, cobertura parcial, falhas e referências institucionais. Há fontes com limite de páginas; o histórico institucional completo não é presumido. Publicações da API Data Privacy têm tipo próprio porque o conjunto inclui diferentes formatos, além de notícias. O Parlamento uruguaio retornou HTTP 403 na rodada de 06/10/2026; eventos históricos da Biblioteca não são classificados como notícias.
+
+A rotina semanal gera `data/unified/public_records.csv`, `data/unified/diagnostico.json` e o HTML. Os CSVs são cumulativos; erros não removem dados anteriores. O Colab unificado usa o mesmo registro e gera o mesmo HTML. Coletores personalizados do Drive podem ser acrescentados opcionalmente; notebooks antigos com células de banco ou navegador têm adaptadores sem executar o setup.
+
+Para incluir um catálogo local ou preservar um painel anterior:
+
+```bash
+python scripts/build_updateable_dashboard.py --catalog caminho/catalogo.md --base-json caminho/base_FAPESP.json --output Painel_FAPESP_interativo.html
+```
+
+O catálogo pessoal e suas notas não são enviados ao GitHub por esse comando. Contagens temáticas usam títulos ou títulos + resumos, com regras visíveis no HTML e denominadores nas tabelas. País/âmbito é o da instituição publicadora. Coocorrência/Jaccard são associações lexicais. Datas de coleta não substituem datas de publicação; eventos, contexto sem data e páginas institucionais ficam identificados.

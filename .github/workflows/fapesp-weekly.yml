@@ -12,6 +12,11 @@ on:
       - ".github/workflows/fapesp-weekly.yml"
       - "scripts/fapesp_weekly.py"
       - "scripts/fapesp_agent.py"
+      - "scripts/source_collectors.py"
+      - "scripts/build_updateable_dashboard.py"
+      - "scripts/painel_atualizavel.html"
+      - "scripts/painel_atualizavel.js"
+      - "tests/test_source_collectors.py"
       - "scripts/generate_weekly_dashboard.py"
       - "Analise/**"
       - "tests/test_fapesp_weekly.py"
@@ -65,6 +70,10 @@ jobs:
           exit 0
       - name: Generate curation tables and charts
         run: python scripts/curadoria_agent.py
+      - name: Collect all registered public sources
+        run: python scripts/source_collectors.py --pages 10
+      - name: Build one updateable offline HTML
+        run: python scripts/build_updateable_dashboard.py
       - name: Upload reusable curation report
         uses: actions/upload-artifact@v4
         with:
@@ -80,6 +89,7 @@ jobs:
           if compgen -G 'data/analysis/*' > /dev/null; then
             git add -f data/analysis/*
           fi
+          git add -f data/unified/public_records.csv data/unified/diagnostico.json
           if ! git diff --cached --quiet; then
             git commit -m "Atualiza notícias e diagnóstico semanal FAPESP"
             git push

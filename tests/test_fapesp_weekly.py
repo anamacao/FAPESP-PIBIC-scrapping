@@ -84,7 +84,8 @@ class WeeklyTest(unittest.TestCase):
             self.assertEqual(rows[0]["title"], "Original")
             self.assertEqual(rows[0]["published_date"], "2026-09-25")
             latest = json.loads((output / "runs/latest.json").read_text())
-            self.assertEqual(latest["notebooks"]["syntax_ok"], 22)
+            self.assertGreater(latest["notebooks"]["count"], 0)
+            self.assertEqual(latest["notebooks"]["syntax_ok"], latest["notebooks"]["count"])
 
     def test_mercociudades_official_rss_after_api_403(self):
         api = "https://mercociudades.org/wp-json/wp/v2/posts?per_page=50&lang=pt-br&_fields=date,link,title"
