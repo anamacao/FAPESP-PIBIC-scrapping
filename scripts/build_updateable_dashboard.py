@@ -28,7 +28,8 @@ def build(csv_path, output, diagnostics_path=None, base_json=None, catalog=None)
     if base_json:
         previous=json.loads(Path(base_json).read_text(encoding="utf-8"))
         documents=previous.get("documents",[])
-    incoming=list(csv.DictReader(Path(csv_path).open(encoding="utf-8-sig",newline="")))
+    with Path(csv_path).open(encoding="utf-8-sig",newline="") as stream:
+        incoming=list(csv.DictReader(stream))
     merged={canonical(r["url"]):dict(r) for r in documents if canonical(r.get("url"))}
     for raw in incoming:
         sid=raw.get("source_id","")
@@ -59,19 +60,41 @@ def build(csv_path, output, diagnostics_path=None, base_json=None, catalog=None)
             else:
                 merged[url]=dict(raw,url=url,record_type="Fonte curada",country="Não informada",region="Não informada",
                                  corpora=["catalogo"],input_snapshots=["Catálogo curado"])
+    publisher_provenance=json.loads((ROOT/"config/publisher_provenance.json").read_text())
     for row in merged.values():
+        parts=urlsplit(row["url"])
+        host=(parts.hostname or "").removeprefix("www.")
+        rule=next((r for r in publisher_provenance["rules"]
+                   if (not r.get("catalog_only") or row.get("manually_selected"))
+                   and any(host==h or host.endswith("."+h) for h in r["hosts"])
+                   and (not r.get("path_prefix") or parts.path.startswith(r["path_prefix"]))),None)
+        if rule:
+            prior=row.get("source") or row.get("source_id","")
+            row.setdefault("collector_id",row.get("source_id",""))
+            if prior!=rule["source"]:
+                row.setdefault("prior_source",prior)
+            if row.get("manually_selected"):
+                row.setdefault("catalog_credit",row.get("catalog_source") or prior)
+            row.update(source_id=rule["id"],source=rule["source"],country=rule["country"],region=rule["region"],
+                       source_basis="Cadastro editorial: domínio e caminho da URL",source_reference=rule["reference"])
         config["source_names"][row["source_id"]]=row.get("source") or config["source_names"].get(row["source_id"],row["source_id"])
     rows,stats=prepare(list(merged.values()),config)
     source_meta={sid:{"source":name,"country":country,"region":region,"hosts":[urlsplit(endpoint).hostname.removeprefix("www.")]} for sid,(name,country,region,endpoint,_) in SOURCES.items()}
     source_meta["dataprivacy"]["hosts"].append("dataprivacy.com.br")
+    # The EU portal links to official institutions on subdomains of europa.eu.
+    source_meta["ue_news"]["hosts"].append("europa.eu")
+    source_meta["nic"]["hosts"].extend(["cetic.br","ix.br"])
+    source_meta["google_transparency"]["hosts"].append("transparencyreport.google.com")
+    for rule in publisher_provenance["rules"]:
+        source_meta[rule["id"]]=dict(rule)
     for row in rows:
         sid=row["source_id"]
         if sid not in source_meta and "scrapers" in row.get("corpora",[]):
             source_meta[sid]={"source":row["source"],"country":row.get("country","Não informada"),"region":row.get("region","Não informada"),"hosts":[urlsplit(row["url"]).hostname.removeprefix("www.")]}
     diagnostics=json.loads(Path(diagnostics_path).read_text()) if diagnostics_path and Path(diagnostics_path).exists() else previous.get("diagnostics",{})
     now=datetime.now(timezone.utc).isoformat(timespec="seconds")
-    payload={"documents":rows,"config":config,"source_meta":source_meta,"color_registry":previous.get("color_registry",{}),
-             "diagnostics":diagnostics,"metadata":dict(previous.get("metadata",{}),generated_at=now,as_of=now[:10],dashboard_version="3.0",
+    payload={"documents":rows,"config":config,"source_meta":source_meta,"publisher_provenance":publisher_provenance,"color_registry":previous.get("color_registry",{}),
+             "diagnostics":diagnostics,"metadata":dict(previous.get("metadata",{}),generated_at=now,as_of=now[:10],dashboard_version="4.0",
                  analysis_text="title",counts=stats,collection_generated_at=diagnostics.get("generated_at"))}
     encoded=json.dumps(payload,ensure_ascii=False,separators=(",",":")).replace("<",r"\u003c").replace(">",r"\u003e").replace("&",r"\u0026")
     template=(ROOT/"scripts/painel_atualizavel.html").read_text()

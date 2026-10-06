@@ -1,0 +1,26 @@
+{
+  "reviewed_at": "2026-10-06",
+  "criterion": "O publicador é a instituição, veículo ou repositório que disponibiliza a URL. Créditos editoriais e autores são preservados em campo separado. Âmbito é o alcance institucional do publicador; não classifica o assunto ou a nacionalidade dos autores.",
+  "rules": [
+    {"id":"anpd","hosts":["gov.br"],"path_prefix":"/anpd/","source":"ANPD · Agência Nacional de Proteção de Dados","country":"Brasil","region":"Mercosul","reference":"https://www.gov.br/anpd/pt-br"},
+    {"id":"urcdp","hosts":["gub.uy"],"path_prefix":"/unidad-reguladora-control-datos-personales/","source":"URCDP Uruguai","country":"Uruguai","region":"Mercosul","reference":"https://www.gub.uy/unidad-reguladora-control-datos-personales/"},
+    {"id":"agesic","hosts":["gub.uy"],"path_prefix":"/agencia-gobierno-electronico-sociedad-informacion-conocimiento/","source":"AGESIC Uruguai","country":"Uruguai","region":"Mercosul","reference":"https://www.gub.uy/agencia-gobierno-electronico-sociedad-informacion-conocimiento/"},
+    {"id":"folha","hosts":["www1.folha.uol.com.br"],"source":"Folha de S.Paulo","country":"Brasil","region":"Mercosul","reference":"https://www1.folha.uol.com.br/"},
+    {"id":"uol","hosts":["uol.com.br"],"source":"UOL / Tilt","country":"Brasil","region":"Mercosul","reference":"https://www.uol.com.br/tilt/"},
+    {"id":"unossc","hosts":["unsouthsouth.org"],"source":"ONU · UNOSSC","country":"Multilateral","region":"Global","reference":"https://unsouthsouth.org/about/"},
+    {"id":"eu_commission","hosts":["ec.europa.eu","commission.europa.eu"],"source":"Comissão Europeia","country":"União Europeia","region":"UE","reference":"https://commission.europa.eu/"},
+    {"id":"eu_parliament","hosts":["europarl.europa.eu"],"source":"Parlamento Europeu","country":"União Europeia","region":"UE","reference":"https://www.europarl.europa.eu/"},
+    {"id":"frontex","hosts":["frontex.europa.eu"],"source":"Frontex","country":"União Europeia","region":"UE","reference":"https://www.frontex.europa.eu/"},
+    {"id":"eur_lex","hosts":["eur-lex.europa.eu"],"source":"EUR-Lex · portal jurídico da União Europeia","country":"União Europeia","region":"UE","reference":"https://eur-lex.europa.eu/"},
+    {"id":"gw_regulatory","hosts":["regulatorystudies.columbian.gwu.edu"],"source":"GW Regulatory Studies Center","country":"Estados Unidos","region":"Global","reference":"https://regulatorystudies.columbian.gwu.edu/"},
+    {"id":"arxiv","hosts":["arxiv.org"],"source":"arXiv · repositório de preprints","country":"Internacional (repositório)","region":"Global","reference":"https://arxiv.org/about"},
+    {"id":"ustr","hosts":["ustr.gov"],"source":"Office of the United States Trade Representative (USTR)","country":"Estados Unidos","region":"Global","reference":"https://ustr.gov/about-us"},
+    {"id":"mercosur_official","hosts":["mercosur.int"],"source":"MERCOSUL · portal oficial","country":"Regional","region":"Mercosul","reference":"https://www.mercosur.int/"},
+    {"id":"oecd","hosts":["oecd.org"],"source":"OCDE","country":"Multilateral","region":"Global","reference":"https://www.oecd.org/en/about.html"},
+    {"id":"itamaraty","hosts":["itamaraty.gov.br"],"source":"Ministério das Relações Exteriores · Itamaraty","country":"Brasil","region":"Mercosul","reference":"https://www.gov.br/mre/pt-br"},
+    {"id":"south_centre","hosts":["southcentre.int"],"source":"South Centre","country":"Multilateral","region":"Global","reference":"https://www.southcentre.int/about-the-south-centre/"},
+    {"id":"researchgate","hosts":["researchgate.net"],"source":"ResearchGate · plataforma de pesquisa","country":"Internacional (plataforma)","region":"Global","reference":"https://www.researchgate.net/about"},
+    {"id":"cidob","hosts":["cidob.org"],"source":"CIDOB · Barcelona Centre for International Affairs","country":"Espanha","region":"UE","reference":"https://www.cidob.org/en"},
+    {"id":"lse_economia","hosts":["economia.lse.ac.uk"],"source":"Economía LACEA Journal · LSE Press","country":"Reino Unido","region":"Global","reference":"https://economia.lse.ac.uk/"}
+  ]
+}
