@@ -1,0 +1,8 @@
+date,count,coverage
+2026-10-02,4,covered
+2026-10-03,0,covered
+2026-10-04,0,covered
+2026-10-05,6,covered
+2026-10-06,18,covered
+2026-10-07,,not_covered
+2026-10-08,,not_covered
