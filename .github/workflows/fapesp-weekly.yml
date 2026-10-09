@@ -3,8 +3,10 @@ name: FAPESP weekly news and notebook diagnostics
 on:
   workflow_dispatch:
   schedule:
-    # Sexta-feira, 10:17 UTC (07:17 no horário de Brasília).
+    # Duas janelas na sexta: 07:17 e 08:47 no horário de Brasília.
+    # A segunda reduz a chance de perder a semana quando o GitHub descarta um disparo.
     - cron: "17 10 * * 5"
+    - cron: "47 11 * * 5"
   push:
     branches:
       - "main"
