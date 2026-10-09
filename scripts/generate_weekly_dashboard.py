@@ -20,10 +20,17 @@ def generate(archive: Path, report_file: Path, output: Path) -> dict:
     report = json.loads(report_file.read_text(encoding="utf-8"))
     diagnostics = []
     for source in report.get("sources", []):
+        coverage_note = source.get("coverage_note", "")
+        status = source.get("status", "unknown")
+        # A successful weekly RSS fetch does not establish historical coverage.
+        if status == "ok" and coverage_note:
+            status = "partial"
         diagnostics.append({"notebook": "workflow semanal: " + source["source_id"],
-                            "source_id": source["source_id"], "status": source.get("status", "unknown"),
+                            "source_id": source["source_id"], "status": status,
                             "records": source.get("seen", 0), "pages_ok": 0,
                             "pages_requested": 0,
+                            "method": source.get("method", ""),
+                            "coverage_note": coverage_note,
                             "errors": [{"error": source["error"]}] if source.get("error") else []})
     dashboard = build_dashboard(data, diagnostics, days=365)
     paths = export_results(data, diagnostics, dashboard, output, quality, embed_plotly_js=False)
