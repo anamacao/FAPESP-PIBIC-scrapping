@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-09T13:52:04.739497+00:00",
+  "generated_at": "2026-10-09T13:55:49.756308+00:00",
   "quality": {
     "input_records": 631,
     "valid": 631,
@@ -14,6 +14,8 @@
       "records": 488,
       "pages_ok": 0,
       "pages_requested": 0,
+      "method": "",
+      "coverage_note": "",
       "errors": []
     },
     {
@@ -23,15 +25,19 @@
       "records": 16,
       "pages_ok": 0,
       "pages_requested": 0,
+      "method": "",
+      "coverage_note": "",
       "errors": []
     },
     {
       "notebook": "workflow semanal: mercociudades",
       "source_id": "mercociudades",
-      "status": "ok",
+      "status": "partial",
       "records": 10,
       "pages_ok": 0,
       "pages_requested": 0,
+      "method": "official_rss_after_api_403",
+      "coverage_note": "Feed oficial com as últimas publicações; notícias anteriores ao item mais antigo não foram verificadas.",
       "errors": []
     },
     {
@@ -41,6 +47,8 @@
       "records": 12,
       "pages_ok": 0,
       "pages_requested": 0,
+      "method": "",
+      "coverage_note": "",
       "errors": []
     }
   ],
