@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-10-06T23:27:40+00:00",
-  "as_of": "2026-10-06",
-  "window_start": "2026-09-30",
+  "generated_at": "2026-10-09T13:52:07+00:00",
+  "as_of": "2026-10-09",
+  "window_start": "2026-10-03",
   "days": 7,
   "timezone": "America/Sao_Paulo",
   "analysis_text": "title",
@@ -10,32 +10,32 @@
   "inputs": {
     "scrapers": {
       "path": "/home/runner/work/FAPESP-PIBIC-scrapping/FAPESP-PIBIC-scrapping/data/news.csv",
-      "sha256": "34cfc14cb478821c78eb4c7c112c497de9878613e37ca80e048a82701242f3f3"
+      "sha256": "40af1c2e5ca289787e2f151fc4f4ce9a77c7cb747ec29092aa4d885d592efa9d"
     }
   },
   "corpus": {
     "scrapers": {
-      "input_rows": 611,
+      "input_rows": 631,
       "duplicates_removed": 0,
       "invalid_records": 0,
-      "documents": 611,
-      "candidates": 289,
-      "published_window": 42,
-      "candidates_window": 8,
-      "candidates_previous_window": 5,
+      "documents": 631,
+      "candidates": 293,
+      "published_window": 44,
+      "candidates_window": 7,
+      "candidates_previous_window": 6,
       "without_exact_date": 0,
       "future_publications": 0,
-      "candidates_without_axis": 111
+      "candidates_without_axis": 114
     }
   },
   "warnings": [
     "mercociudades: Feed oficial com as últimas publicações; notícias anteriores ao item mais antigo não foram verificadas.",
     "O catálogo da curadoria não foi fornecido: estas saídas cobrem somente as notícias dos scrapers."
   ],
-  "collection_generated_at": "2026-10-06T23:27:29+00:00",
+  "collection_generated_at": "2026-10-09T13:51:55+00:00",
   "method": "Correspondências lexicais com sinônimos; multilabel; URL canônica deduplicada por corpus; publicação distinta de primeira detecção.",
   "interactive_dashboard": "painel_interativo.html",
   "shortlist_count": 5,
-  "combined_unique_documents": 611,
-  "dashboard_sha256": "c76a8f010ae3b694073fcd5f3531b3f9d573098c3dde00c84bd33d5c8f3a4f02"
+  "combined_unique_documents": 631,
+  "dashboard_sha256": "819302e509782b8106424d3e0e447e73bbcbd75d397c543cc107d1e559fdeac1"
 }
