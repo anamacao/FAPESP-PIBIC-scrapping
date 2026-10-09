@@ -1,7 +1,8 @@
 {
-  "reviewed_at": "2026-10-06",
+  "reviewed_at": "2026-10-08",
   "criterion": "O publicador é a instituição, veículo ou repositório que disponibiliza a URL. Créditos editoriais e autores são preservados em campo separado. Âmbito é o alcance institucional do publicador; não classifica o assunto ou a nacionalidade dos autores.",
   "rules": [
+    {"id":"biblioteca_uy","hosts":["biblioteca.parlamento.gub.uy","px.parlamento.gub.uy","pxserver6.parlamento.gub.uy"],"source":"Biblioteca do Poder Legislativo do Uruguai","country":"Uruguai","region":"Mercosul","reference":"https://biblioteca.parlamento.gub.uy/"},
     {"id":"anpd","hosts":["gov.br"],"path_prefix":"/anpd/","source":"ANPD · Agência Nacional de Proteção de Dados","country":"Brasil","region":"Mercosul","reference":"https://www.gov.br/anpd/pt-br"},
     {"id":"urcdp","hosts":["gub.uy"],"path_prefix":"/unidad-reguladora-control-datos-personales/","source":"URCDP Uruguai","country":"Uruguai","region":"Mercosul","reference":"https://www.gub.uy/unidad-reguladora-control-datos-personales/"},
     {"id":"agesic","hosts":["gub.uy"],"path_prefix":"/agencia-gobierno-electronico-sociedad-informacion-conocimiento/","source":"AGESIC Uruguai","country":"Uruguai","region":"Mercosul","reference":"https://www.gub.uy/agencia-gobierno-electronico-sociedad-informacion-conocimiento/"},

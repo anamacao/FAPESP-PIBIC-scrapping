@@ -58,7 +58,34 @@ def canonical(value):
 
 
 def text(value):
-    return re.sub(r"\s+", " ", BeautifulSoup(str(value or ""), "html.parser").get_text(" ", strip=True)).strip()
+    # Repair before whitespace normalization: UTF-8 decoded as Latin-1 can
+    # contain NBSP as a continuation byte (e.g. à becomes Ã\u00a0).
+    return re.sub(r"\s+", " ", repair_encoding(BeautifulSoup(str(value or ""), "html.parser").get_text(" ", strip=True))).strip()
+
+
+def repair_encoding(value):
+    text = str(value or "")
+    for _ in range(3):
+        out, i, changed = [], 0, False
+        while i < len(text):
+            try:
+                lead = text[i].encode("cp1252")[0]
+            except UnicodeEncodeError:
+                lead = ord(text[i]) if ord(text[i]) <= 255 else 0
+            length = 2 if 194 <= lead <= 223 else 3 if 224 <= lead <= 239 else 4 if 240 <= lead <= 244 else 0
+            if length and i + length <= len(text):
+                chunk = text[i:i+length]
+                try:
+                    octets = bytes(ord(c) if ord(c) <= 255 else c.encode("cp1252")[0] for c in chunk)
+                    fixed = octets.decode("utf-8")
+                    out.append(fixed); i += length; changed = True; continue
+                except (UnicodeError, ValueError):
+                    pass
+            out.append(text[i]); i += 1
+        text = "".join(out)
+        if not changed:
+            break
+    return text
 
 
 def date_iso(raw):
@@ -108,8 +135,11 @@ def record(sid, title, date, url, summary="", category="", record_type=""):
 
 
 def wp(s, sid, endpoint, pages, report):
-    rows, total_pages = [], None
-    for page in range(1, pages + 1):
+    rows, total_pages, item_ids = [], None, set()
+    # Zero means follow the provider's pagination through the complete archive.
+    # Keep an explicit bound available for callers requesting a sample.
+    limit = pages or 1000
+    for page in range(1, limit + 1):
         if total_pages and page > total_pages:
             break
         try:
@@ -127,10 +157,17 @@ def wp(s, sid, endpoint, pages, report):
         report.update(site_total_pages=total_pages, site_total_records=r.headers.get("X-WP-Total"))
         report["pages_ok"] += 1
         for item in items:
+            item_ids.add(item.get("id") or item.get("link"))
             rows.append(record(sid, item.get("title", {}).get("rendered"), item.get("date"), item.get("link"),
                                item.get("excerpt", {}).get("rendered"), " | ".join(map(str, item.get("categories", [])))))
         report["coverage"] = "Todas as páginas informadas pela API" if total_pages and page >= total_pages else "Recorte paginado da API; histórico completo não confirmado"
+        report["coverage_complete"] = bool(total_pages and page >= total_pages)
+        report["site_items_collected"] = len(item_ids)
         if not items:
+            report["coverage_complete"] = True
+            break
+        if not total_pages and len(items) < 100:
+            report.update(coverage_complete=True, coverage="API paginada até a última página não vazia")
             break
         time.sleep(.2)
     return rows
@@ -147,13 +184,13 @@ def rss(s, sid, url, report):
         except (ValueError, TypeError):
             day = ""
         rows.append(record(sid, item.findtext("title"), day, item.findtext("link"), item.findtext("description")))
-    report.update(method="RSS oficial", coverage="Últimos itens do feed; não representa todo o histórico")
+    report.update(method="RSS oficial", coverage="Últimos itens do feed; não representa todo o histórico", coverage_complete=False)
     return rows
 
 
 def plone(s, sid, endpoint, pages, report):
     rows=[]
-    for page in range(pages):
+    for page in range(pages or 1000):
         try:
             data=fetch(s, endpoint, headers={"Accept":"application/json"}, params={"portal_type":"News Item",
                 "sort_on":"effective", "sort_order":"descending", "b_size":100, "b_start":page*100,
@@ -228,6 +265,8 @@ def listing(s, sid, endpoint, report, details=12):
         "cgi": "/noticia/", "senado_federal": "/noticias/materias/", "icn_argentina": "/noticias/",
         "icann": "/announcements/details/", "ue_news": "/news-and-events/news-and-stories/",
         "parlamento_uy": "/noticiasyeventos/noticias/"}
+    if sid == "parlamento_uy" and host_is_deputies(endpoint):
+        patterns[sid] = "/noticias/"
     rows, seen, remaining = [], set(), details
     host = urlsplit(endpoint).hostname.removeprefix("www.")
     for a in body.select("a[href]"):
@@ -269,7 +308,33 @@ def listing(s, sid, endpoint, report, details=12):
     return rows
 
 
-def collect_source(sid, pages=10):
+def host_is_deputies(url):
+    return (urlsplit(url).hostname or "").removeprefix("www.") == "diputados.gub.uy"
+
+
+def parliament_news(s, endpoint, report):
+    """Try official news channels only; library events are a different corpus."""
+    last_error = None
+    report["attempts"] = []
+    for candidate in [endpoint,
+                      "https://parlamento.gub.uy/noticiasyeventos/noticias/representantes",
+                      "https://www.diputados.gub.uy/noticias/"]:
+        try:
+            found = listing(s, "parlamento_uy", candidate, report)
+            report["attempts"].append({"endpoint":candidate,"status":"ok" if found else "empty"})
+            if found:
+                report.update(effective_endpoint=candidate, method="HTML · notícias legislativas oficiais")
+                return found
+        except (requests.RequestException, ValueError) as exc:
+            last_error = exc
+            report["attempts"].append({"endpoint":candidate,"status":"failed","error":str(exc)[:200]})
+    report["warnings"].append("Portais oficiais de notícias indisponíveis; eventos da Biblioteca não substituem notícias legislativas. O histórico permanece disponível.")
+    if last_error:
+        raise last_error
+    return []
+
+
+def collect_source(sid, pages=0):
     name, country, region, endpoint, method = SOURCES[sid]
     report = {"source_id": sid, "source": name, "country": country, "region": region, "endpoint": endpoint,
               "method": method, "pages_ok": 0, "detail_pages_ok": 0, "warnings": [], "errors": [],
@@ -283,8 +348,16 @@ def collect_source(sid, pages=10):
                 report["method"] = "API pública WordPress"
             except (requests.RequestException, ValueError) as exc:
                 report["warnings"].append("API indisponível: " + str(exc)[:180])
-                feed = urlunsplit((*urlsplit(endpoint)[:2], "/feed/", "", ""))
-                rows = rss(s, sid, feed, report)
+                # WordPress advertises this equivalent public REST route on
+                # sites whose /wp-json/ path is unavailable.
+                rest = urlunsplit((*urlsplit(endpoint)[:2], "/", "rest_route=/wp/v2/posts", ""))
+                try:
+                    rows = wp(s, sid, rest, pages, report)
+                    report.update(method="API pública WordPress · rota alternativa", effective_endpoint=rest)
+                except (requests.RequestException, ValueError) as alternate:
+                    report["warnings"].append("Rota REST alternativa indisponível: " + str(alternate)[:180])
+                    feed = urlunsplit((*urlsplit(endpoint)[:2], "/feed/", "", ""))
+                    rows = rss(s, sid, feed, report)
         elif method == "plone":
             rows = plone(s, sid, endpoint, pages, report)
         elif method == "nic":
@@ -298,12 +371,14 @@ def collect_source(sid, pages=10):
             title = soup.title.get_text(" ", strip=True) if soup.title else name
             rows = [record(sid, title, "", endpoint, record_type="Página institucional")]
             report.update(pages_ok=1, coverage="Página institucional acessível; nenhuma coleta de notícias confirmada")
+        elif sid == "parlamento_uy":
+            rows = parliament_news(s, endpoint, report)
         else:
             rows = listing(s, sid, endpoint, report)
         rows = [r for r in rows if r["title"] and r["url"]]
         rows = list({r["url"]: r for r in rows}.values())
         dated = sum(bool(r["published_date"]) for r in rows)
-        incomplete = bool(report["errors"]) or bool(report.get("site_total_pages") and report["site_total_pages"] > pages) or bool(report.get("site_total_records") and int(report["site_total_records"]) > len(rows))
+        incomplete = bool(report["errors"]) or report.get("coverage_complete") is False or bool(report.get("site_total_records") and int(report["site_total_records"]) > report.get("site_items_collected",len(rows)))
         report.update(records=len(rows), dated=dated, undated=len(rows)-dated,
                       status="reference_only" if method == "reference" else "ok" if dated and dated == len(rows) and not incomplete else "partial" if rows else "empty")
     except (requests.RequestException, ValueError, TypeError, KeyError, ET.ParseError) as exc:
@@ -315,7 +390,7 @@ def collect_source(sid, pages=10):
     return rows, report
 
 
-def collect_all(pages=10, workers=4):
+def collect_all(pages=0, workers=4):
     rows, reports = [], []
     with ThreadPoolExecutor(max_workers=min(4, max(1, workers))) as pool:
         futures = {pool.submit(collect_source, sid, pages): sid for sid in SOURCES}
@@ -332,7 +407,7 @@ def main():
     import csv
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, default=Path(__file__).resolve().parents[1]/"data/unified")
-    parser.add_argument("--pages", type=int, default=10)
+    parser.add_argument("--pages", type=int, default=0, help="Máximo de páginas da API; 0 percorre todas as páginas disponíveis")
     args = parser.parse_args()
     rows, reports = collect_all(args.pages)
     args.output.mkdir(parents=True, exist_ok=True)

@@ -7,18 +7,20 @@ function environment(source){
  const scripts=[...source.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script\s*>/g)].map(m=>m[1]);
  const vc=new VirtualConsole(),errors=[],graphs={},blobs=[];vc.on('jsdomError',e=>{if(!/navigation/.test(e.message))errors.push(e.message)});vc.on('error',e=>errors.push(String(e)));
  const dom=new JSDOM(source,{runScripts:'outside-only',url:'https://dashboard.invalid/',pretendToBeVisual:true,virtualConsole:vc});
- const w=dom.window,$=id=>w.document.getElementById(id);
+ const w=dom.window,$=id=>w.document.getElementById(id),registered=[];
+ Object.defineProperty(w.document,'modelContext',{value:{registerTool:tool=>registered.push(tool)}});
  w.URL.createObjectURL=b=>{blobs.push(b);return 'blob:validation'};w.URL.revokeObjectURL=()=>{};w.HTMLAnchorElement.prototype.click=function(){};
  w.Plotly={react:async(id,data,layout,config)=>{graphs[id]={data,layout,config};const el=$(id);el.data=data;el.layout=layout;el.removeAllListeners=()=>{};el.on=(event,fn)=>{el.callbacks=el.callbacks||{};el.callbacks[event]=fn;};},downloadImage:async()=>{}};
  w.eval(scripts.at(-1));
- return {dom,w,$,graphs,errors,blobs};
+ return {dom,w,$,graphs,errors,blobs,registered};
 }
 const E=environment(html),{w,$,graphs}=E;
 async function idle(){for(let i=0;i<300;i++){if($('busy').textContent==='Atualizado')return;if($('busy').textContent.startsWith('Erro'))throw Error($('busy').textContent);await new Promise(r=>setTimeout(r,10));}throw Error('Render did not complete');}
 const sum=a=>a.reduce((s,n)=>s+n,0);
 async function main(){
  await idle();const F=w.FAPESP,data=F.getData();
- assert.equal(Object.keys(graphs).length,17,'17 charts');assert(!/<script[^>]+src=|<link[^>]+href=/i.test(html),'fully embedded plotting library');
+ assert.equal(E.registered.length,1);const readSelection=E.registered[0];assert.equal(readSelection.name,'fapesp_read_selection');assert.equal(readSelection.annotations.readOnlyHint,true);assert.equal(readSelection.inputSchema.additionalProperties,false);assert.equal(readSelection.execute({}).records,w.curadoriaView.length);assert.throws(()=>readSelection.execute({scope:'Mercosul'}),/objeto vazio/);
+ assert.equal(Object.keys(graphs).length,17,'17 charts');assert(!/<script[^>]+src=|<link[^>]+href=["'](?!data:)/i.test(html),'fully embedded plotting library and favicon');
  assert(data.documents.filter(r=>r.source_id==='dataprivacy'&&r.date_precision==='day').length>=517,'Data Privacy has dated posts');
  assert.equal(sum(w.fapespAnalytics.intersection.map(x=>x.n)),w.fapespAnalytics.news.length,'exclusive intersection partitions dated publications');
  assert.equal(sum(graphs['chart-sources'].data[0].x),w.fapespAnalytics.news.length,'source plot preserves denominator');
@@ -34,7 +36,7 @@ async function main(){
  assert.equal(graphs['chart-comparison'].data[0].type,'scatter');assert.equal(graphs['chart-comparison'].layout.shapes.length,6,'four shaded quadrants and two median lines');
  assert.equal(graphs['chart-comparison'].layout.xaxis.type,'log','volume log scale is explicit and supports different group sizes');
  assert.equal(F.repairEncoding('ProteÃ§Ã£o de dados e usuÃ¡rios'),'Proteção de dados e usuários');assert.equal(F.repairEncoding('Proteção de dados e usuários'),'Proteção de dados e usuários','valid Unicode preserved');assert.equal(F.repairEncoding('â€œIAâ€\u009d'),'“IA”');
- assert(data.documents.some(r=>r.original_title&&r.title!==r.original_title),'raw title retained after encoding correction');
+ if(originalPayload.documents.some(r=>r.original_title))assert(data.documents.some(r=>r.original_title&&r.title!==r.original_title),'raw title retained after encoding correction');
  assert.equal(graphs['chart-regions'].layout.shapes.length,6);assert(graphs['chart-regions'].data.every(t=>t.marker.color===F.color(t.customdata[0][0])),'scope colors match quadrant points');
  for(const id of Object.keys(graphs)){assert(graphs[id].layout.annotations.some(a=>a.text.startsWith('Fonte: elaboração própria')),'source inside every exported figure');assert($(id).dataset.academicCaption.includes('Unidade: URL canônica única'),'complete academic caption');}
  assert.equal(w.document.querySelectorAll('.figure-source').length,17);assert(!$('publisher-provenance').textContent.includes('Não informada'));

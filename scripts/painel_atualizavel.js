@@ -86,8 +86,10 @@ function parseCSV(text) {
 function normalizeRecord(raw, filename="importado") {
  const fields = Object.fromEntries(Object.entries(raw).map(([k,v])=>[norm(k).replace(/ /g,"_"),v]));
  const get=(...names)=>{for(const n of names)if(fields[n]!==undefined&&fields[n]!=="")return fields[n];return "";};
- const suppliedTitle=String(get("title","titulo","manchete","news_title")),title=repairEncoding(suppliedTitle).replace(/\s+/g," ").trim();
- const url=safeURL(get("url","link","permalink","href"));if(!title||!url)return null;
+ const suppliedTitle=String(get("title","titulo","manchete","news_title"));
+ const url=safeURL(get("url","link","permalink","href"));
+ const correction=(D.record_corrections||[]).find(r=>safeURL(r.url)===url&&r.field==="title"&&r.original===suppliedTitle);
+ const title=repairEncoding(correction?correction.corrected:suppliedTitle).replace(/\s+/g," ").trim();if(!title||!url)return null;
  const suppliedDate=get("published_date","data","date","fecha","data_publicacao","data_de_publicacao","published","raw_date");
  const [published_date,date_precision]=parseDate(suppliedDate);
  const host=new URL(url).hostname.replace(/^www\./,"");
@@ -106,7 +108,7 @@ function normalizeRecord(raw, filename="importado") {
  const registrationMismatch=((meta.hosts||[]).length && !(meta.hosts||[]).some(hostMatches))||(meta.path_prefix&&!new URL(url).pathname.startsWith(meta.path_prefix));
  const pending=[source,country,region].some(v=>missing(v)||/^(pendente|dominio em revisao)/.test(norm(v)))||registrationMismatch;
  const source_basis=rule?"Cadastro editorial: domínio e caminho da URL":meta.source?"Cadastro do coletor e domínio da URL":"Metadados declarados no arquivo importado";
- const type=String(get("record_type","tipo_registro")||(manually_selected?"Fonte curada":published_date?((sid==="dataprivacy")?"Publicação institucional":"Notícia/comunicado"):"Registro sem data"));
+ const type=sid==="biblioteca_uy"?"Evento da Biblioteca":String(get("record_type","tipo_registro")||(manually_selected?"Fonte curada":published_date?((sid==="dataprivacy")?"Publicação institucional":"Notícia/comunicado"):"Registro sem data"));
  const suppliedSummary=String(get("summary","resumo","descricao","abstract")||""),summary=repairEncoding(suppliedSummary);
  return {...raw,title,original_title:raw.original_title||(title!==suppliedTitle?suppliedTitle:""),original_summary:raw.original_summary||(summary!==suppliedSummary?suppliedSummary:""),url,canonical_url:url,source_id:sid,collector_id:raw.collector_id||get("source_id"),source,country,region,source_status:pending?"pending":"identified",source_basis,source_reference:safeURL(meta.reference)||url,
   prior_source:raw.prior_source||(prior_source&&prior_source!==source?prior_source:""),catalog_credit:raw.catalog_credit||raw.catalog_source||(manually_selected?prior_source:""),
@@ -351,5 +353,10 @@ const sourceRemap=new Map();D.documents=D.documents.map(r=>{const result=normali
 for(const field of Object.keys(oldOptions)){if(wasAll[field])filters[field]=values(field);else if(field==="source"&&filters.source)filters.source=unique(filters.source.map(name=>sourceRemap.get(name)||name));}
 classify(D.documents);buildFilters();buildSeries();metadata();message("Base incorporada pronta. Para atualizá-la, importe arquivos dos Colabs ou busque a coleta do GitHub. Depois salve este HTML.");
 window.FAPESP={parseCSV,parseDate,normalizeRecord,mergeRecords,importFiles,decodeJSON,selected,color,serializeHTML,saveState,analyticalCSV,render,reset,setFilter:(field,items)=>{filters[field]=items;buildFilters();return render();},repairEncoding,publisherReady,analyticalPublication,quadrantModel,median,getData:()=>D,getFilters:()=>filters};
+// Optional page-scoped access to the same selection shown in the interface.
+if(document.modelContext?.registerTool){
+ const lifecycle=new AbortController();window.addEventListener("pagehide",()=>lifecycle.abort(),{once:true});
+ try{Promise.resolve(document.modelContext.registerTool({name:"fapesp_read_selection",title:"Consultar seleção FAPESP",description:"Ler contagens e filtros da seleção atual do painel, com o número de publicações elegíveis e registros pendentes.",inputSchema:{type:"object",properties:{},additionalProperties:false},annotations:{readOnlyHint:true,untrustedContentHint:true},execute(input){if(!input||typeof input!=="object"||Array.isArray(input)||Object.keys(input).length)throw Error("Use um objeto vazio para consultar a seleção atual.");const rows=selected();return {records:rows.length,eligible_publications:rows.filter(analyticalPublication).length,pending_publishers:rows.filter(r=>!publisherReady(r)).length,scopes:count(rows,"region"),publishers:count(rows,"source"),filters:JSON.parse(JSON.stringify(filters)),collection_generated_at:D.diagnostics?.generated_at};}},{signal:lifecycle.signal})).catch(()=>{});}catch(_){}
+}
 let resizeTimer;window.addEventListener("resize",()=>{clearTimeout(resizeTimer);resizeTimer=setTimeout(render,250);});
 render();

@@ -64,11 +64,13 @@ O eixo de volume dos quadrantes permite escala logarítmica ou linear; coordenad
 Para atualizar no próprio painel, importe CSV/JSON dos Colabs ou use **Atualizar coleta do GitHub**. **Salvar HTML atualizado** incorpora a base, as cores e os filtros no arquivo baixado. Os modos de importação permitem acrescentar URLs, substituir fontes ou substituir o scraping preservando o catálogo curado. Falha de rede não apaga a base. O navegador atualiza o painel a partir de dados coletados; a coleta é executada pelo Python/Colab/GitHub Actions.
 
 ```bash
-python scripts/source_collectors.py --pages 10
+python scripts/source_collectors.py --pages 0
 python scripts/build_updateable_dashboard.py
 ```
 
-O registro público verifica 21 fontes dos notebooks originais. Inclui Data Privacy Brasil (API pública com datas e resumos), ANPD (API Plone), Câmara, EDPB, CGI.br e ICN, com adaptação para as mudanças dos portais. O diagnóstico distingue coleta com datas, cobertura parcial, falhas e referências institucionais. Há fontes com limite de páginas; o histórico institucional completo não é presumido. Publicações da API Data Privacy têm tipo próprio porque o conjunto inclui diferentes formatos, além de notícias. O Parlamento uruguaio retornou HTTP 403 na rodada de 06/10/2026; eventos históricos da Biblioteca não são classificados como notícias.
+O registro público verifica 21 fontes dos notebooks originais. `--pages 0` segue todas as páginas disponíveis das APIs; um número positivo limita a coleta. Em 08/10/2026, as APIs de MITIC Paraguai, OBSERVACOM e Mercociudades tiveram a paginação completa conferida. Contagens de itens da API e de URLs únicas são registradas separadamente porque há permalinks repetidos. O diagnóstico distingue coleta com datas, cobertura parcial, falhas e referências institucionais. As listagens HTML continuam com seu recorte explicitado; o histórico institucional completo não é presumido para essas fontes. Publicações da API Data Privacy têm tipo próprio porque o conjunto inclui diferentes formatos. Os três canais oficiais de notícias do Parlamento uruguaio continuaram indisponíveis (403/502); eventos da Biblioteca do Poder Legislativo têm publicador e tipo próprios e ficam fora das comparações de notícias.
+
+As quatro correções de títulos antigos do CGI.br foram verificadas nos metadados das páginas oficiais e registradas em `config/record_corrections.json`. A correção de codificação agora precede a normalização de espaços, preservando acentos e os textos originais para auditoria. A base pública cumulativa, preservando também a atualização automática de 09/10/2026, contém 12.971 URLs, com 519 publicações datadas do Data Privacy Brasil. O catálogo pessoal é preservado no painel individual.
 
 A rotina semanal gera `data/unified/public_records.csv`, `data/unified/diagnostico.json` e o HTML. Os CSVs são cumulativos; erros não removem dados anteriores. O Colab unificado usa o mesmo registro e gera o mesmo HTML. Coletores personalizados do Drive podem ser acrescentados opcionalmente; notebooks antigos com células de banco ou navegador têm adaptadores sem executar o setup.
 

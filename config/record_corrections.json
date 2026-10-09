@@ -1,0 +1,40 @@
+{
+  "corrections": [
+    {
+      "url": "https://cgi.br/noticia/releases/plataformas-da-internet-sao-o-principal-meio-de-acesso-a-informacao-entre-brasileiros-e-superam-radio-e-tv-aponta-nova-pesquisa",
+      "field": "title",
+      "original": "Plataformas da Internet são o principal meio de acesso Ã informação entre brasileiros, e superam rádio e TV, aponta nova pesquisa",
+      "corrected": "Plataformas da Internet são o principal meio de acesso à informação entre brasileiros, e superam rádio e TV, aponta nova pesquisa ",
+      "reference": "https://cgi.br/noticia/releases/plataformas-da-internet-sao-o-principal-meio-de-acesso-a-informacao-entre-brasileiros-e-superam-radio-e-tv-aponta-nova-pesquisa",
+      "checked_at": "2026-10-08",
+      "basis": "Título nos metadados og:title da página oficial"
+    },
+    {
+      "url": "https://cgi.br/noticia/notas/especialistas-associam-regulacao-da-ia-e-de-plataformas-digitais-a-soberania-nacional",
+      "field": "title",
+      "original": "Especialistas associam regulação da IA e de plataformas digitais Ã soberania nacional",
+      "corrected": "Especialistas associam regulação da IA e de plataformas digitais à soberania nacional",
+      "reference": "https://cgi.br/noticia/notas/especialistas-associam-regulacao-da-ia-e-de-plataformas-digitais-a-soberania-nacional",
+      "checked_at": "2026-10-08",
+      "basis": "Título nos metadados og:title da página oficial"
+    },
+    {
+      "url": "https://cgi.br/noticia/releases/cgi-br-envia-recomendacoes-a-anpd-para-aprimorar-a-aplicacao-do-eca-digital",
+      "field": "title",
+      "original": "CGI.br envia recomendações Ã ANPD para aprimorar a aplicação do ECA Digital",
+      "corrected": "CGI.br envia recomendações à ANPD para aprimorar a aplicação do ECA Digital",
+      "reference": "https://cgi.br/noticia/releases/cgi-br-envia-recomendacoes-a-anpd-para-aprimorar-a-aplicacao-do-eca-digital",
+      "checked_at": "2026-10-08",
+      "basis": "Título nos metadados og:title da página oficial"
+    },
+    {
+      "url": "https://cgi.br/noticia/releases/cgi-br-e-nic-br-abrem-inscricoes-para-17-seminario-de-protecao-a-privacidade-e-para-o-3-seminario-do-obia",
+      "field": "title",
+      "original": "CGI.br e NIC.br abrem inscrições para 17º Seminário de Proteção Ã Privacidade e para o 3º Seminário do OBIA",
+      "corrected": "CGI.br e NIC.br abrem inscrições para 17º Seminário de Proteção à Privacidade e para o 3º Seminário do OBIA",
+      "reference": "https://cgi.br/noticia/releases/cgi-br-e-nic-br-abrem-inscricoes-para-17-seminario-de-protecao-a-privacidade-e-para-o-3-seminario-do-obia",
+      "checked_at": "2026-10-08",
+      "basis": "Título nos metadados og:title da página oficial"
+    }
+  ]
+}

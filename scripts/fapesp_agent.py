@@ -193,10 +193,10 @@ def prepare_collector(item: dict) -> dict:
     if sid and not has_collect:
         name, _, _, endpoint, _ = SOURCES[sid]
         def adapted(source_id, cfg, delay=.25):
-            rows, report = collect_source(source_id, pages=cfg.get("pages", 10))
-            report["pages_requested"] = cfg.get("pages", 10)
+            rows, report = collect_source(source_id, pages=cfg.get("pages", 0))
+            report["pages_requested"] = cfg.get("pages", 0)
             return rows, report
-        cfg = {"name": name, "url": endpoint, "pages": 10}
+        cfg = {"name": name, "url": endpoint, "pages": 0}
         return {"item": item, "scope": {"collect": adapted}, "source_id": sid,
                 "configs": [cfg], "signature": ((endpoint, ()),)}
     # dataclass checks __module__ in sys.modules while Record is defined.
@@ -221,7 +221,8 @@ def collect_one(prepared: dict, max_pages: int | None = None) -> tuple[list[dict
     for original in prepared["configs"]:
         cfg = dict(original)
         if max_pages is not None:
-            cfg["pages"] = min(max_pages, int(cfg.get("pages", 1)))
+            prior_limit = int(cfg.get("pages", 0))
+            cfg["pages"] = min(max_pages, prior_limit) if prior_limit else max_pages
         try:
             rows, result = scope["collect"](prepared["source_id"], cfg, delay=0.25)
         except Exception as exc:
@@ -296,7 +297,7 @@ def collect_drive(notebooks: list[dict], max_pages: int | None = None,
     return rows, sorted(diagnostics, key=lambda d: d["notebook"])
 
 
-def collect_public_sources(max_pages: int = 10, workers: int = 3):
+def collect_public_sources(max_pages: int = 0, workers: int = 3):
     """Collect all registered original institutions, without Drive setup cells."""
     from source_collectors import collect_all
     rows, reports = collect_all(pages=max_pages, workers=workers)

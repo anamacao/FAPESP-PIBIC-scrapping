@@ -13,7 +13,7 @@ from urllib.parse import urlsplit
 
 from plotly.offline import get_plotlyjs
 from curadoria_agent import load_config, prepare, read_catalog
-from source_collectors import SOURCES, canonical
+from source_collectors import SOURCES, canonical, repair_encoding
 
 ROOT=Path(__file__).resolve().parents[1]
 
@@ -25,6 +25,8 @@ def build(csv_path, output, diagnostics_path=None, base_json=None, catalog=None)
     config["axes"]={k:v for k,v in config["axes"].items()}
     documents=[]
     previous={}
+    corrections_path = ROOT/"config/record_corrections.json"
+    corrections = json.loads(corrections_path.read_text()).get("corrections", []) if corrections_path.exists() else []
     if base_json:
         previous=json.loads(Path(base_json).read_text(encoding="utf-8"))
         documents=previous.get("documents",[])
@@ -40,6 +42,11 @@ def build(csv_path, output, diagnostics_path=None, base_json=None, catalog=None)
             continue
         old=merged.get(url,{})
         row=dict(old,**raw)
+        for field in ("title", "summary"):
+            old_text = old.get(field, "")
+            if old_text and old_text != raw.get(field) and (repair_encoding(old_text) != old_text or
+                    any(c["field"] == field and c["original"] == old_text and canonical(c["url"]) == url for c in corrections)):
+                row.setdefault("original_"+field, old_text)
         row.update(url=url,source=meta[0],country=raw.get("country") or meta[1],region=raw.get("region") or meta[2],
                    manually_selected=old.get("manually_selected",False),corpus="scrapers",
                    corpora=sorted(set(old.get("corpora",[]))|{"scrapers"}),
@@ -62,6 +69,18 @@ def build(csv_path, output, diagnostics_path=None, base_json=None, catalog=None)
                                  corpora=["catalogo"],input_snapshots=["Catálogo curado"])
     publisher_provenance=json.loads((ROOT/"config/publisher_provenance.json").read_text())
     for row in merged.values():
+        for correction in corrections:
+            field = correction["field"]
+            if canonical(correction["url"]) == row["url"] and row.get(field) == correction["original"]:
+                row.setdefault("original_"+field, row[field])
+                row[field] = correction["corrected"]
+                row.setdefault("metadata_corrections", []).append(correction)
+        for field in ("title", "summary"):
+            prior_text = row.get(field, "")
+            corrected = repair_encoding(prior_text)
+            if prior_text != corrected:
+                row.setdefault("original_" + field, prior_text)
+                row[field] = corrected
         parts=urlsplit(row["url"])
         host=(parts.hostname or "").removeprefix("www.")
         rule=next((r for r in publisher_provenance["rules"]
@@ -77,6 +96,8 @@ def build(csv_path, output, diagnostics_path=None, base_json=None, catalog=None)
                 row.setdefault("catalog_credit",row.get("catalog_source") or prior)
             row.update(source_id=rule["id"],source=rule["source"],country=rule["country"],region=rule["region"],
                        source_basis="Cadastro editorial: domínio e caminho da URL",source_reference=rule["reference"])
+            if rule["id"] == "biblioteca_uy":
+                row["record_type"] = "Evento da Biblioteca"
         config["source_names"][row["source_id"]]=row.get("source") or config["source_names"].get(row["source_id"],row["source_id"])
     rows,stats=prepare(list(merged.values()),config)
     source_meta={sid:{"source":name,"country":country,"region":region,"hosts":[urlsplit(endpoint).hostname.removeprefix("www.")]} for sid,(name,country,region,endpoint,_) in SOURCES.items()}
@@ -93,8 +114,12 @@ def build(csv_path, output, diagnostics_path=None, base_json=None, catalog=None)
             source_meta[sid]={"source":row["source"],"country":row.get("country","Não informada"),"region":row.get("region","Não informada"),"hosts":[urlsplit(row["url"]).hostname.removeprefix("www.")]}
     diagnostics=json.loads(Path(diagnostics_path).read_text()) if diagnostics_path and Path(diagnostics_path).exists() else previous.get("diagnostics",{})
     now=datetime.now(timezone.utc).isoformat(timespec="seconds")
-    payload={"documents":rows,"config":config,"source_meta":source_meta,"publisher_provenance":publisher_provenance,"color_registry":previous.get("color_registry",{}),
-             "diagnostics":diagnostics,"metadata":dict(previous.get("metadata",{}),generated_at=now,as_of=now[:10],dashboard_version="4.0",
+    # Old collection caveats must not survive as if they described this run.
+    metadata = dict(previous.get("metadata",{}))
+    if diagnostics_path and Path(diagnostics_path).exists():
+        metadata.pop("warnings", None)
+    payload={"documents":rows,"config":config,"source_meta":source_meta,"publisher_provenance":publisher_provenance,"record_corrections":corrections,"color_registry":previous.get("color_registry",{}),
+             "diagnostics":diagnostics,"metadata":dict(metadata,generated_at=now,as_of=now[:10],dashboard_version="4.1",
                  analysis_text="title",counts=stats,collection_generated_at=diagnostics.get("generated_at"))}
     encoded=json.dumps(payload,ensure_ascii=False,separators=(",",":")).replace("<",r"\u003c").replace(">",r"\u003e").replace("&",r"\u0026")
     template=(ROOT/"scripts/painel_atualizavel.html").read_text()
