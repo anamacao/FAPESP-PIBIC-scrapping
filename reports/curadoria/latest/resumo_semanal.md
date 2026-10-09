@@ -5,7 +5,7 @@ Escopo textual: title. Regras lexicais editáveis; sem API de IA.
 
 ## Base e cobertura
 
-- scrapers: 631 registros; 44 publicações datadas na janela; 7 candidatas lexicais na janela.
+- scrapers: 635 registros; 48 publicações datadas na janela; 9 candidatas lexicais na janela.
 
 ## Até cinco publicações para leitura
 
@@ -16,24 +16,24 @@ Ordem: termos (até 5 pontos), eixos (2 por eixo, até 6), seleção prévia no 
    - Fonte: https://www.nic.br/noticia/na-midia/ia-e-i-deepfakes-i-criam-nova-ameaca-digital-para-as-eleicoes-no-brasil-e-dificultam-combate-a-desinformacao/
    - Critério: Termos identificados: Inteligência artificial, Moderação. Eixos: IA e proteção de dados.
 
-2. Uso ético da IA é tema de guia lançado pela Auditoria do Senado
+2. IA avança nas pequenas empresas e cuidado com dados de clientes ganha peso
+   - Publicação: 2026-10-09 · NIC.br
+   - Fonte: https://www.nic.br/noticia/na-midia/ia-avanca-nas-pequenas-empresas-e-cuidado-com-dados-de-clientes-ganha-peso/
+   - Critério: Termos identificados: Inteligência artificial. Eixos: IA e proteção de dados.
+
+3. Uso ético da IA é tema de guia lançado pela Auditoria do Senado
    - Publicação: 2026-10-08 · Senado Federal
    - Fonte: https://www12.senado.leg.br/noticias/materias/2026/10/08/uso-etico-da-ia-e-tema-de-guia-lancado-pela-auditoria-do-senado
    - Critério: Termos identificados: Inteligência artificial. Eixos: IA e proteção de dados.
 
-3. IA pode ser o maior instrumento de igualdade já criado ou a pior fonte de injustiça
+4. IA pode ser o maior instrumento de igualdade já criado ou a pior fonte de injustiça
    - Publicação: 2026-10-05 · NIC.br
    - Fonte: https://www.nic.br/noticia/na-midia/a-inteligencia-artificial-pode-ser-o-maior-instrumento-de-igualdade-ja-criado-ou-a-pior-fonte-de-injustica/
    - Critério: Termos identificados: Inteligência artificial. Eixos: IA e proteção de dados.
 
-4. Projeto usa White Space para levar Internet de baixo custo
-   - Publicação: 2026-10-07 · NIC.br
-   - Fonte: https://www.nic.br/noticia/na-midia/projeto-usa-white-space-para-levar-internet-de-baixo-custo/
-   - Critério: Termos identificados: Internet. Eixos: revisão temática necessária.
-
-5. Projeto brasileiro usa canais de TV sem sinal para levar Internet a regiões remotas
-   - Publicação: 2026-10-07 · NIC.br
-   - Fonte: https://www.nic.br/noticia/na-midia/projeto-brasileiro-usa-canais-de-tv-sem-sinal-para-levar-internet-a-regioes-remotas/
+5. Internet rural no Brasil: projeto revoluciona com tecnologia capaz de entregar alta capacidade
+   - Publicação: 2026-10-09 · NIC.br
+   - Fonte: https://www.nic.br/noticia/na-midia/internet-rural-no-brasil-universidade-revoluciona-com-tecnologia-capaz-de-entregar-alta-velocidade-e-manter-enlaces-estaveis/
    - Critério: Termos identificados: Internet. Eixos: revisão temática necessária.
 
 
