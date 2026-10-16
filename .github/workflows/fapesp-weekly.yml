@@ -35,6 +35,8 @@ on:
       - "requirements-analytics.txt"
       - "data/curadoria/Catalogo_de_fontes_FAPESP.md"
       - ".github/verified-data/**"
+      # Recolete quando a síntese semanal for publicada antes do cron atrasado.
+      - "reports/weekly_news_*.csv"
 
 permissions:
   contents: write
