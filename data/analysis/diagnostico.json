@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-10-09T17:02:07.127440+00:00",
+  "generated_at": "2026-10-16T13:43:17.187836+00:00",
   "quality": {
-    "input_records": 635,
-    "valid": 635,
-    "unique": 635,
+    "input_records": 657,
+    "valid": 657,
+    "unique": 657,
     "duplicates": 0
   },
   "sources": [
@@ -44,7 +44,7 @@
       "notebook": "workflow semanal: senado_federal",
       "source_id": "senado_federal",
       "status": "ok",
-      "records": 11,
+      "records": 9,
       "pages_ok": 0,
       "pages_requested": 0,
       "method": "",

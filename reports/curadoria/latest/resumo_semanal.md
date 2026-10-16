@@ -1,39 +1,34 @@
 # Curadoria FAPESP — resumo automático
 
-Janela: 2026-10-03 a 2026-10-09 (America/Sao_Paulo).
+Janela: 2026-10-10 a 2026-10-16 (America/Sao_Paulo).
 Escopo textual: title. Regras lexicais editáveis; sem API de IA.
 
 ## Base e cobertura
 
-- scrapers: 635 registros; 48 publicações datadas na janela; 9 candidatas lexicais na janela.
+- scrapers: 657 registros; 21 publicações datadas na janela; 4 candidatas lexicais na janela.
 
 ## Até cinco publicações para leitura
 
 Ordem: termos (até 5 pontos), eixos (2 por eixo, até 6), seleção prévia no catálogo (3) e diversidade de eixos (2 por eixo ainda não coberto). A pontuação orienta a leitura.
 
-1. IA e deepfakes criam nova ameaça digital para as eleições no Brasil e dificultam combate à desinformação
-   - Publicação: 2026-10-05 · NIC.br
-   - Fonte: https://www.nic.br/noticia/na-midia/ia-e-i-deepfakes-i-criam-nova-ameaca-digital-para-as-eleicoes-no-brasil-e-dificultam-combate-a-desinformacao/
-   - Critério: Termos identificados: Inteligência artificial, Moderação. Eixos: IA e proteção de dados.
+1. EDPB publishes statement on the data protection challenges of smart glasses
+   - Publicação: 2026-10-13 · EDPB
+   - Fonte: https://www.edpb.europa.eu/news/edpb-publishes-statement-on-the-data-protection-challenges-of-smart-glasses_en
+   - Critério: Termos identificados: Proteção de dados, EDPB. Eixos: GDPR/LGPD e proteção de dados.
 
-2. IA avança nas pequenas empresas e cuidado com dados de clientes ganha peso
-   - Publicação: 2026-10-09 · NIC.br
-   - Fonte: https://www.nic.br/noticia/na-midia/ia-avanca-nas-pequenas-empresas-e-cuidado-com-dados-de-clientes-ganha-peso/
-   - Critério: Termos identificados: Inteligência artificial. Eixos: IA e proteção de dados.
+2. Brasil atinge recorde de 6 milhões de domínios ".br" na Internet
+   - Publicação: 2026-10-15 · NIC.br
+   - Fonte: https://www.nic.br/noticia/na-midia/brasil-atinge-recorde-de-6-milhoes-de-dominios-br-na-internet/
+   - Critério: Termos identificados: Internet. Eixos: revisão temática necessária.
 
-3. Uso ético da IA é tema de guia lançado pela Auditoria do Senado
-   - Publicação: 2026-10-08 · Senado Federal
-   - Fonte: https://www12.senado.leg.br/noticias/materias/2026/10/08/uso-etico-da-ia-e-tema-de-guia-lancado-pela-auditoria-do-senado
-   - Critério: Termos identificados: Inteligência artificial. Eixos: IA e proteção de dados.
+3. Internet rural chega a 115 Mbps em testes com frequências de TV
+   - Publicação: 2026-10-13 · NIC.br
+   - Fonte: https://www.nic.br/noticia/na-midia/internet-rural-chega-a-115-mbps-em-testes-com-frequencias-de-tv/
+   - Critério: Termos identificados: Internet. Eixos: revisão temática necessária.
 
-4. IA pode ser o maior instrumento de igualdade já criado ou a pior fonte de injustiça
-   - Publicação: 2026-10-05 · NIC.br
-   - Fonte: https://www.nic.br/noticia/na-midia/a-inteligencia-artificial-pode-ser-o-maior-instrumento-de-igualdade-ja-criado-ou-a-pior-fonte-de-injustica/
-   - Critério: Termos identificados: Inteligência artificial. Eixos: IA e proteção de dados.
-
-5. Internet rural no Brasil: projeto revoluciona com tecnologia capaz de entregar alta capacidade
-   - Publicação: 2026-10-09 · NIC.br
-   - Fonte: https://www.nic.br/noticia/na-midia/internet-rural-no-brasil-universidade-revoluciona-com-tecnologia-capaz-de-entregar-alta-velocidade-e-manter-enlaces-estaveis/
+4. Como canais de TV podem levar Internet aonde ela não chega
+   - Publicação: 2026-10-13 · NIC.br
+   - Fonte: https://www.nic.br/noticia/na-midia/como-canais-de-tv-podem-levar-internet-aonde-ela-nao-chega/
    - Critério: Termos identificados: Internet. Eixos: revisão temática necessária.
 
 
