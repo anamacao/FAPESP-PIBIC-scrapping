@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">Coleta semanal de notícias, 9 a 15 de outubro de 2026</title>
+  <desc id="desc">Cinco publicações com data válida na janela, todas em 9 de outubro: três do NIC.br e duas do Senado Federal. A base não teve atualização após 9 de outubro, portanto 10 a 15 de outubro aparecem como sem cobertura, não como zero.</desc>
+  <rect width="1200" height="720" fill="#f7f8fa"/>
+  <text x="60" y="58" font-family="Arial, sans-serif" font-size="30" font-weight="700" fill="#17233c">Coleta semanal de notícias</text>
+  <text x="60" y="90" font-family="Arial, sans-serif" font-size="17" fill="#536079">published_date válida · 09–15 out. 2026 · total observado: 5</text>
+
+  <rect x="60" y="130" width="500" height="455" rx="18" fill="#fff" stroke="#d8dee9"/>
+  <text x="90" y="175" font-family="Arial, sans-serif" font-size="21" font-weight="700" fill="#17233c">Por fonte</text>
+  <line x1="180" y1="515" x2="515" y2="515" stroke="#9ba7b8"/>
+  <line x1="180" y1="230" x2="180" y2="515" stroke="#9ba7b8"/>
+  <line x1="180" y1="420" x2="515" y2="420" stroke="#e4e8ef"/>
+  <line x1="180" y1="325" x2="515" y2="325" stroke="#e4e8ef"/>
+  <line x1="180" y1="230" x2="515" y2="230" stroke="#e4e8ef"/>
+  <text x="160" y="520" text-anchor="end" font-family="Arial" font-size="14" fill="#536079">0</text>
+  <text x="160" y="425" text-anchor="end" font-family="Arial" font-size="14" fill="#536079">1</text>
+  <text x="160" y="330" text-anchor="end" font-family="Arial" font-size="14" fill="#536079">2</text>
+  <text x="160" y="235" text-anchor="end" font-family="Arial" font-size="14" fill="#536079">3</text>
+  <rect x="230" y="230" width="90" height="285" rx="8" fill="#2864dc"/>
+  <text x="275" y="215" text-anchor="middle" font-family="Arial" font-size="20" font-weight="700" fill="#17233c">3</text>
+  <text x="275" y="545" text-anchor="middle" font-family="Arial" font-size="15" fill="#37445c">NIC.br</text>
+  <rect x="380" y="325" width="90" height="190" rx="8" fill="#20a486"/>
+  <text x="425" y="310" text-anchor="middle" font-family="Arial" font-size="20" font-weight="700" fill="#17233c">2</text>
+  <text x="425" y="545" text-anchor="middle" font-family="Arial" font-size="15" fill="#37445c">Senado</text>
+
+  <rect x="590" y="130" width="550" height="455" rx="18" fill="#fff" stroke="#d8dee9"/>
+  <text x="620" y="175" font-family="Arial, sans-serif" font-size="21" font-weight="700" fill="#17233c">Por dia</text>
+  <line x1="650" y1="515" x2="1090" y2="515" stroke="#9ba7b8"/>
+  <line x1="650" y1="230" x2="650" y2="515" stroke="#9ba7b8"/>
+  <line x1="650" y1="230" x2="1090" y2="230" stroke="#e4e8ef"/>
+  <path d="M680 230" stroke="#2864dc" stroke-width="4" fill="none"/>
+  <circle cx="680" cy="230" r="9" fill="#2864dc"/>
+  <text x="680" y="210" text-anchor="middle" font-family="Arial" font-size="20" font-weight="700" fill="#17233c">5</text>
+  <text x="680" y="545" text-anchor="middle" font-family="Arial" font-size="14" fill="#37445c">09</text>
+  <rect x="725" y="205" width="350" height="285" rx="10" fill="#eef1f5" stroke="#b5bfcd" stroke-dasharray="8 6"/>
+  <text x="900" y="330" text-anchor="middle" font-family="Arial" font-size="20" font-weight="700" fill="#536079">Sem cobertura</text>
+  <text x="900" y="362" text-anchor="middle" font-family="Arial" font-size="16" fill="#68758a">10–15 out.</text>
+  <text x="900" y="393" text-anchor="middle" font-family="Arial" font-size="14" fill="#68758a">não equivale a zero notícias</text>
+  <text x="755" y="545" text-anchor="middle" font-family="Arial" font-size="14" fill="#8b96a8">10</text>
+  <text x="815" y="545" text-anchor="middle" font-family="Arial" font-size="14" fill="#8b96a8">11</text>
+  <text x="875" y="545" text-anchor="middle" font-family="Arial" font-size="14" fill="#8b96a8">12</text>
+  <text x="935" y="545" text-anchor="middle" font-family="Arial" font-size="14" fill="#8b96a8">13</text>
+  <text x="995" y="545" text-anchor="middle" font-family="Arial" font-size="14" fill="#8b96a8">14</text>
+  <text x="1055" y="545" text-anchor="middle" font-family="Arial" font-size="14" fill="#8b96a8">15</text>
+
+  <rect x="60" y="615" width="1080" height="70" rx="14" fill="#fff2d8" stroke="#e4bc63"/>
+  <text x="85" y="645" font-family="Arial" font-size="16" font-weight="700" fill="#78520d">Cobertura incompleta</text>
+  <text x="85" y="670" font-family="Arial" font-size="15" fill="#78520d">Última execução: 09 out. 2026, 17:01:58 UTC. first_seen na janela: 24; apenas 5 também foram publicados na janela.</text>
+</svg>
