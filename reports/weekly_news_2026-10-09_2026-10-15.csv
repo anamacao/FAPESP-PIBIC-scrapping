@@ -1,0 +1,10 @@
+dimension,label,count,coverage_status
+source,nic,3,observed
+source,senado_federal,2,observed
+day,2026-10-09,5,observed
+day,2026-10-10,,not_collected
+day,2026-10-11,,not_collected
+day,2026-10-12,,not_collected
+day,2026-10-13,,not_collected
+day,2026-10-14,,not_collected
+day,2026-10-15,,not_collected
