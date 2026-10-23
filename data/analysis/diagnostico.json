@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-10-16T13:43:17.187836+00:00",
+  "generated_at": "2026-10-23T11:53:28.883252+00:00",
   "quality": {
-    "input_records": 657,
-    "valid": 657,
-    "unique": 657,
+    "input_records": 680,
+    "valid": 680,
+    "unique": 680,
     "duplicates": 0
   },
   "sources": [
@@ -11,7 +11,7 @@
       "notebook": "workflow semanal: nic",
       "source_id": "nic",
       "status": "ok",
-      "records": 488,
+      "records": 489,
       "pages_ok": 0,
       "pages_requested": 0,
       "method": "",
@@ -44,7 +44,7 @@
       "notebook": "workflow semanal: senado_federal",
       "source_id": "senado_federal",
       "status": "ok",
-      "records": 9,
+      "records": 1,
       "pages_ok": 0,
       "pages_requested": 0,
       "method": "",
