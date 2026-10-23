@@ -117,7 +117,9 @@ jobs:
       - name: Generate curation tables and charts
         run: python scripts/curadoria_agent.py
       - name: Collect all registered public sources
-        run: python scripts/source_collectors.py --pages 0
+        # A rodada semanal busca a página mais recente e preserva o histórico já acumulado.
+        # Uma auditoria histórica completa continua disponível com --pages 0.
+        run: python scripts/source_collectors.py --pages 1
       - name: Build one updateable offline HTML
         run: python scripts/build_updateable_dashboard.py
       - name: Upload reusable curation report

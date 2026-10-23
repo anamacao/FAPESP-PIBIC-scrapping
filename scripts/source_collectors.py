@@ -188,6 +188,47 @@ def rss(s, sid, url, report):
     return rows
 
 
+def internetlab_sitemap(s, sid, report, details=12):
+    """Use the publisher's official sitemap when its WordPress API and feed block the runner."""
+    sitemap = "https://internetlab.org.br/post-sitemap.xml"
+    root = ET.fromstring(fetch(s, sitemap).text)
+    report["pages_ok"] += 1
+    namespace = "{http://www.sitemaps.org/schemas/sitemap/0.9}"
+    prefixes = ("/pt/noticias/", "/pt/opiniao/", "/pt/pesquisa/")
+    candidates = []
+    for node in root.findall(namespace + "url"):
+        url = canonical(node.findtext(namespace + "loc", ""))
+        path = urlsplit(url).path
+        if urlsplit(url).hostname == "internetlab.org.br" and any(path.startswith(prefix) for prefix in prefixes):
+            candidates.append((node.findtext(namespace + "lastmod", ""), url))
+    rows = []
+    for _, url in sorted(set(candidates), reverse=True)[:details]:
+        try:
+            article = BeautifulSoup(fetch(s, url).text, "html.parser")
+            report["detail_pages_ok"] += 1
+        except (requests.RequestException, ValueError) as exc:
+            report["warnings"].append("Artigo do sitemap indisponível: " + url + " — " + str(exc)[:90])
+            continue
+        heading = article.select_one("#content h2, article h2, h2.post-item__title")
+        day = metadata_date(article)
+        if not day:
+            meta = article.select_one(".post-item__meta")
+            day = date_iso(meta.get_text(" ", strip=True) if meta else article.get_text(" ", strip=True))
+        description = article.select_one('meta[name="description"], meta[property="og:description"]')
+        row = record(sid, heading.get_text(" ", strip=True) if heading else "", day, url,
+                     description.get("content", "") if description else "")
+        if row["title"] and row["url"]:
+            rows.append(row)
+        time.sleep(.12)
+    if not rows:
+        raise ValueError("O sitemap oficial do InternetLab não retornou publicações verificáveis")
+    report.update(method="Sitemap oficial após API/feed indisponíveis",
+                  effective_endpoint=sitemap,
+                  coverage=f"{min(details, len(candidates))} publicações mais recentes do sitemap; histórico preservado",
+                  coverage_complete=False)
+    return rows
+
+
 def plone(s, sid, endpoint, pages, report):
     rows=[]
     for page in range(pages or 1000):
@@ -357,7 +398,13 @@ def collect_source(sid, pages=0):
                 except (requests.RequestException, ValueError) as alternate:
                     report["warnings"].append("Rota REST alternativa indisponível: " + str(alternate)[:180])
                     feed = urlunsplit((*urlsplit(endpoint)[:2], "/feed/", "", ""))
-                    rows = rss(s, sid, feed, report)
+                    try:
+                        rows = rss(s, sid, feed, report)
+                    except (requests.RequestException, ValueError, ET.ParseError) as feed_error:
+                        if sid != "internetlab":
+                            raise
+                        report["warnings"].append("Feed oficial indisponível: " + str(feed_error)[:180])
+                        rows = internetlab_sitemap(s, sid, report)
         elif method == "plone":
             rows = plone(s, sid, endpoint, pages, report)
         elif method == "nic":

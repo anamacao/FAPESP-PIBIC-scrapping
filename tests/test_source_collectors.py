@@ -6,7 +6,7 @@ import requests
 import tempfile
 
 from scripts.fapesp_agent import parse_date, prepare_collector, normalize_records, build_dashboard, export_results
-from scripts.source_collectors import SOURCES, date_iso, metadata_date, listing, wp, record, repair_encoding, text, parliament_news
+from scripts.source_collectors import SOURCES, date_iso, metadata_date, listing, wp, record, repair_encoding, text, parliament_news, internetlab_sitemap
 from bs4 import BeautifulSoup
 
 
@@ -74,6 +74,25 @@ class SourceCollectorTests(TestCase):
         report={"pages_ok":0,"detail_pages_ok":0,"warnings":[]}
         rows=listing(s,"edpb",SOURCES["edpb"][3],report)
         self.assertEqual(rows[0]["title"],"Guidance on data protection");self.assertEqual(rows[0]["published_date"],"2026-09-01")
+
+    def test_internetlab_sitemap_fallback_keeps_recent_official_posts(self):
+        sitemap = """<?xml version="1.0"?>
+        <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+          <url><loc>https://internetlab.org.br/pt/noticias/escola-internetlab/</loc><lastmod>2026-10-14T12:00:00+00:00</lastmod></url>
+          <url><loc>https://internetlab.org.br/pt/opiniao/nota-papo-de-ia/</loc><lastmod>2026-10-16T12:00:00+00:00</lastmod></url>
+          <url><loc>https://internetlab.org.br/pt/semanario/23-10-2026/</loc><lastmod>2026-10-23T12:00:00+00:00</lastmod></url>
+        </urlset>"""
+        opinion = '<div id="content"><h2>Nota sobre pesquisa Papo de IA</h2></div><meta property="article:published_time" content="2026-10-16T09:00:00-03:00">'
+        news = '<article><h2>Escola InternetLab de Governança Democrática</h2></article><time datetime="2026-10-14T09:00:00-03:00"></time>'
+        s = mock.Mock()
+        s.get.side_effect = [Response(body=sitemap), Response(body=opinion), Response(body=news)]
+        report = {"pages_ok":0, "detail_pages_ok":0, "warnings":[]}
+        with mock.patch("scripts.source_collectors.time.sleep"):
+            rows = internetlab_sitemap(s, "internetlab", report)
+        self.assertEqual([row["published_date"] for row in rows], ["2026-10-16", "2026-10-14"])
+        self.assertEqual(report["method"], "Sitemap oficial após API/feed indisponíveis")
+        self.assertFalse(report["coverage_complete"])
+        self.assertEqual(report["detail_pages_ok"], 2)
 
     def test_structured_date_ignores_modified_date(self):
         soup=BeautifulSoup('<script type="application/ld+json">{"@type":"NewsArticle","datePublished":"2026-09-01T10:00:00","dateModified":"2026-10-01"}</script>',"html.parser")
