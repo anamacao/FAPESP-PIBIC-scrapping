@@ -5,7 +5,7 @@ Escopo textual: title. Regras lexicais editáveis; sem API de IA.
 
 ## Base e cobertura
 
-- scrapers: 680 registros; 19 publicações datadas na janela; 10 candidatas lexicais na janela.
+- scrapers: 681 registros; 21 publicações datadas na janela; 10 candidatas lexicais na janela.
 
 ## Até cinco publicações para leitura
 

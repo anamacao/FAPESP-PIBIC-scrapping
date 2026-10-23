@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-10-23T14:08:15+00:00",
+  "generated_at": "2026-10-23T15:10:42+00:00",
   "dataset": "data/news.csv",
-  "total_records": 680,
-  "published_last_7_days": 19,
+  "total_records": 681,
+  "published_last_7_days": 21,
   "sources": [
     {
       "source_id": "nic",
@@ -20,7 +20,7 @@
       "source_id": "mercociudades",
       "status": "ok",
       "seen": 10,
-      "new": 0,
+      "new": 1,
       "method": "official_rss_after_api_403",
       "coverage_note": "Feed oficial com as últimas publicações; notícias anteriores ao item mais antigo não foram verificadas."
     },
