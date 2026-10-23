@@ -305,7 +305,8 @@ def listing(s, sid, endpoint, report, details=12):
         "urcdp": "/comunicacion/noticias/", "aaip": "/noticias/", "camara_federal": "/assessoria-de-imprensa/",
         "cgi": "/noticia/", "senado_federal": "/noticias/materias/", "icn_argentina": "/noticias/",
         "icann": "/announcements/details/", "ue_news": "/news-and-events/news-and-stories/",
-        "parlamento_uy": "/noticiasyeventos/noticias/"}
+        "parlamento_uy": "/noticiasyeventos/noticias/",
+        "internetlab": ("/pt/noticias/", "/pt/opiniao/", "/pt/pesquisa/")}
     if sid == "parlamento_uy" and host_is_deputies(endpoint):
         patterns[sid] = "/noticias/"
     rows, seen, remaining = [], set(), details
@@ -314,10 +315,15 @@ def listing(s, sid, endpoint, report, details=12):
         url = canonical(urljoin(endpoint, a["href"]))
         u = urlsplit(url)
         external_eu = sid == "ue_news" and u.hostname and u.hostname.endswith(".europa.eu") and any(p in u.path for p in ["/news-and-media/news/", "/en/news/", "/news/en/press-room/", "/presscorner/detail/"])
-        if not u.hostname or (not external_eu and (u.hostname.removeprefix("www.") != host or patterns[sid] not in u.path)):
+        accepted_paths = patterns[sid] if isinstance(patterns[sid], tuple) else (patterns[sid],)
+        if not u.hostname or (not external_eu and (u.hostname.removeprefix("www.") != host or not any(p in u.path for p in accepted_paths))):
             continue
         title = a.get_text(" ", strip=True)
         parent = a.find_parent(class_=re.compile(r"node-article-card__content|views-row|item-noticia|box-noticia", re.I)) or a.find_parent(["article", "li"]) or a.find_parent(class_=re.compile(r"card|tile|news|noticia|Box", re.I)) or a.parent
+        if sid == "internetlab":
+            heading = parent.select_one("h2.post-item__title, h2, h3")
+            if heading:
+                title = heading.get_text(" ", strip=True)
         if not title:
             heading = parent.select_one("h2,h3,h4,.titulo")
             title = heading.get_text(" ", strip=True) if heading else ""
@@ -333,7 +339,7 @@ def listing(s, sid, endpoint, report, details=12):
             try:
                 article = BeautifulSoup(fetch(s, url).text, "html.parser")
                 day = metadata_date(article)
-                heading = article.select_one("main h1, #content h1, h1.entry-title, h1.documentFirstHeading")
+                heading = article.select_one("main h1, #content h1, h1.entry-title, h1.documentFirstHeading, #content h2, article h2")
                 if heading:
                     title = heading.get_text(" ", strip=True)
                 description = article.select_one('meta[name="description"], meta[property="og:description"]')
@@ -346,6 +352,28 @@ def listing(s, sid, endpoint, report, details=12):
         if len(rows) >= 100:
             break
     report["coverage"] = "Primeira listagem; até 12 artigos sem data conferidos individualmente"
+    return rows
+
+
+def internetlab_html(s, sid, report):
+    """Fallback to the publisher's public HTML archives; keep only dated articles."""
+    endpoints = (
+        "https://internetlab.org.br/pt/blog/",
+        "https://internetlab.org.br/pt/category/pesquisa/",
+    )
+    rows = []
+    for endpoint in endpoints:
+        try:
+            rows.extend(listing(s, sid, endpoint, report))
+        except (requests.RequestException, ValueError) as exc:
+            report["warnings"].append("Arquivo HTML indisponível: " + endpoint + " — " + str(exc)[:120])
+    rows = list({row["url"]: row for row in rows if row["published_date"]}.values())
+    if not rows:
+        raise ValueError("Os arquivos HTML oficiais do InternetLab não retornaram publicações datadas")
+    report.update(method="Arquivos HTML oficiais após API/feed/sitemap indisponíveis",
+                  effective_endpoint=", ".join(endpoints),
+                  coverage="Duas listagens oficiais recentes; histórico preservado",
+                  coverage_complete=False)
     return rows
 
 
@@ -404,7 +432,11 @@ def collect_source(sid, pages=0):
                         if sid != "internetlab":
                             raise
                         report["warnings"].append("Feed oficial indisponível: " + str(feed_error)[:180])
-                        rows = internetlab_sitemap(s, sid, report)
+                        try:
+                            rows = internetlab_sitemap(s, sid, report)
+                        except (requests.RequestException, ValueError, ET.ParseError) as sitemap_error:
+                            report["warnings"].append("Sitemap oficial indisponível: " + str(sitemap_error)[:180])
+                            rows = internetlab_html(s, sid, report)
         elif method == "plone":
             rows = plone(s, sid, endpoint, pages, report)
         elif method == "nic":

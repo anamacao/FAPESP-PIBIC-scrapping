@@ -6,7 +6,7 @@ import requests
 import tempfile
 
 from scripts.fapesp_agent import parse_date, prepare_collector, normalize_records, build_dashboard, export_results
-from scripts.source_collectors import SOURCES, date_iso, metadata_date, listing, wp, record, repair_encoding, text, parliament_news, internetlab_sitemap
+from scripts.source_collectors import SOURCES, date_iso, metadata_date, listing, wp, record, repair_encoding, text, parliament_news, internetlab_sitemap, internetlab_html
 from bs4 import BeautifulSoup
 
 
@@ -93,6 +93,27 @@ class SourceCollectorTests(TestCase):
         self.assertEqual(report["method"], "Sitemap oficial após API/feed indisponíveis")
         self.assertFalse(report["coverage_complete"])
         self.assertEqual(report["detail_pages_ok"], 2)
+
+    def test_internetlab_html_fallback_deduplicates_and_requires_dates(self):
+        blog = """
+        <article><span>Notícias | 14.10.2026</span>
+          <a href="/pt/noticias/escola-internetlab/"><h2>Escola InternetLab de Governança Democrática</h2></a>
+        </article>"""
+        archive = """
+        <article><span>Notícias | 14.10.2026</span>
+          <a href="/pt/noticias/escola-internetlab/"><h2>Escola InternetLab de Governança Democrática</h2></a>
+        </article>
+        <article><span>Opinião | 16.10.2026</span>
+          <a href="/pt/opiniao/nota-papo-de-ia/"><h2>Nota sobre pesquisa Papo de IA</h2></a>
+        </article>
+        <article><a href="/pt/pesquisa/sem-data/"><h2>Registro sem data não confirmado</h2></a></article>"""
+        s = mock.Mock()
+        s.get.side_effect = [Response(body=blog), Response(body=archive), Response(body="<html></html>")]
+        report = {"pages_ok":0, "detail_pages_ok":0, "warnings":[]}
+        rows = internetlab_html(s, "internetlab", report)
+        self.assertEqual([row["published_date"] for row in rows], ["2026-10-14", "2026-10-16"])
+        self.assertEqual(report["method"], "Arquivos HTML oficiais após API/feed/sitemap indisponíveis")
+        self.assertFalse(report["coverage_complete"])
 
     def test_structured_date_ignores_modified_date(self):
         soup=BeautifulSoup('<script type="application/ld+json">{"@type":"NewsArticle","datePublished":"2026-09-01T10:00:00","dateModified":"2026-10-01"}</script>',"html.parser")
