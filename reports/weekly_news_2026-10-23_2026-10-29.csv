@@ -1,0 +1,9 @@
+metric,source_id,date,count,coverage_note
+published_date,mercociudades,2026-10-23,2,"Coleta disponível apenas até 2026-10-23T15:55:34Z"
+published_date,all_sources,2026-10-24,,"Sem coleta; não interpretar como zero"
+published_date,all_sources,2026-10-25,,"Sem coleta; não interpretar como zero"
+published_date,all_sources,2026-10-26,,"Sem coleta; não interpretar como zero"
+published_date,all_sources,2026-10-27,,"Sem coleta; não interpretar como zero"
+published_date,all_sources,2026-10-28,,"Sem coleta; não interpretar como zero"
+published_date,all_sources,2026-10-29,,"Sem coleta; não interpretar como zero"
+first_seen,all_sources,2026-10-23,24,"23 publicações antigas; 1 publicação dentro da janela"
