@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">Coleta semanal de notícias, 23 a 29 de outubro de 2026</title>
+  <desc id="desc">Duas publicações com data válida em 23 de outubro, ambas de Mercocidades. Não houve coleta entre 24 e 29 de outubro. Vinte e quatro itens foram detectados pela primeira vez em 23 de outubro, dos quais vinte e três eram publicações antigas.</desc>
+  <rect width="1200" height="720" fill="#f8fafc"/>
+  <text x="70" y="70" font-family="Arial, sans-serif" font-size="30" font-weight="700" fill="#0f172a">Notícias por data de publicação</text>
+  <text x="70" y="106" font-family="Arial, sans-serif" font-size="18" fill="#475569">Janela: 23–29/10/2026 · base atualizada somente até 23/10 às 15:55 UTC</text>
+  <line x1="100" y1="460" x2="1120" y2="460" stroke="#94a3b8" stroke-width="2"/>
+  <line x1="100" y1="170" x2="100" y2="460" stroke="#94a3b8" stroke-width="2"/>
+  <rect x="130" y="250" width="100" height="210" rx="8" fill="#2563eb"/>
+  <text x="180" y="235" text-anchor="middle" font-family="Arial, sans-serif" font-size="28" font-weight="700" fill="#1e3a8a">2</text>
+  <text x="180" y="495" text-anchor="middle" font-family="Arial, sans-serif" font-size="17" fill="#334155">23/10</text>
+  <text x="180" y="522" text-anchor="middle" font-family="Arial, sans-serif" font-size="15" fill="#2563eb">Mercocidades</text>
+  <g font-family="Arial, sans-serif" font-size="16" fill="#64748b" text-anchor="middle">
+    <text x="330" y="495">24/10</text><text x="480" y="495">25/10</text><text x="630" y="495">26/10</text><text x="780" y="495">27/10</text><text x="930" y="495">28/10</text><text x="1080" y="495">29/10</text>
+  </g>
+  <rect x="275" y="185" width="860" height="245" rx="14" fill="#fff7ed" stroke="#fb923c" stroke-width="2" stroke-dasharray="8 7"/>
+  <text x="705" y="255" text-anchor="middle" font-family="Arial, sans-serif" font-size="28" font-weight="700" fill="#9a3412">SEM COBERTURA DE COLETA</text>
+  <text x="705" y="300" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" fill="#7c2d12">24–29/10 não são dias com zero notícias</text>
+  <text x="705" y="336" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" fill="#7c2d12">A ausência de registros decorre de base desatualizada.</text>
+  <rect x="70" y="570" width="1060" height="100" rx="12" fill="#e0f2fe"/>
+  <text x="95" y="610" font-family="Arial, sans-serif" font-size="20" font-weight="700" fill="#075985">Primeira detecção em 23/10: 24 itens</text>
+  <text x="95" y="644" font-family="Arial, sans-serif" font-size="18" fill="#0c4a6e">23 eram publicações anteriores à janela; apenas 1 combinava first_seen e published_date na janela.</text>
+</svg>
