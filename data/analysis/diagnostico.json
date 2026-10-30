@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-10-23T15:55:43.683030+00:00",
+  "generated_at": "2026-10-30T11:11:08.790003+00:00",
   "quality": {
-    "input_records": 681,
-    "valid": 681,
-    "unique": 681,
+    "input_records": 708,
+    "valid": 708,
+    "unique": 708,
     "duplicates": 0
   },
   "sources": [
@@ -32,19 +32,19 @@
     {
       "notebook": "workflow semanal: mercociudades",
       "source_id": "mercociudades",
-      "status": "partial",
-      "records": 10,
+      "status": "ok",
+      "records": 50,
       "pages_ok": 0,
       "pages_requested": 0,
-      "method": "official_rss_after_api_403",
-      "coverage_note": "Feed oficial com as últimas publicações; notícias anteriores ao item mais antigo não foram verificadas.",
+      "method": "",
+      "coverage_note": "",
       "errors": []
     },
     {
       "notebook": "workflow semanal: senado_federal",
       "source_id": "senado_federal",
       "status": "ok",
-      "records": 1,
+      "records": 7,
       "pages_ok": 0,
       "pages_requested": 0,
       "method": "",

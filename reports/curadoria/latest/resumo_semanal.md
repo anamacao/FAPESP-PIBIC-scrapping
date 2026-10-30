@@ -1,39 +1,39 @@
 # Curadoria FAPESP — resumo automático
 
-Janela: 2026-10-17 a 2026-10-23 (America/Sao_Paulo).
+Janela: 2026-10-24 a 2026-10-30 (America/Sao_Paulo).
 Escopo textual: title. Regras lexicais editáveis; sem API de IA.
 
 ## Base e cobertura
 
-- scrapers: 681 registros; 21 publicações datadas na janela; 10 candidatas lexicais na janela.
+- scrapers: 708 registros; 24 publicações datadas na janela; 13 candidatas lexicais na janela.
 
 ## Até cinco publicações para leitura
 
 Ordem: termos (até 5 pontos), eixos (2 por eixo, até 6), seleção prévia no catálogo (3) e diversidade de eixos (2 por eixo ainda não coberto). A pontuação orienta a leitura.
 
-1. Inteligência artificial desafia combate à desinformação eleitoral no Brasil
-   - Publicação: 2026-10-21 · NIC.br
-   - Fonte: https://www.nic.br/noticia/na-midia/inteligencia-artificial-desafia-combate-a-desinformacao-eleitoral-no-brasil/
-   - Critério: Termos identificados: Inteligência artificial, Moderação. Eixos: IA e proteção de dados.
+1. Soberania digital e inteligência artificial são temas de colóquio internacional em São Paulo
+   - Publicação: 2026-10-27 · NIC.br
+   - Fonte: https://www.nic.br/noticia/na-midia/soberania-digital-e-inteligencia-artificial-sao-temas-de-coloquio-internacional-em-sao-paulo/
+   - Critério: Termos identificados: Inteligência artificial, Soberania digital. Eixos: IA e proteção de dados, Sul Global.
 
-2. Menos alarmismo, mais barreiras: o que 87 estudos dizem sobre a IA no Brasil
-   - Publicação: 2026-10-21 · NIC.br
-   - Fonte: https://www.nic.br/noticia/na-midia/menos-alarmismo-mais-barreiras-o-que-87-estudos-dizem-sobre-a-ia-no-brasil/
+2. Simpósio Crianças e Adolescentes na Internet completa uma década com debates sobre ECA Digital, IA na educação e radicalização nas redes sociais
+   - Publicação: 2026-10-28 · NIC.br
+   - Fonte: https://www.nic.br/noticia/releases/simposio-criancas-e-adolescentes-na-internet-completa-uma-decada-com-debates-sobre-eca-digital-ia-na-educacao-e-radicalizacao-nas-redes-sociais/
+   - Critério: Termos identificados: Inteligência artificial, Plataformas, Proteção infantil, Internet. Eixos: IA e proteção de dados.
+
+3. IDP São Paulo debate soberania digital, IA e geopolítica
+   - Publicação: 2026-10-27 · NIC.br
+   - Fonte: https://www.nic.br/noticia/na-midia/idp-sao-paulo-debate-soberania-digital-ia-e-geopolitica/
+   - Critério: Termos identificados: Inteligência artificial, Soberania digital. Eixos: IA e proteção de dados, Sul Global.
+
+4. CERT.br atualiza guias de segurança digital incorporando, pela 1ª vez, alertas sobre riscos da inteligência artificial
+   - Publicação: 2026-10-29 · NIC.br
+   - Fonte: https://www.nic.br/noticia/releases/cert-br-atualiza-guias-de-seguranca-digital-incorporando-pela-1-vez-alertas-sobre-riscos-da-inteligencia-artificial/
    - Critério: Termos identificados: Inteligência artificial. Eixos: IA e proteção de dados.
 
-3. 25% dos hospitais particulares do país já usam inteligência artificial
-   - Publicação: 2026-10-21 · NIC.br
-   - Fonte: https://www.nic.br/noticia/na-midia/25-dos-hospitais-particulares-do-pais-ja-usam-inteligencia-artificial/
-   - Critério: Termos identificados: Inteligência artificial. Eixos: IA e proteção de dados.
-
-4. Inteligência artificial com responsabilidade
-   - Publicação: 2026-10-19 · NIC.br
-   - Fonte: https://www.nic.br/noticia/na-midia/inteligencia-artificial-com-responsabilidade/
-   - Critério: Termos identificados: Inteligência artificial. Eixos: IA e proteção de dados.
-
-5. Governo federal disponibiliza guia com orientações sobre uso de inteligência artificial por crianças e adolescentes
-   - Publicação: 2026-10-19 · NIC.br
-   - Fonte: https://www.nic.br/noticia/na-midia/governo-federal-disponibiliza-guia-com-orientacoes-sobre-uso-de-inteligencia-artificial-por-criancas-e-adolescentes/
+5. Área da saúde será a mais beneficiada pela IA, diz especialista
+   - Publicação: 2026-10-28 · NIC.br
+   - Fonte: https://www.nic.br/noticia/na-midia/area-da-saude-sera-a-mais-beneficiada-pela-ia-diz-especialista/
    - Critério: Termos identificados: Inteligência artificial. Eixos: IA e proteção de dados.
 
 
@@ -45,5 +45,4 @@ Ordem: termos (até 5 pontos), eixos (2 por eixo, até 6), seleção prévia no 
 - Datas apenas mensais ou anuais e datas ausentes não entram na seleção semanal.
 - Todas as fontes do catálogo permanecem na base, mesmo sem correspondência lexical no título.
 
-- mercociudades: Feed oficial com as últimas publicações; notícias anteriores ao item mais antigo não foram verificadas.
 - O catálogo da curadoria não foi fornecido: estas saídas cobrem somente as notícias dos scrapers.

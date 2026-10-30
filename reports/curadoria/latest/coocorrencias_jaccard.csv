@@ -1,34 +1,35 @@
 ﻿termo_1,termo_2,documentos,jaccard
-Governança digital,Internet,8,0.092
-Internet,Proteção infantil,8,0.0661
-Inteligência artificial,Internet,7,0.0312
-Inteligência artificial,Moderação,5,0.034
-Internet,Plataformas,4,0.037
+Governança digital,Internet,10,0.1064
+Internet,Proteção infantil,9,0.0698
+Inteligência artificial,Internet,8,0.0338
+Internet,Plataformas,5,0.0431
+Inteligência artificial,Moderação,5,0.0325
+Inteligência artificial,Proteção infantil,4,0.0207
+Inteligência artificial,Soberania digital,3,0.0192
 EDPB,Proteção de dados,3,0.1364
-Internet,Proteção de dados,3,0.0312
-Inteligência artificial,Proteção infantil,3,0.0162
-Privacidade,Proteção infantil,3,0.0625
+Internet,Proteção de dados,3,0.0291
+Privacidade,Proteção infantil,3,0.06
 EDPB,União Europeia,3,0.2308
 Proteção de dados,União Europeia,3,0.2143
-ANPD,Proteção infantil,3,0.06
-Algoritmos,Inteligência artificial,2,0.0135
+ANPD,Proteção infantil,3,0.0577
+Inteligência artificial,Plataformas,2,0.0112
+Algoritmos,Inteligência artificial,2,0.0129
 EDPB,GDPR,2,0.1538
-Inteligência artificial,Privacidade,2,0.0132
-ANPD,Governança digital,1,0.0556
-ANPD,Internet,1,0.0105
+Inteligência artificial,Privacidade,2,0.0127
+Plataformas,Proteção infantil,1,0.0139
+ANPD,Governança digital,1,0.05
+ANPD,Internet,1,0.0098
 DSA,EDPB,1,0.0833
 DSA,GDPR,1,0.3333
 ANPD,Proteção de dados,1,0.0455
-Inteligência artificial,Proteção de dados,1,0.0064
-Proteção de dados,Proteção infantil,1,0.0182
+Inteligência artificial,Proteção de dados,1,0.0061
+Proteção de dados,Proteção infantil,1,0.0175
 Privacidade,Proteção de dados,1,0.05
-EDPB,Inteligência artificial,1,0.0064
-Internet,Privacidade,1,0.0108
-Inteligência artificial,Soberania digital,1,0.0067
-Inteligência artificial,Plataformas,1,0.0059
-Internet,Soberania digital,1,0.0111
-EDPB,Internet,1,0.0103
-Internet,União Europeia,1,0.0112
+EDPB,Inteligência artificial,1,0.0061
+Internet,Privacidade,1,0.01
+Internet,Soberania digital,1,0.0101
+EDPB,Internet,1,0.0096
+Internet,União Europeia,1,0.0104
 GDPR,Proteção de dados,1,0.0667
 GDPR,União Europeia,1,0.1667
-Algoritmos,Internet,1,0.0111
+Algoritmos,Internet,1,0.0103
