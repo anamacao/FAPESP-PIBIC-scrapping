@@ -1,14 +1,14 @@
 {
-  "generated_at": "2026-10-30T11:10:58+00:00",
+  "generated_at": "2026-10-30T16:43:51+00:00",
   "dataset": "data/news.csv",
-  "total_records": 708,
-  "published_last_7_days": 24,
+  "total_records": 712,
+  "published_last_7_days": 28,
   "sources": [
     {
       "source_id": "nic",
       "status": "ok",
       "seen": 489,
-      "new": 19
+      "new": 3
     },
     {
       "source_id": "edpb",
@@ -26,7 +26,7 @@
       "source_id": "senado_federal",
       "status": "ok",
       "seen": 7,
-      "new": 7
+      "new": 0
     }
   ],
   "notebooks": {

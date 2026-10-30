@@ -1,35 +1,35 @@
 ﻿termo_1,termo_2,documentos,jaccard
-Governança digital,Internet,10,0.1064
-Internet,Proteção infantil,9,0.0698
-Inteligência artificial,Internet,8,0.0338
-Internet,Plataformas,5,0.0431
-Inteligência artificial,Moderação,5,0.0325
-Inteligência artificial,Proteção infantil,4,0.0207
-Inteligência artificial,Soberania digital,3,0.0192
+Governança digital,Internet,10,0.1053
+Internet,Proteção infantil,9,0.0692
+Inteligência artificial,Internet,8,0.0333
+Internet,Plataformas,5,0.0427
+Inteligência artificial,Moderação,5,0.0321
+Inteligência artificial,Proteção infantil,4,0.0205
+Inteligência artificial,Soberania digital,3,0.019
 EDPB,Proteção de dados,3,0.1364
-Internet,Proteção de dados,3,0.0291
+Internet,Proteção de dados,3,0.0288
 Privacidade,Proteção infantil,3,0.06
 EDPB,União Europeia,3,0.2308
 Proteção de dados,União Europeia,3,0.2143
 ANPD,Proteção infantil,3,0.0577
-Inteligência artificial,Plataformas,2,0.0112
-Algoritmos,Inteligência artificial,2,0.0129
+Inteligência artificial,Plataformas,2,0.0111
+Algoritmos,Inteligência artificial,2,0.0127
 EDPB,GDPR,2,0.1538
-Inteligência artificial,Privacidade,2,0.0127
+Inteligência artificial,Privacidade,2,0.0125
 Plataformas,Proteção infantil,1,0.0139
 ANPD,Governança digital,1,0.05
-ANPD,Internet,1,0.0098
+ANPD,Internet,1,0.0097
 DSA,EDPB,1,0.0833
 DSA,GDPR,1,0.3333
 ANPD,Proteção de dados,1,0.0455
-Inteligência artificial,Proteção de dados,1,0.0061
+Inteligência artificial,Proteção de dados,1,0.006
 Proteção de dados,Proteção infantil,1,0.0175
 Privacidade,Proteção de dados,1,0.05
 EDPB,Inteligência artificial,1,0.0061
-Internet,Privacidade,1,0.01
-Internet,Soberania digital,1,0.0101
-EDPB,Internet,1,0.0096
-Internet,União Europeia,1,0.0104
+Internet,Privacidade,1,0.0099
+Internet,Soberania digital,1,0.01
+EDPB,Internet,1,0.0095
+Internet,União Europeia,1,0.0103
 GDPR,Proteção de dados,1,0.0667
 GDPR,União Europeia,1,0.1667
-Algoritmos,Internet,1,0.0103
+Algoritmos,Internet,1,0.0102

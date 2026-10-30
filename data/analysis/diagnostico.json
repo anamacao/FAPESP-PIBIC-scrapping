@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-10-30T11:11:08.790003+00:00",
+  "generated_at": "2026-10-30T16:44:03.747460+00:00",
   "quality": {
-    "input_records": 708,
-    "valid": 708,
-    "unique": 708,
+    "input_records": 712,
+    "valid": 712,
+    "unique": 712,
     "duplicates": 0
   },
   "sources": [
