@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-06T17:32:30+00:00",
+  "generated_at": "2026-11-06T18:29:03+00:00",
   "dataset": "data/news.csv",
   "total_records": 737,
   "published_last_7_days": 24,
@@ -8,7 +8,7 @@
       "source_id": "nic",
       "status": "ok",
       "seen": 488,
-      "new": 3
+      "new": 0
     },
     {
       "source_id": "edpb",
@@ -20,13 +20,13 @@
       "source_id": "mercociudades",
       "status": "ok",
       "seen": 50,
-      "new": 1
+      "new": 0
     },
     {
       "source_id": "senado_federal",
       "status": "ok",
       "seen": 3,
-      "new": 2
+      "new": 0
     }
   ],
   "notebooks": {

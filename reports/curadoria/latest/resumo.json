@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-06T17:32:42+00:00",
+  "generated_at": "2026-11-06T18:29:18+00:00",
   "as_of": "2026-11-06",
   "window_start": "2026-10-31",
   "days": 7,
@@ -10,7 +10,7 @@
   "inputs": {
     "scrapers": {
       "path": "/home/runner/work/FAPESP-PIBIC-scrapping/FAPESP-PIBIC-scrapping/data/news.csv",
-      "sha256": "9667d8174765ba8c767b9dc0dc944005ef99782f8e4bd4762a24b4041f9220db"
+      "sha256": "3b0d1e9514024bd8ca52d34841b9374c30f96773fbf556499f17c20c938606db"
     }
   },
   "corpus": {
@@ -31,10 +31,10 @@
   "warnings": [
     "O catálogo da curadoria não foi fornecido: estas saídas cobrem somente as notícias dos scrapers."
   ],
-  "collection_generated_at": "2026-11-06T17:32:30+00:00",
+  "collection_generated_at": "2026-11-06T18:29:03+00:00",
   "method": "Correspondências lexicais com sinônimos; multilabel; URL canônica deduplicada por corpus; publicação distinta de primeira detecção.",
   "interactive_dashboard": "painel_interativo.html",
   "shortlist_count": 5,
   "combined_unique_documents": 737,
-  "dashboard_sha256": "99e7a4cb862addd2787abb1ede5b7045a7cc3afb950892e35cad7f7ddd31887b"
+  "dashboard_sha256": "ec3759edc82e0637b0e4a3fe401c2823d4828b98d9cfefd5690f9d3a34b5fe8b"
 }
