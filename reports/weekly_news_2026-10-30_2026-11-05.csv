@@ -1,0 +1,9 @@
+metric,source_id,date,count,coverage_note
+published_date,nic,2026-10-30,3,"Coleta disponível somente até 2026-10-30T17:12:34Z"
+published_date,all_sources,2026-10-31,,"Sem coleta; não interpretar como zero"
+published_date,all_sources,2026-11-01,,"Sem coleta; não interpretar como zero"
+published_date,all_sources,2026-11-02,,"Sem coleta; não interpretar como zero"
+published_date,all_sources,2026-11-03,,"Sem coleta; não interpretar como zero"
+published_date,all_sources,2026-11-04,,"Sem coleta; não interpretar como zero"
+published_date,all_sources,2026-11-05,,"Sem coleta; não interpretar como zero"
+first_seen,all_sources,2026-10-30,31,"28 publicações anteriores à janela; 3 publicações dentro da janela"
