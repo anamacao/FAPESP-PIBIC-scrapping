@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">Coleta semanal de notícias, 30 de outubro a 5 de novembro de 2026</title>
+  <desc id="desc">Três publicações com data válida em 30 de outubro, todas do NIC.br. Não houve coleta entre 31 de outubro e 5 de novembro. Trinta e um itens foram detectados pela primeira vez em 30 de outubro, dos quais vinte e oito eram publicações antigas.</desc>
+  <rect width="1200" height="720" fill="#f8fafc"/>
+  <text x="70" y="70" font-family="Arial, sans-serif" font-size="30" font-weight="700" fill="#0f172a">Notícias por data de publicação</text>
+  <text x="70" y="106" font-family="Arial, sans-serif" font-size="18" fill="#475569">Janela: 30/10–05/11/2026 · base atualizada somente até 30/10 às 17:12 UTC</text>
+  <line x1="100" y1="460" x2="1120" y2="460" stroke="#94a3b8" stroke-width="2"/>
+  <line x1="100" y1="170" x2="100" y2="460" stroke="#94a3b8" stroke-width="2"/>
+  <rect x="130" y="210" width="100" height="250" rx="8" fill="#2563eb"/>
+  <text x="180" y="195" text-anchor="middle" font-family="Arial, sans-serif" font-size="28" font-weight="700" fill="#1e3a8a">3</text>
+  <text x="180" y="495" text-anchor="middle" font-family="Arial, sans-serif" font-size="17" fill="#334155">30/10</text>
+  <text x="180" y="522" text-anchor="middle" font-family="Arial, sans-serif" font-size="15" fill="#2563eb">NIC.br</text>
+  <g font-family="Arial, sans-serif" font-size="16" fill="#64748b" text-anchor="middle">
+    <text x="330" y="495">31/10</text><text x="480" y="495">01/11</text><text x="630" y="495">02/11</text><text x="780" y="495">03/11</text><text x="930" y="495">04/11</text><text x="1080" y="495">05/11</text>
+  </g>
+  <rect x="275" y="185" width="860" height="245" rx="14" fill="#fff7ed" stroke="#fb923c" stroke-width="2" stroke-dasharray="8 7"/>
+  <text x="705" y="255" text-anchor="middle" font-family="Arial, sans-serif" font-size="28" font-weight="700" fill="#9a3412">SEM COBERTURA DE COLETA</text>
+  <text x="705" y="300" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" fill="#7c2d12">31/10–05/11 não são dias com zero notícias</text>
+  <text x="705" y="336" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" fill="#7c2d12">A ausência de registros decorre de base desatualizada.</text>
+  <rect x="70" y="570" width="1060" height="100" rx="12" fill="#e0f2fe"/>
+  <text x="95" y="610" font-family="Arial, sans-serif" font-size="20" font-weight="700" fill="#075985">Primeira detecção em 30/10: 31 itens</text>
+  <text x="95" y="644" font-family="Arial, sans-serif" font-size="18" fill="#0c4a6e">28 eram publicações anteriores à janela; somente 3 também foram publicadas em 30/10.</text>
+</svg>
