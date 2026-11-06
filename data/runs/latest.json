@@ -1,32 +1,32 @@
 {
-  "generated_at": "2026-10-30T17:12:34+00:00",
+  "generated_at": "2026-11-06T11:16:09+00:00",
   "dataset": "data/news.csv",
-  "total_records": 712,
-  "published_last_7_days": 28,
+  "total_records": 731,
+  "published_last_7_days": 18,
   "sources": [
     {
       "source_id": "nic",
       "status": "ok",
-      "seen": 489,
-      "new": 0
+      "seen": 488,
+      "new": 9
     },
     {
       "source_id": "edpb",
       "status": "ok",
       "seen": 16,
-      "new": 0
+      "new": 1
     },
     {
       "source_id": "mercociudades",
       "status": "ok",
       "seen": 50,
-      "new": 0
+      "new": 3
     },
     {
       "source_id": "senado_federal",
       "status": "ok",
-      "seen": 7,
-      "new": 0
+      "seen": 6,
+      "new": 6
     }
   ],
   "notebooks": {
