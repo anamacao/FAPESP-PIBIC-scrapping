@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">Coleta semanal de notícias, 6 a 12 de novembro de 2026</title>
+  <desc id="desc">Seis publicações com data válida em 6 de novembro: três do NIC.br, duas do Senado Federal e uma da Mercocidades. Não houve coleta entre 7 e 12 de novembro. Vinte e cinco itens foram detectados, dos quais dezenove eram antigos.</desc>
+  <rect width="1200" height="760" fill="#f8fafc"/>
+  <text x="70" y="65" font-family="Arial, sans-serif" font-size="30" font-weight="700" fill="#0f172a">Publicações observadas por fonte e dia</text>
+  <text x="70" y="100" font-family="Arial, sans-serif" font-size="18" fill="#475569">Janela: 06–12/11/2026 · base atualizada somente até 06/11 às 18:29 UTC</text>
+  <text x="70" y="155" font-family="Arial, sans-serif" font-size="21" font-weight="700" fill="#0f172a">Por fonte em 06/11</text>
+  <line x1="100" y1="420" x2="560" y2="420" stroke="#94a3b8" stroke-width="2"/>
+  <rect x="135" y="210" width="90" height="210" rx="8" fill="#2563eb"/><text x="180" y="195" text-anchor="middle" font-family="Arial" font-size="25" font-weight="700" fill="#1e3a8a">3</text><text x="180" y="450" text-anchor="middle" font-family="Arial" font-size="17" fill="#334155">NIC.br</text>
+  <rect x="285" y="280" width="90" height="140" rx="8" fill="#0ea5e9"/><text x="330" y="265" text-anchor="middle" font-family="Arial" font-size="25" font-weight="700" fill="#075985">2</text><text x="330" y="450" text-anchor="middle" font-family="Arial" font-size="17" fill="#334155">Senado</text>
+  <rect x="435" y="350" width="90" height="70" rx="8" fill="#14b8a6"/><text x="480" y="335" text-anchor="middle" font-family="Arial" font-size="25" font-weight="700" fill="#115e59">1</text><text x="480" y="450" text-anchor="middle" font-family="Arial" font-size="17" fill="#334155">Mercocidades</text>
+  <rect x="610" y="155" width="520" height="295" rx="14" fill="#fff7ed" stroke="#fb923c" stroke-width="2" stroke-dasharray="8 7"/>
+  <text x="870" y="225" text-anchor="middle" font-family="Arial" font-size="27" font-weight="700" fill="#9a3412">SEM COBERTURA</text>
+  <text x="870" y="272" text-anchor="middle" font-family="Arial" font-size="21" fill="#7c2d12">07–12/11 não são dias com zero notícias</text>
+  <text x="870" y="315" text-anchor="middle" font-family="Arial" font-size="18" fill="#7c2d12">A base não recebeu novas execuções.</text>
+  <text x="870" y="365" text-anchor="middle" font-family="Arial" font-size="19" font-weight="700" fill="#9a3412">Total observado: 6</text>
+  <rect x="70" y="525" width="1060" height="145" rx="12" fill="#e0f2fe"/>
+  <text x="95" y="570" font-family="Arial" font-size="21" font-weight="700" fill="#075985">Primeira detecção em 06/11: 25 itens</text>
+  <text x="95" y="610" font-family="Arial" font-size="18" fill="#0c4a6e">19 foram publicados antes da janela e não entram na contagem semanal.</text>
+  <text x="95" y="645" font-family="Arial" font-size="18" fill="#0c4a6e">6 itens combinaram first_seen e published_date em 06/11.</text>
+</svg>
