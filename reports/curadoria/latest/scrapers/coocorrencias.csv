@@ -1,12 +1,12 @@
 ﻿termo_1,termo_2,documentos
-Governança digital,Internet,10
+Governança digital,Internet,11
 Internet,Proteção infantil,9
 Inteligência artificial,Internet,8
 Inteligência artificial,Moderação,5
 Internet,Plataformas,5
+EDPB,Proteção de dados,4
 Inteligência artificial,Proteção infantil,4
 ANPD,Proteção infantil,3
-EDPB,Proteção de dados,3
 EDPB,União Europeia,3
 Inteligência artificial,Soberania digital,3
 Internet,Proteção de dados,3
@@ -19,6 +19,7 @@ Inteligência artificial,Privacidade,2
 ANPD,Governança digital,1
 ANPD,Internet,1
 ANPD,Proteção de dados,1
+Adequação,EDPB,1
 Algoritmos,Internet,1
 DSA,EDPB,1
 DSA,GDPR,1
