@@ -297,7 +297,7 @@ def listing(s, sid, endpoint, report, details=12):
         for panel in body.select(".panel[data-slug]"):
             heading, date = panel.select_one("h4,h3,h2"), panel.select_one("time")
             if heading:
-                rows.append(record(sid, heading.get_text(" ", strip=True), date.get_text(" ", strip=True) if date else "", urljoin(endpoint + "/", panel["data-slug"])))
+                rows.append(record(sid, heading.get_text(" ", strip=True), date.get_text(" ", strip=True) if date else "", urljoin("https://icn.gob.ar/noticias/", panel["data-slug"])))
         report["coverage"] = "Notícias da listagem oficial, com data e identificador de artigo"
         return rows
     patterns = {
@@ -377,6 +377,33 @@ def internetlab_html(s, sid, report):
     return rows
 
 
+def icn_news(s, endpoint, report):
+    """Use the official home page only when the ICN news archive times out."""
+    last_error = None
+    report["attempts"] = []
+    for candidate in (endpoint, "https://icn.gob.ar/"):
+        try:
+            found = listing(s, "icn_argentina", candidate, report)
+            report["attempts"].append({"endpoint": candidate, "status": "ok" if found else "empty"})
+            if found:
+                report.update(effective_endpoint=candidate, method="HTML · notícias oficiais")
+                if candidate != endpoint:
+                    report.update(
+                        coverage="Capa oficial após indisponibilidade do arquivo de notícias; histórico preservado",
+                        coverage_complete=False,
+                    )
+                    report["warnings"].append(
+                        "O arquivo /noticias não respondeu; a capa oficial cobre somente as publicações recentes"
+                    )
+                return found
+        except (requests.RequestException, ValueError) as exc:
+            last_error = exc
+            report["attempts"].append({"endpoint": candidate, "status": "failed", "error": str(exc)[:200]})
+    if last_error:
+        raise last_error
+    return []
+
+
 def host_is_deputies(url):
     return (urlsplit(url).hostname or "").removeprefix("www.") == "diputados.gub.uy"
 
@@ -452,6 +479,8 @@ def collect_source(sid, pages=0):
             report.update(pages_ok=1, coverage="Página institucional acessível; nenhuma coleta de notícias confirmada")
         elif sid == "parlamento_uy":
             rows = parliament_news(s, endpoint, report)
+        elif sid == "icn_argentina":
+            rows = icn_news(s, endpoint, report)
         else:
             rows = listing(s, sid, endpoint, report)
         rows = [r for r in rows if r["title"] and r["url"]]

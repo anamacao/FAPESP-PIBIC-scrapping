@@ -6,7 +6,7 @@ import requests
 import tempfile
 
 from scripts.fapesp_agent import parse_date, prepare_collector, normalize_records, build_dashboard, export_results
-from scripts.source_collectors import SOURCES, date_iso, metadata_date, listing, wp, record, repair_encoding, text, parliament_news, internetlab_sitemap, internetlab_html
+from scripts.source_collectors import SOURCES, date_iso, metadata_date, listing, wp, record, repair_encoding, text, parliament_news, internetlab_sitemap, internetlab_html, icn_news
 from bs4 import BeautifulSoup
 
 
@@ -18,6 +18,26 @@ class Response:
 
 
 class SourceCollectorTests(TestCase):
+    def test_icn_uses_official_home_page_after_news_archive_timeout(self):
+        report = {"pages_ok": 0, "detail_pages_ok": 0, "warnings": []}
+        recent = [record(
+            "icn_argentina",
+            "Patria Mía: la nueva colección de la Imprenta del Congreso de la Nación",
+            "22 de octubre de 2026",
+            "https://icn.gob.ar/noticias/patria-mia",
+        )]
+        with mock.patch(
+            "scripts.source_collectors.listing",
+            side_effect=[requests.Timeout("timeout"), recent],
+        ) as fetch_listing:
+            rows = icn_news(mock.Mock(), SOURCES["icn_argentina"][3], report)
+
+        self.assertEqual(rows, recent)
+        self.assertEqual(fetch_listing.call_count, 2)
+        self.assertEqual(report["effective_endpoint"], "https://icn.gob.ar/")
+        self.assertFalse(report["coverage_complete"])
+        self.assertTrue(report["warnings"])
+
     def test_blocked_parliament_news_never_becomes_library_events(self):
         report={"pages_ok":0,"detail_pages_ok":0,"warnings":[]}
         with mock.patch("scripts.source_collectors.listing",side_effect=requests.HTTPError("403 Forbidden")) as fetch_listing:
