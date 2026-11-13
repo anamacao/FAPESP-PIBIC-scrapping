@@ -33,6 +33,22 @@ DATAFRAMES = {
 }
 
 
+def original_notebooks() -> list[Path]:
+    """Return only the 21 notebooks covered by the original runtime check."""
+    paths = sorted(
+        path
+        for folder in (Path("Mercosul"), Path("UE"))
+        for path in folder.rglob("*.ipynb")
+        if path.stem in DATAFRAMES
+    )
+    missing = sorted(set(DATAFRAMES) - {path.stem for path in paths})
+    if missing:
+        raise FileNotFoundError(
+            "Notebooks originais ausentes: " + ", ".join(missing)
+        )
+    return paths
+
+
 def timeout_handler(signum, frame):
     raise TimeoutError("Célula excedeu o limite de tempo")
 
@@ -100,7 +116,7 @@ def main():
     parser.add_argument("--output", type=Path)
     args = parser.parse_args()
     if args.all:
-        args.notebooks = sorted(Path("Mercosul").rglob("*.ipynb")) + sorted(Path("UE").rglob("*.ipynb"))
+        args.notebooks = original_notebooks()
     if not args.notebooks:
         parser.error("Informe notebooks ou use --all")
     results = []
