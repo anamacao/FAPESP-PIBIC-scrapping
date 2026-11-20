@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-11-20T14:15:16+00:00",
+  "generated_at": "2026-11-20T18:38:48+00:00",
   "dataset": "data/news.csv",
-  "total_records": 792,
-  "published_last_7_days": 24,
+  "total_records": 793,
+  "published_last_7_days": 25,
   "sources": [
     {
       "source_id": "nic",
@@ -20,7 +20,7 @@
       "source_id": "mercociudades",
       "status": "ok",
       "seen": 50,
-      "new": 0
+      "new": 1
     },
     {
       "source_id": "senado_federal",
