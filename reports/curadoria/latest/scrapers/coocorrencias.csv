@@ -5,13 +5,14 @@ Inteligência artificial,Internet,8
 Inteligência artificial,Moderação,5
 Internet,Plataformas,5
 EDPB,Proteção de dados,4
+EDPB,União Europeia,4
 Inteligência artificial,Proteção infantil,4
 ANPD,Proteção infantil,3
-EDPB,União Europeia,3
 Inteligência artificial,Soberania digital,3
 Internet,Proteção de dados,3
 Privacidade,Proteção infantil,3
 Proteção de dados,União Europeia,3
+Adequação,EDPB,2
 Algoritmos,Inteligência artificial,2
 EDPB,GDPR,2
 Inteligência artificial,Plataformas,2
@@ -19,7 +20,7 @@ Inteligência artificial,Privacidade,2
 ANPD,Governança digital,1
 ANPD,Internet,1
 ANPD,Proteção de dados,1
-Adequação,EDPB,1
+Adequação,União Europeia,1
 Algoritmos,Internet,1
 DSA,EDPB,1
 DSA,GDPR,1
@@ -31,6 +32,7 @@ Inteligência artificial,Proteção de dados,1
 Internet,Privacidade,1
 Internet,Soberania digital,1
 Internet,União Europeia,1
+Plataformas,Privacidade,1
 Plataformas,Proteção infantil,1
 Privacidade,Proteção de dados,1
 Proteção de dados,Proteção infantil,1

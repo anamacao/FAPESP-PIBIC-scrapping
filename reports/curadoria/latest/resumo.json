@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-11-13T18:46:40+00:00",
-  "as_of": "2026-11-13",
-  "window_start": "2026-11-07",
+  "generated_at": "2026-11-20T11:25:38+00:00",
+  "as_of": "2026-11-20",
+  "window_start": "2026-11-14",
   "days": 7,
   "timezone": "America/Sao_Paulo",
   "analysis_text": "title",
@@ -10,31 +10,31 @@
   "inputs": {
     "scrapers": {
       "path": "/home/runner/work/FAPESP-PIBIC-scrapping/FAPESP-PIBIC-scrapping/data/news.csv",
-      "sha256": "cae3c7f413c4cb3aa4c1b6a7f1df0ebba106417089f649185aa9f4bba153044a"
+      "sha256": "115057b3831eb9665e174495109891f6db616a83340a3cc59d5251678bdb5231"
     }
   },
   "corpus": {
     "scrapers": {
-      "input_rows": 768,
+      "input_rows": 792,
       "duplicates_removed": 0,
       "invalid_records": 0,
-      "documents": 768,
-      "candidates": 345,
-      "published_window": 31,
-      "candidates_window": 11,
-      "candidates_previous_window": 7,
+      "documents": 792,
+      "candidates": 354,
+      "published_window": 24,
+      "candidates_window": 9,
+      "candidates_previous_window": 11,
       "without_exact_date": 0,
       "future_publications": 0,
-      "candidates_without_axis": 138
+      "candidates_without_axis": 142
     }
   },
   "warnings": [
     "O catálogo da curadoria não foi fornecido: estas saídas cobrem somente as notícias dos scrapers."
   ],
-  "collection_generated_at": "2026-11-13T18:46:29+00:00",
+  "collection_generated_at": "2026-11-20T11:25:27+00:00",
   "method": "Correspondências lexicais com sinônimos; multilabel; URL canônica deduplicada por corpus; publicação distinta de primeira detecção.",
   "interactive_dashboard": "painel_interativo.html",
   "shortlist_count": 5,
-  "combined_unique_documents": 768,
-  "dashboard_sha256": "4fc9c7db9db0a3ed3e300f7c25ab771c92f345fa3e5d90f0a6dd6ff863952bbe"
+  "combined_unique_documents": 792,
+  "dashboard_sha256": "bab44d6f22f56dde0d358f030fd24e9caaa76832f68a61930a48a6dfb796d964"
 }
