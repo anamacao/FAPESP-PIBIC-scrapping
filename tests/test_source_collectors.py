@@ -34,16 +34,27 @@ class SourceCollectorTests(TestCase):
         old_spam["category"] = "1"
         valid_history = record("observacom", "Integridad electoral", "2026-11-11", "https://www.observacom.org/integridad-electoral")
         valid_history["category"] = "279"
+        stale_aaip = record(
+            "aaip",
+            "13 de abril de 2026 La AAIP investiga protección de datos",
+            "2026-11-12",
+            "https://www.argentina.gob.ar/noticias/investigacion-aaip",
+        )
+        observacom_report = {"source_id": "observacom", **report}
+        aaip_report = {"source_id": "aaip", "warnings": []}
         merged = merge_public_records([
             record("observacom", "Casino promotion", "2026-11-16", spam["link"]),
             old_spam,
             valid_history,
-        ], rows, [{"source_id": "observacom", **report}])
+            stale_aaip,
+        ], rows, [observacom_report, aaip_report])
 
         self.assertEqual([row["title"] for row in rows], ["Regulación de plataformas digitales"])
         self.assertNotIn(spam["link"], merged)
         self.assertNotIn(old_spam["url"], merged)
         self.assertIn(valid_history["url"], merged)
+        self.assertEqual(merged[stale_aaip["url"]]["published_date"], "2026-04-13")
+        self.assertEqual(aaip_report["repaired_historical_dates"], 1)
         self.assertEqual(report["verified_rejected_urls"], 1)
         self.assertEqual(report["discarded_records"], 1)
 

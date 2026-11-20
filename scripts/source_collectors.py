@@ -585,8 +585,29 @@ def quarantined_historical_record(row):
     )
 
 
+def repair_aaip_historical_date(row):
+    """Recover an AAIP date embedded in legacy card text, without inventing it."""
+    fixed = dict(row)
+    match = re.match(
+        r"^\s*(\d{1,2}\s+de\s+[^\d\s]+\s+de\s+\d{4})\b",
+        str(row.get("title", "")),
+        flags=re.IGNORECASE,
+    )
+    if row.get("source_id") == "aaip" and match and (day := date_iso(match.group(1))):
+        fixed["published_date"] = day
+        fixed["raw_date"] = match.group(1)
+    return fixed
+
+
 def merge_public_records(existing, rows, reports):
     """Merge current records after live rejection and the exact quarantine."""
+    repaired_existing = [repair_aaip_historical_date(row) for row in existing]
+    repaired_dates = sum(
+        before.get("published_date") != after.get("published_date")
+        for before, after in zip(existing, repaired_existing)
+    )
+    existing = repaired_existing
+    rows = [repair_aaip_historical_date(row) for row in rows]
     rejected = {
         canonical(url)
         for report in reports
@@ -619,6 +640,13 @@ def merge_public_records(existing, rows, reports):
         if quarantined:
             observacom.setdefault("warnings", []).append(
                 f"{len(quarantined)} páginas removidas do histórico por corresponderem ao lote comprometido já excluído da API oficial"
+            )
+    aaip = next((report for report in reports if report.get("source_id") == "aaip"), None)
+    if aaip is not None:
+        aaip["repaired_historical_dates"] = repaired_dates
+        if repaired_dates:
+            aaip.setdefault("warnings", []).append(
+                f"{repaired_dates} datas históricas recuperadas do texto oficial dos cartões"
             )
     return merged
 
