@@ -30,10 +30,20 @@ class SourceCollectorTests(TestCase):
         report = {"pages_ok": 0, "errors": [], "warnings": []}
 
         rows = wp(s, "observacom", SOURCES["observacom"][3], 1, report)
-        merged = merge_public_records([record("observacom", "Casino promotion", "2026-11-16", spam["link"])], rows, [report])
+        old_spam = record("observacom", "Casino promotion", "2026-11-12", "https://www.observacom.org/old-casino")
+        old_spam["category"] = "1"
+        valid_history = record("observacom", "Integridad electoral", "2026-11-11", "https://www.observacom.org/integridad-electoral")
+        valid_history["category"] = "279"
+        merged = merge_public_records([
+            record("observacom", "Casino promotion", "2026-11-16", spam["link"]),
+            old_spam,
+            valid_history,
+        ], rows, [{"source_id": "observacom", **report}])
 
         self.assertEqual([row["title"] for row in rows], ["Regulación de plataformas digitales"])
         self.assertNotIn(spam["link"], merged)
+        self.assertNotIn(old_spam["url"], merged)
+        self.assertIn(valid_history["url"], merged)
         self.assertEqual(report["verified_rejected_urls"], 1)
         self.assertEqual(report["discarded_records"], 1)
 

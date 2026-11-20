@@ -51,6 +51,16 @@ SOURCES = {
 # and retain the rejected URLs so an already accumulated copy can be pruned.
 WP_REJECTED_AUTHORS = {"observacom": {23}}
 
+# A second, already deleted batch from the same compromise remains in older
+# cumulative snapshots.  The official API shows no institutional post in these
+# category/date combinations; the valid 9 and 11 November entries use category
+# sets 755|662|665 and 279.  This exact quarantine avoids a lexical spam filter.
+OBSERVACOM_QUARANTINE = {
+    "start": "2026-11-06",
+    "end": "2026-11-13",
+    "categories": {"1", "754", "756", "757", "758"},
+}
+
 
 def canonical(value):
     try:
@@ -566,24 +576,50 @@ def collect_all(pages=0, workers=4):
     return rows, sorted(reports, key=lambda r: r["source"])
 
 
+def quarantined_historical_record(row):
+    """Match only the verified OBSERVACOM compromise window and categories."""
+    return (
+        row.get("source_id") == "observacom"
+        and OBSERVACOM_QUARANTINE["start"] <= row.get("published_date", "") <= OBSERVACOM_QUARANTINE["end"]
+        and str(row.get("category", "")) in OBSERVACOM_QUARANTINE["categories"]
+    )
+
+
 def merge_public_records(existing, rows, reports):
-    """Merge current records and remove only URLs rejected by live validation."""
+    """Merge current records after live rejection and the exact quarantine."""
     rejected = {
         canonical(url)
         for report in reports
         for url in report.get("_discarded_urls", [])
         if canonical(url)
     }
+    quarantined = {
+        canonical(row.get("url", ""))
+        for row in [*existing, *rows]
+        if quarantined_historical_record(row) and canonical(row.get("url", ""))
+    }
     merged = {
         canonical(row["url"]): row
         for row in existing
-        if canonical(row.get("url", "")) and canonical(row["url"]) not in rejected
+        if canonical(row.get("url", ""))
+        and canonical(row["url"]) not in rejected
+        and canonical(row["url"]) not in quarantined
     }
     for row in rows:
+        if row["url"] in quarantined:
+            continue
         old = merged.get(row["url"], {})
         if old.get("published_date") and not row.get("published_date"):
             continue
         merged[row["url"]] = row
+    observacom = next((report for report in reports if report.get("source_id") == "observacom"), None)
+    if observacom is not None:
+        observacom["quarantined_historical_records"] = len(quarantined)
+        observacom["historical_quarantine_rule"] = "2026-11-06..2026-11-13; categorias 1, 754, 756, 757 e 758"
+        if quarantined:
+            observacom.setdefault("warnings", []).append(
+                f"{len(quarantined)} páginas removidas do histórico por corresponderem ao lote comprometido já excluído da API oficial"
+            )
     return merged
 
 
