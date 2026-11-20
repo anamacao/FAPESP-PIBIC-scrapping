@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-20T14:01:54+00:00",
+  "generated_at": "2026-11-20T14:09:46+00:00",
   "sources": [
     {
       "source_id": "aaip",
@@ -12,7 +12,7 @@
       "detail_pages_ok": 0,
       "warnings": [],
       "errors": [],
-      "collected_at": "2026-11-20T14:00:29+00:00",
+      "collected_at": "2026-11-20T14:08:22+00:00",
       "coverage": "Primeira listagem; até 12 artigos sem data conferidos individualmente",
       "records": 16,
       "dated": 16,
@@ -30,7 +30,7 @@
       "detail_pages_ok": 0,
       "warnings": [],
       "errors": [],
-      "collected_at": "2026-11-20T14:00:28+00:00",
+      "collected_at": "2026-11-20T14:08:21+00:00",
       "coverage": "Primeira listagem; até 12 artigos sem data conferidos individualmente",
       "records": 10,
       "dated": 10,
@@ -48,7 +48,7 @@
       "detail_pages_ok": 2,
       "warnings": [],
       "errors": [],
-      "collected_at": "2026-11-20T14:00:31+00:00",
+      "collected_at": "2026-11-20T14:08:23+00:00",
       "coverage": "Primeira listagem; até 12 artigos sem data conferidos individualmente",
       "records": 12,
       "dated": 12,
@@ -68,7 +68,7 @@
         "Limite de páginas atingido; o histórico da API não foi coletado por completo"
       ],
       "errors": [],
-      "collected_at": "2026-11-20T14:00:28+00:00",
+      "collected_at": "2026-11-20T14:08:21+00:00",
       "site_total_records": 701,
       "coverage": "API pública Plone, ordenada por publicação; até 100 itens por página",
       "records": 100,
@@ -87,7 +87,7 @@
       "detail_pages_ok": 0,
       "warnings": [],
       "errors": [],
-      "collected_at": "2026-11-20T14:00:30+00:00",
+      "collected_at": "2026-11-20T14:08:22+00:00",
       "coverage": "Primeira listagem; até 12 artigos sem data conferidos individualmente",
       "records": 10,
       "dated": 10,
@@ -105,7 +105,7 @@
       "detail_pages_ok": 0,
       "warnings": [],
       "errors": [],
-      "collected_at": "2026-11-20T14:00:30+00:00",
+      "collected_at": "2026-11-20T14:08:22+00:00",
       "coverage": "Primeira listagem; até 12 artigos sem data conferidos individualmente",
       "records": 10,
       "dated": 10,
@@ -123,7 +123,7 @@
       "detail_pages_ok": 0,
       "warnings": [],
       "errors": [],
-      "collected_at": "2026-11-20T14:00:33+00:00",
+      "collected_at": "2026-11-20T14:08:26+00:00",
       "coverage": "Página institucional acessível; nenhuma coleta de notícias confirmada",
       "records": 1,
       "dated": 0,
@@ -141,7 +141,7 @@
       "detail_pages_ok": 0,
       "warnings": [],
       "errors": [],
-      "collected_at": "2026-11-20T14:00:25+00:00",
+      "collected_at": "2026-11-20T14:08:17+00:00",
       "site_total_pages": 6,
       "site_total_records": "544",
       "coverage": "Recorte paginado da API; histórico completo não confirmado",
@@ -163,7 +163,7 @@
       "detail_pages_ok": 0,
       "warnings": [],
       "errors": [],
-      "collected_at": "2026-11-20T14:00:27+00:00",
+      "collected_at": "2026-11-20T14:08:20+00:00",
       "coverage": "Primeira listagem; até 12 artigos sem data conferidos individualmente",
       "records": 16,
       "dated": 16,
@@ -181,7 +181,7 @@
       "detail_pages_ok": 0,
       "warnings": [],
       "errors": [],
-      "collected_at": "2026-11-20T14:00:32+00:00",
+      "collected_at": "2026-11-20T14:08:25+00:00",
       "coverage": "Página institucional acessível; nenhuma coleta de notícias confirmada",
       "records": 1,
       "dated": 0,
@@ -199,7 +199,7 @@
       "detail_pages_ok": 0,
       "warnings": [],
       "errors": [],
-      "collected_at": "2026-11-20T14:00:31+00:00",
+      "collected_at": "2026-11-20T14:08:24+00:00",
       "coverage": "Primeira listagem; até 12 artigos sem data conferidos individualmente",
       "records": 20,
       "dated": 20,
@@ -219,7 +219,7 @@
       "errors": [
         "ConnectionError: HTTPSConnectionPool(host='icn.gob.ar', port=443): Max retries exceeded with url: / (Caused by ReadTimeoutError(\"HTTPSConnectionPool(host='icn.gob.ar', port=443): Read timed out. (read timeout=20)\"))"
       ],
-      "collected_at": "2026-11-20T14:00:31+00:00",
+      "collected_at": "2026-11-20T14:08:23+00:00",
       "attempts": [
         {
           "endpoint": "https://icn.gob.ar/noticias",
@@ -249,7 +249,7 @@
       "detail_pages_ok": 0,
       "warnings": [],
       "errors": [],
-      "collected_at": "2026-11-20T14:00:26+00:00",
+      "collected_at": "2026-11-20T14:08:19+00:00",
       "site_total_pages": 8,
       "site_total_records": "760",
       "coverage": "Recorte paginado da API; histórico completo não confirmado",
@@ -271,7 +271,7 @@
       "detail_pages_ok": 0,
       "warnings": [],
       "errors": [],
-      "collected_at": "2026-11-20T14:00:26+00:00",
+      "collected_at": "2026-11-20T14:08:19+00:00",
       "site_total_pages": 13,
       "site_total_records": "1275",
       "coverage": "Recorte paginado da API; histórico completo não confirmado",
@@ -293,7 +293,7 @@
       "detail_pages_ok": 0,
       "warnings": [],
       "errors": [],
-      "collected_at": "2026-11-20T14:00:25+00:00",
+      "collected_at": "2026-11-20T14:08:17+00:00",
       "site_total_pages": 62,
       "site_total_records": "6154",
       "coverage": "Recorte paginado da API; histórico completo não confirmado",
@@ -315,7 +315,7 @@
       "detail_pages_ok": 0,
       "warnings": [],
       "errors": [],
-      "collected_at": "2026-11-20T14:00:33+00:00",
+      "collected_at": "2026-11-20T14:08:26+00:00",
       "coverage": "Página institucional acessível; nenhuma coleta de notícias confirmada",
       "records": 1,
       "dated": 0,
@@ -333,7 +333,7 @@
       "detail_pages_ok": 0,
       "warnings": [],
       "errors": [],
-      "collected_at": "2026-11-20T14:00:25+00:00",
+      "collected_at": "2026-11-20T14:08:17+00:00",
       "coverage": "Até 600 itens do índice oficial; não representa todo o histórico",
       "records": 489,
       "dated": 489,
@@ -350,10 +350,11 @@
       "pages_ok": 1,
       "detail_pages_ok": 0,
       "warnings": [
-        "52 publicações do autor WordPress site_admin (id 23) foram rejeitadas por conteúdo alheio ao OBSERVACOM"
+        "52 publicações do autor WordPress site_admin (id 23) foram rejeitadas por conteúdo alheio ao OBSERVACOM",
+        "151 páginas removidas do histórico por corresponderem ao lote comprometido já excluído da API oficial"
       ],
       "errors": [],
-      "collected_at": "2026-11-20T14:00:25+00:00",
+      "collected_at": "2026-11-20T14:08:17+00:00",
       "validation_pages_ok": 1,
       "site_total_pages": 37,
       "site_total_records": "3641",
@@ -365,7 +366,9 @@
       "records": 46,
       "dated": 46,
       "undated": 0,
-      "status": "partial"
+      "status": "partial",
+      "quarantined_historical_records": 151,
+      "historical_quarantine_rule": "2026-11-06..2026-11-13; categorias 1, 754, 756, 757 e 758"
     },
     {
       "source_id": "parlamento_uy",
@@ -378,7 +381,7 @@
       "detail_pages_ok": 0,
       "warnings": [],
       "errors": [],
-      "collected_at": "2026-11-20T14:00:32+00:00",
+      "collected_at": "2026-11-20T14:08:24+00:00",
       "attempts": [
         {
           "endpoint": "https://parlamento.gub.uy/noticiasyeventos/noticias",
@@ -403,7 +406,7 @@
       "detail_pages_ok": 0,
       "warnings": [],
       "errors": [],
-      "collected_at": "2026-11-20T14:00:28+00:00",
+      "collected_at": "2026-11-20T14:08:21+00:00",
       "coverage": "Primeira listagem; até 12 artigos sem data conferidos individualmente",
       "records": 10,
       "dated": 10,
@@ -421,7 +424,7 @@
       "detail_pages_ok": 0,
       "warnings": [],
       "errors": [],
-      "collected_at": "2026-11-20T14:00:32+00:00",
+      "collected_at": "2026-11-20T14:08:24+00:00",
       "coverage": "Primeira listagem; até 12 artigos sem data conferidos individualmente",
       "records": 12,
       "dated": 12,
@@ -429,6 +432,6 @@
       "status": "ok"
     }
   ],
-  "total_records": 13607,
+  "total_records": 13456,
   "preservation": "Falhas não apagam registros históricos"
 }
