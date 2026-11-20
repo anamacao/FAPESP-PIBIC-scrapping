@@ -45,6 +45,12 @@ SOURCES = {
     "dsa_transparency": ("DSA Transparency Database", "União Europeia", "UE", "https://transparency.dsa.ec.europa.eu/", "reference"),
 }
 
+# The public OBSERVACOM author directory identifies 23 as ``site_admin``.
+# Its published posts are unrelated casino/SEO pages, while institutional
+# articles use the publisher's named accounts.  Keep the rule source-specific
+# and retain the rejected URLs so an already accumulated copy can be pruned.
+WP_REJECTED_AUTHORS = {"observacom": {23}}
+
 
 def canonical(value):
     try:
@@ -134,8 +140,39 @@ def record(sid, title, date, url, summary="", category="", record_type=""):
             "collected_at": datetime.now(timezone.utc).isoformat(timespec="seconds")}
 
 
+def wp_rejected_urls(s, sid, endpoint, report):
+    """Return URLs published by a source-specific, verified invalid author."""
+    author_ids = WP_REJECTED_AUTHORS.get(sid, set())
+    if not author_ids:
+        return set()
+    rejected = set()
+    for author_id in sorted(author_ids):
+        page, total_pages = 1, None
+        while total_pages is None or page <= total_pages:
+            r = fetch(s, endpoint, params={"per_page": 100, "page": page, "author": author_id,
+                      "_fields": "id,link,author"})
+            items = r.json()
+            if not isinstance(items, list):
+                raise ValueError("API de validação de autores não retornou lista")
+            total_pages = int(r.headers.get("X-WP-TotalPages", "0")) or 1
+            report["validation_pages_ok"] = report.get("validation_pages_ok", 0) + 1
+            rejected.update(filter(None, (canonical(item.get("link")) for item in items)))
+            if not items:
+                break
+            page += 1
+    return rejected
+
+
 def wp(s, sid, endpoint, pages, report):
     rows, total_pages, item_ids = [], None, set()
+    report.setdefault("warnings", [])
+    blocked_authors = WP_REJECTED_AUTHORS.get(sid, set())
+    try:
+        rejected_urls = wp_rejected_urls(s, sid, endpoint, report)
+    except (requests.RequestException, ValueError, TypeError) as exc:
+        rejected_urls = set()
+        report["warnings"].append("Validação de autores indisponível: " + str(exc)[:160])
+    rejected_in_sample = set()
     # Zero means follow the provider's pagination through the complete archive.
     # Keep an explicit bound available for callers requesting a sample.
     limit = pages or 1000
@@ -144,7 +181,7 @@ def wp(s, sid, endpoint, pages, report):
             break
         try:
             r = fetch(s, endpoint, params={"per_page": 100, "page": page, "orderby": "date", "order": "desc",
-                      "_fields": "id,date,link,title,excerpt,categories"})
+                      "_fields": "id,date,link,title,excerpt,categories,author"})
         except requests.RequestException as exc:
             if not rows:
                 raise
@@ -157,6 +194,11 @@ def wp(s, sid, endpoint, pages, report):
         report.update(site_total_pages=total_pages, site_total_records=r.headers.get("X-WP-Total"))
         report["pages_ok"] += 1
         for item in items:
+            item_url = canonical(item.get("link"))
+            if item.get("author") in blocked_authors or item_url in rejected_urls:
+                if item_url:
+                    rejected_in_sample.add(item_url)
+                continue
             item_ids.add(item.get("id") or item.get("link"))
             rows.append(record(sid, item.get("title", {}).get("rendered"), item.get("date"), item.get("link"),
                                item.get("excerpt", {}).get("rendered"), " | ".join(map(str, item.get("categories", [])))))
@@ -170,6 +212,15 @@ def wp(s, sid, endpoint, pages, report):
             report.update(coverage_complete=True, coverage="API paginada até a última página não vazia")
             break
         time.sleep(.2)
+    rejected_urls.update(rejected_in_sample)
+    if rejected_urls:
+        report["_discarded_urls"] = sorted(rejected_urls)
+        report["verified_rejected_urls"] = len(rejected_urls)
+        report["discarded_records"] = len(rejected_in_sample)
+        report["warnings"].append(
+            f"{len(rejected_in_sample)} publicações do autor WordPress site_admin (id 23) "
+            "foram rejeitadas por conteúdo alheio ao OBSERVACOM"
+        )
     return rows
 
 
@@ -318,8 +369,13 @@ def listing(s, sid, endpoint, report, details=12):
         accepted_paths = patterns[sid] if isinstance(patterns[sid], tuple) else (patterns[sid],)
         if not u.hostname or (not external_eu and (u.hostname.removeprefix("www.") != host or not any(p in u.path for p in accepted_paths))):
             continue
-        title = a.get_text(" ", strip=True)
-        parent = a.find_parent(class_=re.compile(r"node-article-card__content|views-row|item-noticia|box-noticia", re.I)) or a.find_parent(["article", "li"]) or a.find_parent(class_=re.compile(r"card|tile|news|noticia|Box", re.I)) or a.parent
+        inline_heading = a.select_one("h2,h3,h4,.titulo")
+        inline_date = a.select_one("time")
+        title = inline_heading.get_text(" ", strip=True) if inline_heading else a.get_text(" ", strip=True)
+        # Argentina.gob.ar wraps each complete news card (time, heading and
+        # summary) in its anchor.  Using an ancestor here assigns the first
+        # card's date to every article in the row.
+        parent = a if inline_heading and inline_date else (a.find_parent(class_=re.compile(r"node-article-card__content|views-row|item-noticia|box-noticia", re.I)) or a.find_parent(["article", "li"]) or a.find_parent(class_=re.compile(r"card|tile|news|noticia|Box", re.I)) or a.parent)
         if sid == "internetlab":
             heading = parent.select_one("h2.post-item__title, h2, h3")
             if heading:
@@ -510,6 +566,27 @@ def collect_all(pages=0, workers=4):
     return rows, sorted(reports, key=lambda r: r["source"])
 
 
+def merge_public_records(existing, rows, reports):
+    """Merge current records and remove only URLs rejected by live validation."""
+    rejected = {
+        canonical(url)
+        for report in reports
+        for url in report.get("_discarded_urls", [])
+        if canonical(url)
+    }
+    merged = {
+        canonical(row["url"]): row
+        for row in existing
+        if canonical(row.get("url", "")) and canonical(row["url"]) not in rejected
+    }
+    for row in rows:
+        old = merged.get(row["url"], {})
+        if old.get("published_date") and not row.get("published_date"):
+            continue
+        merged[row["url"]] = row
+    return merged
+
+
 def main():
     import argparse
     import csv
@@ -521,18 +598,15 @@ def main():
     args.output.mkdir(parents=True, exist_ok=True)
     path = args.output / "public_records.csv"
     existing = list(csv.DictReader(path.open(encoding="utf-8-sig"))) if path.exists() else []
-    merged = {canonical(r["url"]): r for r in existing}
-    for row in rows:
-        old = merged.get(row["url"], {})
-        if old.get("published_date") and not row.get("published_date"):
-            continue
-        merged[row["url"]] = row
+    merged = merge_public_records(existing, rows, reports)
     fields = list(record("nic", "", "", ""))
     with path.open("w", newline="", encoding="utf-8-sig") as f:
         writer = csv.DictWriter(f, fieldnames=fields, extrasaction="ignore")
         writer.writeheader(); writer.writerows(merged.values())
+    public_reports = [{key: value for key, value in report.items() if not key.startswith("_")}
+                      for report in reports]
     diagnostic = {"generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-                  "sources": reports, "total_records": len(merged), "preservation": "Falhas não apagam registros históricos"}
+                  "sources": public_reports, "total_records": len(merged), "preservation": "Falhas não apagam registros históricos"}
     (args.output/"diagnostico.json").write_text(json.dumps(diagnostic, ensure_ascii=False, indent=2))
 
 

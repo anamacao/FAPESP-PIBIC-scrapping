@@ -6,7 +6,7 @@ import requests
 import tempfile
 
 from scripts.fapesp_agent import parse_date, prepare_collector, normalize_records, build_dashboard, export_results
-from scripts.source_collectors import SOURCES, date_iso, metadata_date, listing, wp, record, repair_encoding, text, parliament_news, internetlab_sitemap, internetlab_html, icn_news
+from scripts.source_collectors import SOURCES, date_iso, metadata_date, listing, wp, record, repair_encoding, text, parliament_news, internetlab_sitemap, internetlab_html, icn_news, merge_public_records
 from bs4 import BeautifulSoup
 
 
@@ -18,6 +18,42 @@ class Response:
 
 
 class SourceCollectorTests(TestCase):
+    def test_observacom_rejects_verified_spam_author_and_prunes_history(self):
+        spam = {"id": 1, "author": 23, "title": {"rendered": "Casino promotion"},
+                "date": "2026-11-16T08:00:00", "link": "https://www.observacom.org/casino-promotion"}
+        article = {"id": 2, "author": 11, "title": {"rendered": "Regulación de plataformas digitales"},
+                   "date": "2026-11-16T09:00:00", "link": "https://www.observacom.org/regulacion-plataformas"}
+        validation = Response([{"id": 1, "author": 23, "link": spam["link"]}],
+                              headers={"X-WP-TotalPages": "1"})
+        listing_page = Response([spam, article], headers={"X-WP-TotalPages": "1", "X-WP-Total": "2"})
+        s = mock.Mock(); s.get.side_effect = [validation, listing_page]
+        report = {"pages_ok": 0, "errors": [], "warnings": []}
+
+        rows = wp(s, "observacom", SOURCES["observacom"][3], 1, report)
+        merged = merge_public_records([record("observacom", "Casino promotion", "2026-11-16", spam["link"])], rows, [report])
+
+        self.assertEqual([row["title"] for row in rows], ["Regulación de plataformas digitales"])
+        self.assertNotIn(spam["link"], merged)
+        self.assertEqual(report["verified_rejected_urls"], 1)
+        self.assertEqual(report["discarded_records"], 1)
+
+    def test_anchor_wrapped_cards_keep_each_aaip_title_and_date(self):
+        body = """
+        <div class="row panels-row">
+          <a class="panel" href="/noticias/primera-noticia"><time datetime="2026-11-16 09:00:00">16 de noviembre</time><h3>Primera noticia sobre protección de datos</h3><p>Resumen uno</p></a>
+          <a class="panel" href="/noticias/segunda-noticia"><time datetime="2026-11-12 10:00:00">12 de noviembre</time><h3>Segunda noticia sobre transparencia pública</h3><p>Resumen dos</p></a>
+        </div>"""
+        s = mock.Mock(); s.get.return_value = Response(body=body)
+        report = {"pages_ok": 0, "detail_pages_ok": 0, "warnings": []}
+
+        rows = listing(s, "aaip", SOURCES["aaip"][3], report)
+
+        self.assertEqual([row["title"] for row in rows], [
+            "Primera noticia sobre protección de datos",
+            "Segunda noticia sobre transparencia pública",
+        ])
+        self.assertEqual([row["published_date"] for row in rows], ["2026-11-16", "2026-11-12"])
+
     def test_icn_uses_official_home_page_after_news_archive_timeout(self):
         report = {"pages_ok": 0, "detail_pages_ok": 0, "warnings": []}
         recent = [record(
